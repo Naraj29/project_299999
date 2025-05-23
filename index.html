@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secret Greeting</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #43cea2, #185a9d);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="password"] {
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      margin-top: 20px;
+      font-size: 1em;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 5px;
+      background-color: #00c9ff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #007ea7;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 1.2em;
+      line-height: 1.4em;
+    }
+
+    .greeting {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <h2>Enter Passcode</h2>
+    <input type="password" id="passcodeInput" placeholder="Enter secret code" />
+    <button onclick="checkPasscode()">Unlock</button>
+    <div id="message" class="message hidden"></div>
+  </div>
+
+  <script>
+    const correctPasscode = "open123";
+    const clearPasscode = "clearme";
+
+    function checkPasscode() {
+      const input = document.getElementById("passcodeInput").value;
+      const container = document.getElementById("container");
+      const messageDiv = document.getElementById("message");
+
+      if (input === correctPasscode) {
+        messageDiv.classList.remove("hidden");
+        messageDiv.innerHTML = `
+          <div class="greeting">🎉 Hello, Dear Friend!</div>
+          <p>I'm so glad you made it here. Just wanted to say: <strong>You matter.</strong><br/>This little moment is just for you. 🌟</p>
+        `;
+      } else if (input === clearPasscode) {
+        container.innerHTML = "";
+        document.body.style.background = "#000";
+      } else {
+        messageDiv.classList.remove("hidden");
+        messageDiv.textContent = "❌ Incorrect passcode. Please try again.";
+      }
+    }
+  </script>
+</body>
+</html>
