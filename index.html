@@ -80,8 +80,8 @@
   </div>
 
   <script>
-    const correctPasscode = "open123";
-    const clearPasscode = "clearme";
+    const correctPasscode = "2025";
+    const clearPasscode = "0000";
 
     function checkPasscode() {
       const input = document.getElementById("passcodeInput").value;
@@ -91,8 +91,8 @@
       if (input === correctPasscode) {
         messageDiv.classList.remove("hidden");
         messageDiv.innerHTML = `
-          <div class="greeting">🎉 Hello, Dear Friend!</div>
-          <p>I'm so glad you made it here. Just wanted to say: <strong>You matter.</strong><br/>This little moment is just for you. 🌟</p>
+          <div class="greeting">🎉 Hello, Nainsi !</div>
+          <p>Itna serious mat hua karo , turant reply karo. 🌟</p>
         `;
       } else if (input === clearPasscode) {
         container.innerHTML = "";
