@@ -2,104 +2,131 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Secret Greeting</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UPSC Planner</title>
   <style>
-    * {
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7fa;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    body {
-      background: linear-gradient(to right, #43cea2, #185a9d);
-      color: white;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
-      text-align: center;
-      padding: 20px;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.5);
-      padding: 30px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 400px;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
-    input[type="password"] {
+    input[type="text"] {
       padding: 10px;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
-      margin-top: 20px;
-      font-size: 1em;
+      width: 250px;
+      margin: 10px;
+      font-size: 16px;
     }
 
     button {
-      margin-top: 15px;
       padding: 10px 20px;
-      font-size: 1em;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #0078D4;
+      color: white;
       border: none;
       border-radius: 5px;
-      background-color: #00c9ff;
-      color: #fff;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #007ea7;
     }
 
     .hidden {
       display: none;
     }
 
-    .message {
-      margin-top: 20px;
-      font-size: 1.2em;
-      line-height: 1.4em;
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
     }
 
-    .greeting {
-      font-size: 1.6em;
-      margin-bottom: 10px;
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #0078D4;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="container">
-    <h2>Enter Passcode</h2>
-    <input type="password" id="passcodeInput" placeholder="Enter secret code" />
-    <button onclick="checkPasscode()">Unlock</button>
-    <div id="message" class="message hidden"></div>
+  <div class="container">
+    <h1>Enter Passcode</h1>
+    <input type="text" id="passcodeInput" placeholder="Enter passcode..." />
+    <button onclick="checkPasscode()">Submit</button>
+
+    <div id="timetableSection" class="hidden">
+      <h2>UPSC Study Planner</h2>
+      <table id="timetable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date (Sunday)</th>
+            <th>Task</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- JS will insert rows here -->
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
-    const correctPasscode = "2025";
-    const clearPasscode = "0000";
-
     function checkPasscode() {
-      const input = document.getElementById("passcodeInput").value;
-      const container = document.getElementById("container");
-      const messageDiv = document.getElementById("message");
-
-      if (input === correctPasscode) {
-        messageDiv.classList.remove("hidden");
-        messageDiv.innerHTML = `
-          <div class="greeting">🎉 Hello !</div>
-          <p>Hello world 🌟</p>
-        `;
-      } else if (input === clearPasscode) {
-        container.innerHTML = "";
-        document.body.style.background = "#000";
+      const input = document.getElementById('passcodeInput').value.trim();
+      if (input === 'UPSC') {
+        document.getElementById('timetableSection').classList.remove('hidden');
+        generateTimetable();
       } else {
-        messageDiv.classList.remove("hidden");
-        messageDiv.textContent = "❌ Incorrect passcode. Please try again.";
+        alert('Incorrect passcode. Try again.');
+      }
+    }
+
+    function generateTimetable() {
+      const tbody = document.querySelector('#timetable tbody');
+      tbody.innerHTML = ''; // Clear existing
+
+      let startDate = new Date('2025-08-10'); // Start on 10th August 2025
+      const oneYearLater = new Date('2026-08-09');
+
+      let count = 1;
+      while (startDate <= oneYearLater) {
+        if (startDate.getDay() === 0) { // Sunday
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td>${count}</td>
+            <td>${startDate.toDateString()}</td>
+            <td>Task for this Sunday</td>
+            <td>Pending</td>
+          `;
+
+          tbody.appendChild(row);
+          count++;
+        }
+        startDate.setDate(startDate.getDate() + 1);
       }
     }
   </script>
