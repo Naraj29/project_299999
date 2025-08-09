@@ -1,0 +1,531 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> My Fiction Journey</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f2f5f9, #dfe6ed);
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+    }
+    .selector {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 30px;
+      transition: all 0.3s ease-in-out;
+    }
+    label {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+    select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .material-list {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f1f9ff;
+      border-left: 4px solid #007bff;
+    }
+    .material-list h2 {
+      margin-bottom: 10px;
+      color: #0a3d62;
+    }
+    .material-list ul {
+      list-style-type: square;
+      margin-left: 20px;
+    }
+
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.subject-card {
+  background: linear-gradient(135deg, #e8e8e8, #ffffff);
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.subject-card:hover {
+  transform: translateY(-5px);
+  background: linear-gradient(135deg, #d0f0ff, #ffffff);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.material-section {
+  display: none;
+  background: #f8f8f8;
+  border-left: 4px solid #3498db;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 12px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+
+
+  </style>
+</head>
+<body>
+  <h1></h1>
+  <div class="selector">
+    <label for="stage">Select Type</label>
+    <select id="stage" onchange="showSubjects()">
+      <option value="">-- Select --</option>
+      <option value="prelims">Stand-alones</option>
+      <option value="mains">Universes</option>
+      <option value="interview">Written</option>
+      <option value="documentaries">Documentaries</option>
+      <option value="Upcoming">Upcoming</option>
+      <option value="Others">Others</option>
+
+
+    </select><label for="subject">Select Subject</label>
+<select id="subject" onchange="showMaterials()">
+  <option value="">-- Select --</option>
+</select>
+
+<label for="person">Select Candidate</label>
+<select id="person" onchange="updateOptionalSubjects()">
+  <option value="aryan">Aryan</option>
+  <option value="shital">Shital</option>
+</select>
+
+<div class="material-list" id="materials" style="display:none">
+  <h2>Recommended Materials</h2>
+  <ul id="materialItems"></ul>
+</div>
+
+
+<!-- Subject Material Sections -->
+<div id="gs1" class="material-section">
+  <h3>GS Paper 1 Materials</h3>
+  <ul>
+    <li>History: NCERTs, Spectrum, Art & Culture by Nitin Singhania</li>
+    <li>Geography: NCERT + GC Leong + Atlas Practice</li>
+    <li>Society: Vision Notes, Current Examples</li>
+  </ul>
+</div>
+
+<div id="gs2" class="material-section">
+  <h3>GS Paper 2 Materials</h3>
+  <ul>
+    <li>Polity: Laxmikant + Previous Year Questions</li>
+    <li>Governance: ARC + 2nd ARC Reports</li>
+    <li>IR: Current Affairs from MEA + Newspaper</li>
+  </ul>
+</div>
+
+<div id="gs3" class="material-section">
+  <h3>GS Paper 3 Materials</h3>
+  <ul>
+    <li>Economy: Mrunal Videos + NCERTs</li>
+    <li>Environment: Shankar IAS Book</li>
+    <li>Science & Tech: PIB, Newspaper</li>
+  </ul>
+</div>
+
+<div id="gs4" class="material-section">
+  <h3>GS Paper 4 Materials</h3>
+  <ul>
+    <li>Lexicon for Ethics</li>
+    <li>Case Studies Practice</li>
+    <li>Quotes and Thinkers List</li>
+  </ul>
+</div>
+
+<div id="essay" class="material-section">
+  <h3>Essay Materials</h3>
+  <ul>
+    <li>Past Year Essay Analysis</li>
+    <li>Theme Bank Practice</li>
+    <li>GS-integrated Examples</li>
+  </ul>
+</div>
+
+<div id="csat" class="material-section">
+  <h3>CSAT Materials</h3>
+  <ul>
+    <li>Maths: CSAT Manual + Practice Sets</li>
+    <li>Comprehension: Reading Hindu Editorials</li>
+    <li>Reasoning: RS Aggarwal + PYQs</li>
+  </ul>
+</div>
+
+<div id="optional-aryan" class="material-section">
+  <h3>Aryan's Optional – Anthropology</h3>
+  <ul>
+    <li>IGNOU Material</li>
+    <li>Vaid Sir Class Notes</li>
+    <li>Previous Year Answers</li>
+  </ul>
+</div>
+
+<div id="optional-shital" class="material-section">
+  <h3>Shital's Optional – PSIR</h3>
+  <ul>
+    <li>Subhra Ranjan Notes</li>
+    <li>Political Theory: O P Gauba</li>
+    <li>International Relations: Andrew Heywood</li>
+  </ul>
+</div>
+
+<div id="languages" class="material-section">
+  <h3>Languages</h3>
+  <ul>
+    <li>English Compulsory: Practice Papers + Grammar</li>
+    <li>Regional Language: Grammar Book + Essay Writing Practice</li>
+  </ul>
+</div>
+
+<div id="interview" class="material-section">
+  <h3>Interview Preparation</h3>
+  <ul>
+    <li>DAF-based Question Bank</li>
+    <li>Mock Interviews</li>
+    <li>Current Affairs + Situation Judgement</li>
+  </ul>
+</div>
+
+
+
+
+
+  </div> 
+
+<script>
+  function showMaterial(subject) {
+    const allSections = document.querySelectorAll('.material-section');
+    allSections.forEach(section => section.style.display = 'none');
+
+    // Optional logic
+    if (subject === 'optional') {
+      const user = prompt("Who are you? (Aryan / Shital)").toLowerCase();
+      if (user.includes("aryan")) {
+        document.getElementById('optional-aryan').style.display = 'block';
+      } else if (user.includes("shital")) {
+        document.getElementById('optional-shital').style.display = 'block';
+      } else {
+        alert("Please enter a valid name (Aryan / Shital).");
+      }
+      return;
+    }
+
+    const target = document.getElementById(subject);
+    if (target) {
+      target.style.display = 'block';
+    }
+  }
+</script>
+
+
+
+
+
+
+
+
+
+ <script>
+    const subjects = {
+      prelims: ['CSAT', 'General Studies'],
+      mains: ['GS1', 'GS2', 'GS3', 'GS4', 'Essay', 'Optional'],
+      interview: ['Preparation Techniques']
+    };
+
+    const materials = {
+      GS1: ['NCERT History (Class 6–12)', 'Spectrum Modern India', 'Geography NCERT + G.C. Leong'],
+      GS2: ['Laxmikanth Polity', 'Current Affairs – Indian Express / The Hindu', 'PRSIndia Notes'],
+      GS3: ['Economic Survey', 'Budget Summary', 'Ramesh Singh Economy', 'Environment by Shankar IAS'],
+      GS4: ['Lexicon Ethics', 'Second ARC Report Summaries', 'Case Study Practice'],
+      Essay: ['Previous Year Essays', 'Essay Writing Strategy Videos', 'Topic-wise Essay Practice'],
+      CSAT: ['Previous Year Papers', 'Logical Reasoning Workbooks', 'Basic Maths Practice'],
+      'Preparation Techniques': ['Mock Interviews', 'DAF Analysis', 'Current Affairs Discussions'],
+      Optional: {
+        aryan: ['Anthropology – Ember & Ember, IGNOU Notes', 'Tribal India by Nadeem Hasnain'],
+        shital: ['PSIR – Andrew Heywood, IGNOU Notes, Subhra Ranjan Materials']
+      },
+      'General Studies': ['NCERTs from Class 6–12', 'Lucent GK', 'Current Affairs']
+    };
+
+    function showSubjects() {
+      const stage = document.getElementById('stage').value;
+      const subjectSelect = document.getElementById('subject');
+      subjectSelect.innerHTML = '<option value="">-- Select --</option>';
+      if (subjects[stage]) {
+        subjects[stage].forEach(sub => {
+          const opt = document.createElement('option');
+          opt.value = sub;
+          opt.textContent = sub;
+          subjectSelect.appendChild(opt);
+        });
+      }
+    }
+
+    function updateOptionalSubjects() {
+      const subject = document.getElementById('subject').value;
+      showMaterials(subject);
+    }
+
+    function showMaterials() {
+      const subject = document.getElementById('subject').value;
+      const person = document.getElementById('person').value;
+      const list = document.getElementById('materialItems');
+      const container = document.getElementById('materials');
+
+      list.innerHTML = '';
+
+      if (!subject) {
+        container.style.display = 'none';
+        return;
+      }
+
+      let data = materials[subject];
+
+      if (subject === 'Optional') {
+        data = materials.Optional[person];
+      }
+
+      if (data && Array.isArray(data)) {
+        data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = item;
+          list.appendChild(li);
+        });
+        container.style.display = 'block';
+      }
+    }
+  </script>
+
+<!-- CONTINUATION: Paste this *after* Part 3 -->
+<style>
+  .content-area {
+    display: none;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 10px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .content-area.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .subject-block {
+    margin-bottom: 20px;
+  }
+
+  .subject-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+
+  .material-list {
+    padding-left: 20px;
+  }
+
+  .material-list li {
+    margin-bottom: 6px;
+  }
+</style><script>
+  const buttons = document.querySelectorAll('.btn');
+  const contentArea = document.getElementById('content-area');
+
+  const contentMap = {
+    gs1: `
+      <div class="subject-block">
+        <div class="subject-title">History</div>
+        <ul class="material-list">
+          <li>NCERT Class 6-12 History</li>
+          <li>India’s Ancient Past – RS Sharma</li>
+          <li>Modern India – Bipan Chandra</li>
+          <li>Post-Independence India – Bipan Chandra</li>
+        </ul>
+      </div>
+      <div class="subject-block">
+        <div class="subject-title">Society</div>
+        <ul class="material-list">
+          <li>NCERT Sociology Class 11 & 12</li>
+          <li>Social Issues by Ram Ahuja</li>
+        </ul>
+      </div>
+      <div class="subject-block">
+        <div class="subject-title">Geography</div>
+        <ul class="material-list">
+          <li>NCERT Class 6-12 Geography</li>
+          <li>GC Leong – Certificate Physical Geography</li>
+          <li>Atlas (Oxford or Orient BlackSwan)</li>
+        </ul>
+      </div>
+    `,
+    gs2: `
+      <div class="subject-block">
+        <div class="subject-title">Polity</div>
+        <ul class="material-list">
+          <li>Indian Polity – M. Laxmikanth</li>
+          <li>Polity NCERTs Class 9-12</li>
+          <li>Governance in India – ARC Reports</li>
+        </ul>
+      </div>
+      <div class="subject-block">
+        <div class="subject-title">International Relations</div>
+        <ul class="material-list">
+          <li>Current Affairs (The Hindu, Indian Express)</li>
+          <li>MEA India Yearbook</li>
+        </ul>
+      </div>
+    `,
+    gs3: `
+      <div class="subject-block">
+        <div class="subject-title">Economy</div>
+        <ul class="material-list">
+          <li>NCERT Macroeconomics Class 12</li>
+          <li>Sriram IAS Economy Notes</li>
+          <li>Economic Survey & Budget Highlights</li>
+        </ul>
+      </div>
+      <div class="subject-block">
+        <div class="subject-title">Environment</div>
+        <ul class="material-list">
+          <li>Shankar IAS Environment Book</li>
+          <li>Down to Earth Magazine</li>
+        </ul>
+      </div>
+      <div class="subject-block">
+        <div class="subject-title">Disaster Management</div>
+        <ul class="material-list">
+          <li>2nd ARC Report on Crisis Management</li>
+          <li>NDMA Guidelines</li>
+        </ul>
+      </div>
+    `,
+    gs4: `
+      <div class="subject-block">
+        <div class="subject-title">Ethics, Integrity & Aptitude</div>
+        <ul class="material-list">
+          <li>Lexicon for Ethics</li>
+          <li>G Subba Rao’s Ethics Book</li>
+          <li>Case Studies Practice Workbook</li>
+        </ul>
+      </div>
+    `,
+    essay: `
+      <div class="subject-block">
+        <div class="subject-title">Essay Preparation</div>
+        <ul class="material-list">
+          <li>Vision IAS Essay Compilations</li>
+          <li>Topic-wise Essay Examples (Topper copies)</li>
+          <li>YT: Anudeep Durishetty Essay Video</li>
+        </ul>
+      </div>
+    `,
+    csat: `
+      <div class="subject-block">
+        <div class="subject-title">CSAT</div>
+        <ul class="material-list">
+          <li>CSAT Manual – TMH</li>
+          <li>Previous Year CSAT Papers</li>
+          <li>R.S. Aggarwal (Quant + Reasoning)</li>
+        </ul>
+      </div>
+    `,
+    optional: `
+      <div class="subject-block">
+        <div class="subject-title">Optional Subjects</div>
+        <p><b>Aryan:</b> Anthropology</p>
+        <ul class="material-list">
+          <li>Physical Anthropology – P. Nath</li>
+          <li>Tribal India – Nadeem Hasnain</li>
+          <li>Anthro IGNOU + Toppers Notes</li>
+        </ul>
+        <p><b>Shital:</b> PSIR</p>
+        <ul class="material-list">
+          <li>IGNOU PSIR BA Notes</li>
+          <li>Global Politics – Andrew Heywood</li>
+          <li>Shubhra Ranjan PSIR Notes</li>
+        </ul>
+      </div>
+    `,
+    interview: `
+      <div class="subject-block">
+        <div class="subject-title">Interview Prep</div>
+        <ul class="material-list">
+          <li>Mock Interviews with Coaching Institutes</li>
+          <li>Daf Analysis & Current Issues</li>
+          <li>Interview Transcript Compilation (Topper Docs)</li>
+        </ul>
+      </div>
+    `
+  };
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.getAttribute('data-subject');
+      contentArea.innerHTML = contentMap[key];
+      contentArea.classList.add('active');
+    });
+  });
+</script>
+
+
+
+
+</body>
+</html>
