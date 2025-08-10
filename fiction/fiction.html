@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cinematic Content Viewer</title>
+<title>Cinematic Universe Hub</title>
 <style>
     body {
         margin: 0;
@@ -11,29 +11,35 @@
         color: #fff;
         background-color: #000;
         min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 2rem;
-        transition: background-image 0.8s ease-in-out;
+        overflow-x: hidden;
+    }
+    /* Background layers */
+    #background {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         background-size: cover;
         background-position: center;
-        background-attachment: fixed;
+        transition: background-image 1s ease-in-out;
+        will-change: background-image;
+        z-index: -2;
     }
-    body::before {
-        content: "";
+    #overlay {
         position: fixed;
         top: 0; left: 0;
         width: 100%; height: 100%;
         background: rgba(0,0,0,0.6);
-        z-index: 0;
+        z-index: -1;
+    }
+    /* Page content */
+    header {
+        text-align: center;
+        padding: 2rem 1rem 1rem;
     }
     h1 {
         font-size: 2.5rem;
-        margin-bottom: 1rem;
-        text-align: center;
+        margin: 0;
         color: #ffd369;
-        z-index: 1;
         text-shadow: 0 0 15px #ffd369, 0 0 30px #ff9f1c;
         animation: titlePop 1s ease forwards;
     }
@@ -46,13 +52,12 @@
         flex-direction: column;
         gap: 1rem;
         max-width: 500px;
-        width: 100%;
+        margin: auto;
         background: rgba(255, 255, 255, 0.05);
         padding: 1.5rem;
         border-radius: 12px;
         backdrop-filter: blur(10px);
         box-shadow: 0 4px 25px rgba(0,0,0,0.5);
-        z-index: 1;
         animation: fadeIn 0.8s ease forwards;
     }
     select {
@@ -70,15 +75,14 @@
         background: rgba(255,255,255,0.3);
     }
     #content {
-        margin-top: 2rem;
+        margin: 2rem auto;
         padding: 1.5rem;
         background: rgba(0,0,0,0.6);
         border-radius: 10px;
         max-width: 900px;
-        width: 100%;
+        width: 90%;
         min-height: 200px;
         box-shadow: 0 4px 25px rgba(0,0,0,0.4);
-        z-index: 1;
         animation: fadeInContent 0.8s ease;
     }
     .fade-in {
@@ -99,7 +103,13 @@
 </head>
 <body>
 
-<h1>🎥 Cinematic Universe Hub</h1>
+<div id="background"></div>
+<div id="overlay"></div>
+
+<header>
+    <h1>🎥 Cinematic Universe Hub</h1>
+</header>
+
 <div class="selector-container">
     <select id="mainCategory">
         <option value="">-- Select Category --</option>
@@ -120,36 +130,59 @@
 
 <div id="content">Please select a category to view content.</div>
 
+<audio id="bgMusic" autoplay loop></audio>
+
 <script>
     const mainCategory = document.getElementById("mainCategory");
     const subCategory = document.getElementById("subCategory");
     const contentDiv = document.getElementById("content");
-    const body = document.body;
+    const bg = document.getElementById("background");
+    const bgMusic = document.getElementById("bgMusic");
 
     const backgrounds = {
-        standalone: "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80')",
-        universes: "url('https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1350&q=80')",
-        upcoming: "url('https://images.unsplash.com/photo-1549921296-3a6b1c8944d4?auto=format&fit=crop&w=1350&q=80')",
-        documentaries: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1350&q=80')",
-        marvel: "url('https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?auto=format&fit=crop&w=1350&q=80')",
-        dc: "url('https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?auto=format&fit=crop&w=1350&q=80')",
-        starwars: "url('https://images.unsplash.com/photo-1523987355523-c7b5b48a9c34?auto=format&fit=crop&w=1350&q=80')",
-        lotr: "url('https://images.unsplash.com/photo-1600709734546-1ff4cbae78b0?auto=format&fit=crop&w=1350&q=80')"
+        standalone: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80",
+        universes: "https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1350&q=80",
+        upcoming: "https://images.unsplash.com/photo-1549921296-3a6b1c8944d4?auto=format&fit=crop&w=1350&q=80",
+        documentaries: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1350&q=80",
+        marvel: "https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?auto=format&fit=crop&w=1350&q=80",
+        dc: "https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?auto=format&fit=crop&w=1350&q=80",
+        starwars: "https://images.unsplash.com/photo-1523987355523-c7b5b48a9c34?auto=format&fit=crop&w=1350&q=80",
+        lotr: "https://images.unsplash.com/photo-1600709734546-1ff4cbae78b0?auto=format&fit=crop&w=1350&q=80"
+    };
+
+    const music = {
+        standalone: "standalone.mp3",
+        universes: "universes.mp3",
+        upcoming: "upcoming.mp3",
+        documentaries: "documentaries.mp3",
+        marvel: "marvel.mp3",
+        dc: "dc.mp3",
+        starwars: "starwars.mp3",
+        lotr: "lotr.mp3"
     };
 
     function setBackground(key) {
-        body.style.backgroundImage = backgrounds[key] || "none";
+        bg.style.backgroundImage = `url('${backgrounds[key]}')`;
+    }
+
+    function setMusic(key) {
+        if (music[key]) {
+            bgMusic.src = music[key];
+            bgMusic.play().catch(()=>{});
+        }
     }
 
     mainCategory.addEventListener("change", () => {
         if (mainCategory.value === "universes") {
             subCategory.style.display = "block";
             setBackground("universes");
+            setMusic("universes");
             contentDiv.innerHTML = "Please choose a universe...";
         } else {
             subCategory.style.display = "none";
             if (mainCategory.value) {
                 setBackground(mainCategory.value);
+                setMusic(mainCategory.value);
                 loadContent(mainCategory.value + ".txt");
             } else {
                 contentDiv.innerHTML = "Please select a category to view content.";
@@ -160,6 +193,7 @@
     subCategory.addEventListener("change", () => {
         if (subCategory.value) {
             setBackground(subCategory.value);
+            setMusic(subCategory.value);
             loadContent(subCategory.value + ".txt");
         } else {
             contentDiv.innerHTML = "Please choose a universe...";
