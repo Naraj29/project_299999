@@ -1,287 +1,563 @@
-import React, { useEffect, useState, useRef } from "react";
-
-// NoDaydream Dashboard
-// Single-file React component (Tailwind CSS assumed available in the host project)
-// Default export a React component
-
-export default function NoDaydreamDashboard() {
-  const [txtContent, setTxtContent] = useState("");
-  const [currentFileName, setCurrentFileName] = useState("");
-  const [dailyTasks, setDailyTasks] = useState([]);
-  const [logs, setLogs] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("nodaydream_logs") || "[]");
-    } catch (e) {
-      return [];
-    }
-  });
-  const [lastLoadedAt, setLastLoadedAt] = useState(null);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [timerSecs, setTimerSecs] = useState(0);
-  const timerRef = useRef(null);
-  const [mode, setMode] = useState("MRP"); // MRP or NBRP or custom
-
-  // parse txt into tasks by lines starting with - or @daily
-  function parseTxtToTasks(text) {
-    const lines = text.split(/\r?\n/).map((l) => l.trim());
-    const tasks = [];
-    for (let i = 0; i < lines.length; i++) {
-      const l = lines[i];
-      if (!l) continue;
-      if (l.startsWith("@daily")) {
-        // format: @daily: Title --desc
-        const parts = l.replace(/^@daily[:\s]*/i, "").split("--");
-        tasks.push({ id: Date.now() + Math.random(), title: parts[0].trim(), done: false, source: "file" });
-      } else if (l.startsWith("- ") || l.startsWith("-")) {
-        tasks.push({ id: Date.now() + Math.random(), title: l.replace(/^-\s?/, ""), done: false, source: "file" });
-      }
-    }
-    return tasks;
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>NoDaydream • Dopamine Detox Diary</title>
+<style>
+  :root{
+    --bg:#0b0f14;--panel:#0f1720;--muted:#96a0aa;--accent:#22c1c3;--red:#ff5f6d;
+    --glass: rgba(255,255,255,0.03);--card:#0b1220;--success:#7ee787;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    color-scheme: dark;
   }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#020409 0%, #071018 70%);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  .wrap{max-width:1100px;margin:18px auto;padding:18px;display:grid;grid-template-columns:320px 1fr 320px;gap:18px;}
+  header{grid-column:1/-1;display:flex;align-items:center;gap:12px;}
+  .logo{font-weight:700;color:var(--accent);font-size:20px;letter-spacing:0.6px}
+  .subtitle{color:var(--muted);font-size:13px}
+  .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;box-shadow:0 6px 24px rgba(2,6,10,0.6);border:1px solid rgba(255,255,255,0.02)}
+  .left{height:calc(100vh - 120px);overflow:auto;padding:12px}
+  .right{height:calc(100vh - 120px);overflow:auto;padding:12px}
+  .center{height:calc(100vh - 120px);overflow:auto;padding:14px}
+  .small{font-size:13px;color:var(--muted)}
+  .day-list{display:flex;flex-direction:column;gap:8px}
+  .day-item{padding:10px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .day-item:hover{background:var(--glass)}
+  .day-item.active{background:linear-gradient(90deg, rgba(34,193,195,0.08), rgba(34,193,195,0.03));border:1px solid rgba(34,193,195,0.08)}
+  .date{font-weight:600}
+  textarea{width:100%;min-height:260px;background:transparent;border:1px dashed rgba(255,255,255,0.04);padding:12px;border-radius:8px;color:#e6eef2;resize:vertical}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  button{background:var(--accent);color:#021;border:none;padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .muted{color:var(--muted)}
+  .tiny{font-size:12px;color:var(--muted)}
+  .log{height:280px;overflow:auto;background:rgba(255,255,255,0.01);padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)}
+  .grid-split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .center .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .pill{background:rgba(255,255,255,0.02);padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.02);font-size:13px}
+  .trigger-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .advice{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);min-height:120px}
+  .quote{font-style:italic;color:var(--muted);font-size:14px}
+  footer{grid-column:1/-1;margin-top:8px;text-align:center;color:var(--muted);font-size:13px}
+  .small-btn{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer}
+  .flex{display:flex;gap:8px;align-items:center}
+  .danger{background:var(--red);color:white}
+  .success{background:var(--success);color:#012}
+  input[type="date"], input[type="text"], select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:#e8f3f6}
+  label.file {display:inline-block;padding:8px 10px;border-radius:8px;border:1px dashed rgba(255,255,255,0.03);cursor:pointer;color:var(--muted)}
+  .kicker{font-size:12px;color:var(--muted);margin-bottom:6px}
+  .big-title{font-size:20px;font-weight:700;color:#e6f9f9}
+  .help{color:var(--muted);font-size:13px}
+  @media(max-width:980px){.wrap{grid-template-columns:1fr;padding:12px}.left{order:2}.center{order:1}.right{order:3;height:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="logo">NoDaydream • Dopamine Diary</div>
+      <div class="subtitle">Daily notes • Trigger helper • Micro-actions • Offline-first</div>
+    </div>
+    <div style="margin-left:auto" class="small muted">Local only • Your data saved in browser (or export)</div>
+  </header>
 
-  function handleFile(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file) return;
-    setCurrentFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const text = String(ev.target.result || "");
-      setTxtContent(text);
-      setLastLoadedAt(new Date().toISOString());
-      const parsed = parseTxtToTasks(text);
-      setDailyTasks((prev) => {
-        // merge without duplicates (by title)
-        const titles = new Set(prev.map((t) => t.title));
-        const merged = [...prev];
-        parsed.forEach((p) => {
-          if (!titles.has(p.title)) merged.push(p);
-        });
-        return merged;
-      });
-      logAction(`Loaded file ${file.name}`);
-    };
-    reader.readAsText(file);
-  }
+  <!-- LEFT: Day list + import/export -->
+  <aside class="panel left">
+    <div class="kicker">Diary Navigation</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <input id="jumpDate" type="date" class="" />
+      <button id="goDate" class="ghost small-btn">Jump</button>
+    </div>
 
-  function logAction(text) {
-    const entry = { id: Date.now(), text, ts: new Date().toISOString() };
-    setLogs((s) => {
-      const n = [entry, ...s].slice(0, 200);
-      localStorage.setItem("nodaydream_logs", JSON.stringify(n));
-      return n;
-    });
-  }
+    <div style="margin-bottom:8px">
+      <button id="newDay" class="">New Today</button>
+      <button id="deleteDay" class="ghost small-btn">Delete</button>
+    </div>
 
-  function toggleTask(id) {
-    setDailyTasks((tasks) => {
-      const n = tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
-      logAction(`Toggled task: ${n.find((x) => x.id === id).title}`);
-      return n;
-    });
-  }
+    <div style="margin-top:8px" class="day-list panel" id="dayList" aria-live="polite"></div>
 
-  useEffect(() => {
-    // persist tasks to localStorage
-    localStorage.setItem("nodaydream_tasks", JSON.stringify(dailyTasks));
-  }, [dailyTasks]);
+    <div style="margin-top:12px" class="kicker">Import / Export</div>
+    <div style="display:flex;gap:8px">
+      <label class="file">Import TXT<input id="importTxt" type="file" accept=".txt" style="display:none" /></label>
+      <label class="file">Import JSON<input id="importJson" type="file" accept="application/json" style="display:none" /></label>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="exportJson" class="ghost small-btn">Export JSON</button>
+      <button id="clearAll" class="ghost small-btn danger">Clear All</button>
+    </div>
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("nodaydream_tasks") || "null");
-    if (saved) setDailyTasks(saved);
-  }, []);
+    <div style="margin-top:12px" class="kicker">Quick tips</div>
+    <div class="small muted">
+      • Use the trigger helper on the right when you feel urges.<br>
+      • Write a short daily note each morning. Keep it minimal but real.<br>
+      • Export your diary as JSON for backup.
+    </div>
+  </aside>
 
-  useEffect(() => {
-    if (timerRunning) {
-      timerRef.current = setInterval(() => setTimerSecs((s) => s + 1), 1000);
-    } else {
-      clearInterval(timerRef.current);
-    }
-    return () => clearInterval(timerRef.current);
-  }, [timerRunning]);
-
-  function startTimer(seconds) {
-    setTimerSecs(0);
-    setTimerRunning(true);
-    logAction(`Started ${seconds} sec timer`);
-    // auto stop after seconds
-    setTimeout(() => {
-      setTimerRunning(false);
-      // quick break action: vibrate & sound
-      try {
-        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-      } catch (e) {}
-      const audio = new Audio(
-        "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YcQAAAAA"
-      );
-      audio.play().catch(() => {});
-      logAction("Timer finished");
-    }, seconds * 1000);
-  }
-
-  function stopTimer() {
-    setTimerRunning(false);
-    setTimerSecs(0);
-    logAction("Timer stopped");
-  }
-
-  function mockSelected() {
-    // create a mocked/cringe version of selected text
-    const sel = window.getSelection().toString().trim();
-    if (!sel) return alert("Select a phrase from the text preview to mock it.");
-    // simple mocking rules: exaggerate and insert silly words
-    const mocked = sel
-      .split(" ")
-      .map((w, i) => (i % 5 === 0 ? w.toUpperCase() + "-clown" : w + "~"))
-      .join(" ");
-    logAction(`Mocked text: ${sel}`);
-    alert(`Mocked (copy to clipboard):\n\n${mocked}`);
-    navigator.clipboard && navigator.clipboard.writeText(mocked).catch(() => {});
-  }
-
-  function doMicroAction(action) {
-    logAction(`Micro action: ${action}`);
-    if (action === "pushups") {
-      alert("Do 10 pushups now. Start.");
-    } else if (action === "cold") {
-      alert("Splash cold water or cold shower for 30s.");
-    } else if (action === "write") {
-      const note = prompt("Write one sentence about what you will do right now:");
-      if (note) logAction(`Note: ${note}`);
-    }
-  }
-
-  function clearLogs() {
-    if (!confirm("Clear logs?")) return;
-    setLogs([]);
-    localStorage.removeItem("nodaydream_logs");
-  }
-
-  // quick export/import of tasks
-  function exportState() {
-    const data = { tasks: dailyTasks, logs };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "nodaydream_backup.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function importState(e) {
-    const f = e.target.files && e.target.files[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => {
-      try {
-        const obj = JSON.parse(ev.target.result);
-        if (obj.tasks) setDailyTasks(obj.tasks);
-        if (obj.logs) setLogs(obj.logs);
-        logAction("Imported state");
-        alert("Imported state");
-      } catch (err) {
-        alert("Invalid file");
-      }
-    };
-    r.readAsText(f);
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-12 gap-6">
-        <header className="col-span-12 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">NoDaydream — Dopamine Detox Dashboard</h1>
-          <div className="flex items-center gap-3">
-            <label className="bg-gray-800 px-3 py-2 rounded cursor-pointer">
-              Load .txt
-              <input className="hidden" type="file" accept=".txt" onChange={handleFile} />
-            </label>
-            <label className="bg-gray-800 px-3 py-2 rounded cursor-pointer">
-              Import JSON
-              <input className="hidden" type="file" accept=".json" onChange={importState} />
-            </label>
-            <button onClick={exportState} className="bg-blue-600 px-3 py-2 rounded">Export</button>
-          </div>
-        </header>
-
-        {/* Left: Text preview */}
-        <section className="col-span-5 bg-gray-800 p-4 rounded">
-          <h2 className="font-semibold mb-2">Loaded file</h2>
-          <div className="text-sm mb-2 text-gray-400">{currentFileName || "No file loaded"}</div>
-          <div className="h-96 overflow-auto bg-gray-900 p-3 rounded border border-gray-700">
-            <pre className="whitespace-pre-wrap text-sm">{txtContent || "(load a .txt file — this will parse @daily and lines starting with - as tasks)"}</pre>
-          </div>
-          <div className="mt-3 flex gap-2">
-            <button onClick={mockSelected} className="bg-red-600 px-3 py-2 rounded">Mock selected</button>
-            <button onClick={() => doMicroAction("write")} className="bg-yellow-600 px-3 py-2 rounded">Quick note</button>
-            <button onClick={() => doMicroAction("cold")} className="bg-blue-600 px-3 py-2 rounded">Cold splash</button>
-          </div>
-        </section>
-
-        {/* Middle: Tasks & Timer */}
-        <section className="col-span-4 bg-gray-800 p-4 rounded">
-          <h2 className="font-semibold mb-2">Daily Tasks</h2>
-          <div className="space-y-2 mb-3">
-            {dailyTasks.length === 0 && <div className="text-sm text-gray-400">No tasks yet. Load a file or add manually.</div>}
-            {dailyTasks.map((t) => (
-              <div key={t.id} className="flex items-center justify-between bg-gray-900 p-2 rounded">
-                <div className="flex items-center gap-3">
-                  <input type="checkbox" checked={t.done} onChange={() => toggleTask(t.id)} />
-                  <div className={`text-sm ${t.done ? "line-through text-gray-500" : ""}`}>{t.title}</div>
-                </div>
-                <div className="text-xs text-gray-400">{t.source}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-4">
-            <h3 className="font-medium">Quick Timers</h3>
-            <div className="flex gap-2 mt-2">
-              <button onClick={() => startTimer(30)} className="bg-green-600 px-3 py-2 rounded">30s Break</button>
-              <button onClick={() => startTimer(60)} className="bg-green-600 px-3 py-2 rounded">60s</button>
-              <button onClick={() => startTimer(300)} className="bg-green-600 px-3 py-2 rounded">5min</button>
-            </div>
-            <div className="mt-3">{timerRunning ? <div>Timer: {timerSecs}s</div> : <div>Timer stopped</div>}</div>
-            <div className="flex gap-2 mt-3">
-              <button onClick={() => doMicroAction("pushups")} className="bg-indigo-600 px-3 py-2 rounded">Do 10 pushups</button>
-              <button onClick={() => doMicroAction("write")} className="bg-indigo-600 px-3 py-2 rounded">Write 1 sentence</button>
-            </div>
-          </div>
-        </section>
-
-        {/* Right: Logs & Controls */}
-        <aside className="col-span-3 bg-gray-800 p-4 rounded">
-          <h2 className="font-semibold mb-2">Action Log</h2>
-          <div className="h-72 overflow-auto bg-gray-900 p-2 rounded border border-gray-700 text-sm">
-            {logs.length === 0 && <div className="text-gray-400">No activity yet.</div>}
-            {logs.map((l) => (
-              <div key={l.id} className="mb-2">
-                <div className="text-xs text-gray-400">{new Date(l.ts).toLocaleString()}</div>
-                <div>{l.text}</div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-3">
-            <button onClick={clearLogs} className="bg-red-700 px-3 py-2 rounded w-full">Clear Logs</button>
-            <div className="mt-3 text-xs text-gray-400">Backup / Restore</div>
-            <div className="flex gap-2 mt-2">
-              <button onClick={exportState} className="bg-blue-600 px-3 py-2 rounded">Backup</button>
-              <label className="bg-gray-700 px-3 py-2 rounded cursor-pointer">
-                Restore
-                <input className="hidden" type="file" accept="application/json" onChange={importState} />
-              </label>
-            </div>
-          </div>
-
-          <div className="mt-4 text-xs text-gray-400">Last loaded: {lastLoadedAt ? new Date(lastLoadedAt).toLocaleString() : "never"}</div>
-        </aside>
-
-        <footer className="col-span-12 text-center text-sm text-gray-500 mt-6">
-          NoDaydream Dashboard • local only • your data stored in browser storage
-        </footer>
+  <!-- CENTER: Diary editor + metadata -->
+  <main class="panel center">
+    <div class="meta">
+      <div>
+        <div class="big-title" id="titleDate">—</div>
+        <div class="small muted" id="readableDate"></div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="pill" id="moodPill">Mood: calm</div>
       </div>
     </div>
-  );
+
+    <div class="kicker">Daily Entry</div>
+    <textarea id="entry" placeholder="Write your daily note, 3-10 lines recommended. This file is your diary."></textarea>
+
+    <div style="margin-top:10px" class="controls">
+      <button id="saveBtn">Save</button>
+      <button id="archiveBtn" class="ghost">Archive</button>
+      <button id="duplicateBtn" class="ghost">Duplicate</button>
+      <button id="todayBtn" class="ghost">Go Today</button>
+      <select id="mood" style="min-width:140px">
+        <option value="calm">Calm</option><option value="focused">Focused</option><option value="agitated">Agitated</option><option value="sleepy">Sleepy</option>
+      </select>
+    </div>
+
+    <div style="margin-top:12px" class="kicker">Journal history (preview)</div>
+    <div id="previewList" style="max-height:180px;overflow:auto;padding:8px;border-radius:8px;background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.02)"></div>
+  </main>
+
+  <!-- RIGHT: Trigger helper, micro actions -->
+  <aside class="panel right">
+    <div class="kicker">Trigger Helper</div>
+    <div class="small muted">Select problem and context → Get immediate actions</div>
+    <div class="trigger-row" style="margin-top:8px">
+      <label class="pill">Problem</label>
+      <select id="problem">
+        <option value="daydream">Daydream / Fantasy</option>
+        <option value="urge">Urge (fap / sexual)</option>
+        <option value="sleepy">Sleepy / Low Energy</option>
+        <option value="procrast">Procrastination</option>
+        <option value="anxiety">Anxiety</option>
+      </select>
+    </div>
+
+    <div class="trigger-row">
+      <label class="pill">Context</label>
+      <select id="context">
+        <option value="alone">Alone</option>
+        <option value="someone">Someone can see</option>
+        <option value="public">Public</option>
+        <option value="friend">With friend</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px" class="controls">
+      <button id="suggestBtn">Suggest</button>
+      <button id="mockBtn" class="ghost">Mock Idea</button>
+      <button id="quickTimer" class="ghost">Quick Timer</button>
+    </div>
+
+    <div style="margin-top:12px" class="kicker">Advice</div>
+    <div id="adviceBox" class="advice">
+      <div id="adviceText" class="small muted">Choose problem & context, then press Suggest.</div>
+    </div>
+
+    <div style="margin-top:12px" class="kicker">Micro-actions</div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button id="pushups" class="">10 Pushups</button>
+      <button id="cold" class="">Cold Splash</button>
+      <button id="write1" class="">Write 1 line</button>
+    </div>
+
+    <div style="margin-top:12px" class="kicker">Timers</div>
+    <div style="display:flex;gap:8px">
+      <button id="t30" class="ghost">30s</button>
+      <button id="t60" class="ghost">60s</button>
+      <button id="t300" class="ghost">5min</button>
+    </div>
+
+    <div style="margin-top:12px" class="kicker">Action Log</div>
+    <div class="log" id="actLog"></div>
+  </aside>
+
+  <footer>Made for you • Keep your diary private • Export backups regularly</footer>
+</div>
+
+<script>
+/* NoDaydream Diary — single-file app
+   - Persistent: uses localStorage key "nd_diary_v1"
+   - Diary structure: { dateISO: "YYYY-MM-DD", text, mood, createdAt, archived:false }
+   - Supports import TXT (special format) & import JSON (backup)
+*/
+
+// ===== Helpers =====
+const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const todayISO = ()=>new Date().toISOString().slice(0,10);
+const niceDate = d => new Date(d + 'T00:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+
+// state
+let DB = {}; // dateISO -> entry
+let currentDate = todayISO();
+const LSKEY = 'nd_diary_v1';
+
+// initial sample if empty
+function defaultSeed(){
+  const d = todayISO();
+  DB[d] = {date: d, text: "Day 1.\nGoal: Zero daydreams. Micro action: Pushups & write 1 line.", mood:'calm', createdAt: new Date().toISOString(), archived:false};
+  saveDB();
 }
 
+// load/save
+function loadDB(){
+  const raw = localStorage.getItem(LSKEY);
+  if(raw){ try{ DB = JSON.parse(raw) || {}; }catch(e){ DB = {}; } }
+  if(!Object.keys(DB).length) defaultSeed();
+}
+function saveDB(){ localStorage.setItem(LSKEY, JSON.stringify(DB)); }
+
+// UI references
+const dayList = document.getElementById('dayList');
+const entry = document.getElementById('entry');
+const titleDate = document.getElementById('titleDate');
+const readableDate = document.getElementById('readableDate');
+const previewList = document.getElementById('previewList');
+const moodPill = document.getElementById('moodPill');
+const moodSel = document.getElementById('mood');
+const actLog = document.getElementById('actLog');
+const adviceText = document.getElementById('adviceText');
+
+// load on start
+loadDB();
+renderDayList();
+openDate(currentDate);
+
+// ===== Rendering =====
+function renderDayList(){
+  dayList.innerHTML = '';
+  // sort by date desc
+  const keys = Object.keys(DB).sort((a,b)=>b.localeCompare(a));
+  for(const k of keys){
+    const e = DB[k];
+    const div = document.createElement('div');
+    div.className = 'day-item' + (k===currentDate ? ' active' : '');
+    div.onclick = ()=>openDate(k);
+    const left = document.createElement('div');
+    left.innerHTML = `<div class="date">${niceDate(k)}</div><div class="small muted">${(e.text||'').split('\\n')[0].slice(0,60)}</div>`;
+    const right = document.createElement('div');
+    right.innerHTML = `<div class="small muted">${e.mood||'--'}</div>`;
+    div.appendChild(left);
+    div.appendChild(right);
+    dayList.appendChild(div);
+  }
+}
+
+// open date in editor
+function openDate(dateISO){
+  currentDate = dateISO;
+  if(!DB[dateISO]) {
+    DB[dateISO] = {date:dateISO, text:'', mood:'calm', createdAt: new Date().toISOString(), archived:false};
+  }
+  const e = DB[dateISO];
+  titleDate.textContent = niceDate(dateISO);
+  readableDate.textContent = dateISO;
+  entry.value = e.text||'';
+  moodSel.value = e.mood||'calm';
+  moodPill.textContent = 'Mood: ' + (e.mood||'calm');
+  renderPreview();
+  renderDayList();
+}
+
+// save current entry
+document.getElementById('saveBtn').addEventListener('click', ()=>{
+  const txt = entry.value.trim();
+  DB[currentDate] = {date:currentDate, text:txt, mood:moodSel.value || 'calm', createdAt: DB[currentDate]?.createdAt || new Date().toISOString(), archived:false};
+  saveDB();
+  logAction('Saved ' + currentDate);
+  renderDayList();
+  renderPreview();
+});
+
+// go today
+document.getElementById('todayBtn').addEventListener('click', ()=>{ openDate(todayISO()); });
+
+// new today
+document.getElementById('newDay').addEventListener('click', ()=>{ openDate(todayISO()); logAction('New today'); });
+
+// delete day
+document.getElementById('deleteDay').addEventListener('click', ()=>{
+  if(!confirm('Delete this day?')) return;
+  delete DB[currentDate];
+  saveDB();
+  renderDayList();
+  const keys = Object.keys(DB).sort((a,b)=>b.localeCompare(a));
+  openDate(keys[0] || todayISO());
+  logAction('Deleted ' + currentDate);
+});
+
+// duplicate
+document.getElementById('duplicateBtn').addEventListener('click', ()=>{
+  const newDate = prompt('Duplicate to date (YYYY-MM-DD):', todayISO());
+  if(!newDate) return;
+  DB[newDate] = {...DB[currentDate], date:newDate, createdAt: new Date().toISOString()};
+  saveDB(); renderDayList(); logAction('Duplicated to ' + newDate);
+});
+
+// archive
+document.getElementById('archiveBtn').addEventListener('click', ()=>{
+  DB[currentDate].archived = true;
+  saveDB();
+  renderDayList(); logAction('Archived ' + currentDate);
+});
+
+// preview list
+function renderPreview(){
+  previewList.innerHTML = '';
+  const keys = Object.keys(DB).sort((a,b)=>b.localeCompare(a));
+  for(const k of keys){
+    const t = DB[k].text||'';
+    const p = document.createElement('div');
+    p.style.padding='6px';
+    p.style.borderBottom='1px dashed rgba(255,255,255,0.02)';
+    p.innerHTML = `<div style="font-weight:600">${niceDate(k)}</div><div class="tiny" style="color:var(--muted)">${(t.split('\\n')[0]||'').slice(0,120)}</div>`;
+    p.onclick = ()=>openDate(k);
+    previewList.appendChild(p);
+  }
+}
+
+// ===== Logs & Actions =====
+function logAction(txt){
+  const el = document.createElement('div');
+  el.style.padding = '6px 4px';
+  el.innerHTML = `<div class="tiny muted">${new Date().toLocaleTimeString()}</div><div>${txt}</div>`;
+  actLog.prepend(el);
+  // also save to localStorage small log history
+  const small = JSON.parse(localStorage.getItem('nd_log')||'[]');
+  small.unshift({t: new Date().toISOString(), action: txt});
+  localStorage.setItem('nd_log', JSON.stringify(small.slice(0,200)));
+}
+
+// quick micro-actions
+document.getElementById('pushups').addEventListener('click', ()=>{ alert('Do 10 pushups now. Start.'); logAction('Pushups (10)'); });
+document.getElementById('cold').addEventListener('click', ()=>{ alert('Splash cold water or cold shower for 30s.'); logAction('Cold splash'); });
+document.getElementById('write1').addEventListener('click', ()=>{ const s = prompt('Write a single sentence:'); if(s){ DB[currentDate].text = (DB[currentDate].text||'') + '\\n' + s; saveDB(); entry.value = DB[currentDate].text; logAction('Wrote 1 line'); renderPreview(); } });
+
+// timers
+let timerHandle = null;
+function startTimer(sec){
+  if(timerHandle) clearTimeout(timerHandle);
+  logAction('Started timer ' + sec + 's');
+  timerHandle = setTimeout(()=>{
+    alert('Timer finished: ' + sec + 's');
+    logAction('Timer finished ' + sec + 's');
+    timerHandle = null;
+  }, sec*1000);
+}
+document.getElementById('t30').addEventListener('click', ()=>startTimer(30));
+document.getElementById('t60').addEventListener('click', ()=>startTimer(60));
+document.getElementById('t300').addEventListener('click', ()=>startTimer(300));
+
+// ===== Trigger Helper logic =====
+const SUGGESTIONS = {
+  daydream: {
+    alone: [
+      "Mock it: imagine the scene collapsing into something ridiculous. Say it out loud if needed.",
+      "Physical interrupt: stand and do 10 bodyweight squats.",
+      "Replace: open your editor and write a single TODO for 5 minutes.",
+      "Timer: 5 minute focus sprint (no phone)."
+    ],
+    someone: [
+      "Shift context: ask a small quick question to the person nearby.",
+      "Breathe: 10 slow breaths and focus on present senses.",
+      "Micro-task: tidy your immediate area for 2 minutes.",
+      "If stuck: write a single sentence about why this fantasy is false."
+    ],
+    public: [
+      "Anchor to environment: count 5 textures around you and describe them.",
+      "Delay: postpone thinking for 10 minutes and set a timer.",
+      "Walk: move for 60s to break the loop."
+    ],
+    friend: [
+      "Ask for a small micro-challenge from your friend (e.g., 20-second push).",
+      "Be honest: 'I need to focus — help me stay accountable for 10 minutes'.",
+      "Do a quick cognitive task together (puzzle, recall list)."
+    ]
+  },
+  urge: {
+    alone: [
+      "Immediate interrupt: splash cold water on face (30s).",
+      "Remove stimulus: leave the room or close the tab/device.",
+      "Replace: go for a 10-minute walk or do 50 jumping jacks.",
+      "Write: a note explaining why you choose long-term power over short pleasure."
+    ],
+    someone: [
+      "Delay & distract: say aloud 'later' and do a breath count.",
+      "Choose a neutral action: fetch water or step outside.",
+      "Accountability: text a short sentence to your own note saying you delay 10m."
+    ],
+    public: [
+      "Focus on posture and breath. Slow inhale/exhale for 40 seconds.",
+      "Move to a different spot or engage in a harmless task (tie shoe)."
+    ],
+    friend: [
+      "Confess: ask friend for a quick accountability check.",
+      "Switch to a collaborative small task (30s)."
+    ]
+  },
+  sleepy: {
+    alone: [
+      "Stand, splash cold water, and do 30-second high-knees.",
+      "Bright light: face a window or turn on a bright lamp.",
+      "5-minute movement break + strong coffee if needed."
+    ],
+    someone: [
+      "Hydrate and talk: engage in a 2-minute active conversation to wake your brain.",
+      "Walk together for 2 minutes."
+    ],
+    public: [
+      "Use posture & breathing to keep alert. Do subtle leg movements.",
+      "Delay: set a 20-minute micro-nap if safe (but only if you can).
+      "
+    ],
+    friend: [
+      "Request a quick challenge from them (30s workout).",
+      "Switch to small tactical task: write 3 immediate goals."
+    ]
+  },
+  procrast: {
+    alone: [
+      "Do the 2-minute rule: commit for 2 minutes, then decide to continue.",
+      "Break the task into the smallest step and start it now.",
+      "Micro-reward: do 10 pushups after 15 minutes of progress."
+    ],
+    someone: [
+      "Tell them a single sentence: 'I’ll work for 20 minutes; check after.'",
+      "Work in presence of another for accountability."
+    ],
+    public: [
+      "Use a visible timer and commit aloud to a 10-minute sprint.",
+      "Switch focus to a tiny deliverable you can show quickly."
+    ],
+    friend: [
+      "Make it a short challenge together: 15-minute focus sprint.",
+      "Record a short video/audio of the task and share when done."
+    ]
+  },
+  anxiety: {
+    alone: [
+      "Ground: 5-4-3-2-1 sensory exercise (name 5 things you see...)",
+      "Write a 2-line rational plan: what you can control now.",
+      "Slow exhale breathing for 2 minutes."
+    ],
+    someone: [
+      "Say: 'I need a second' and step away to breathe.",
+      "Ask for a calm, quick check-in 'Are you okay?' to redirect your mind."
+    ],
+    public: [
+      "Use breathing and posture. Focus on simple physical tasks.",
+      "Delay: set a timer for 10 minutes to revisit the worry."
+    ],
+    friend: [
+      "Ask for a brief grounding talk or to remind you of facts.",
+      "Share a small plan and request one supportive action."
+    ]
+  }
+};
+
+// motivational quotes
+const QUOTES = [
+  "Mastery is the sum of small, consistent victories.",
+  "The shadow is patient. So must you be.",
+  "Action beats fantasy — every single time.",
+  "Small real wins give stronger dopamine than illusions."
+];
+
+function pickAdvice(){
+  const problem = document.getElementById('problem').value;
+  const context = document.getElementById('context').value;
+  const arr = (SUGGESTIONS[problem] && SUGGESTIONS[problem][context]) || ["Breathe, ground, act."];
+  const out = `<strong style="color:var(--accent)">${problem.toUpperCase()}</strong> • ${context}<br><ul>` + arr.map(x=>`<li>${x}</li>`).join('') + `</ul><div class="quote">${QUOTES[Math.floor(Math.random()*QUOTES.length)]}</div>`;
+  adviceText.innerHTML = out;
+  logAction('Suggested: ' + problem + ' / ' + context);
+}
+
+document.getElementById('suggestBtn').addEventListener('click', pickAdvice);
+
+// mock generator: create cringe variant from selected diary text
+document.getElementById('mockBtn').addEventListener('click', ()=>{
+  const sel = window.getSelection().toString().trim() || entry.value.split('\\n')[0] || 'that fantasy';
+  const mocked = sel.split(' ').map((w,i)=> i%4===0 ? w.toUpperCase()+'-CLOWN' : w+'*').join(' ');
+  navigator.clipboard && navigator.clipboard.writeText(mocked).catch(()=>{});
+  alert('Mocked text copied to clipboard:\\n\\n'+mocked);
+  logAction('Mocked text');
+});
+
+// quick timer button
+document.getElementById('quickTimer').addEventListener('click', ()=>{ startTimer(300); });
+
+// quick micro action buttons also log
+document.getElementById('pushups').addEventListener('click', ()=>logAction('Pushups triggered'));
+document.getElementById('cold').addEventListener('click', ()=>logAction('Cold splash triggered'));
+document.getElementById('write1').addEventListener('click', ()=>logAction('Write 1 line'));
+
+// suggestion from shortcuts
+document.getElementById('t30').addEventListener('click', ()=>startTimer(30));
+document.getElementById('t60').addEventListener('click', ()=>startTimer(60));
+document.getElementById('t300').addEventListener('click', ()=>startTimer(300));
+document.getElementById('goDate').addEventListener('click', ()=>{
+  const v = document.getElementById('jumpDate').value; if(v) openDate(v);
+});
+
+// ===== Import / Export =====
+document.getElementById('exportJson').addEventListener('click', ()=>{
+  const blob = new Blob([JSON.stringify(DB,null,2)], {type:'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download='nodaydream_backup.json'; a.click(); URL.revokeObjectURL(a.href);
+  logAction('Exported diary JSON');
+});
+
+document.getElementById('importJson').addEventListener('change', (ev)=>{
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader(); r.onload = e=>{ try{ const obj = JSON.parse(e.target.result); DB = obj; saveDB(); renderDayList(); openDate(Object.keys(DB)[0]||todayISO()); logAction('Imported JSON'); alert('Imported'); }catch(err){alert('Invalid JSON');} };
+  r.readAsText(f);
+});
+
+document.getElementById('importTxt').addEventListener('change', (ev)=>{
+  const f = ev.target.files[0]; if(!f) return;
+  const r = new FileReader(); r.onload = e=>{
+    const raw = e.target.result;
+    // parse simple format: lines starting with "=== YYYY-MM-DD ===" mark date blocks, else text lines belong to that date
+    const lines = raw.split(/\\r?\\n/);
+    let current = null;
+    for(const L of lines){
+      const m = L.match(/^===\\s*(\\d{4}-\\d{2}-\\d{2})\\s*===/);
+      if(m){ current = m[1]; if(!DB[current]) DB[current] = {date:current,text:'',mood:'calm',createdAt:new Date().toISOString(),archived:false}; continue; }
+      if(!current){ // prepend to today's if no header
+        current = todayISO(); if(!DB[current]) DB[current] = {date:current,text:'',mood:'calm',createdAt:new Date().toISOString(),archived:false};
+      }
+      DB[current].text += (DB[current].text? '\\n':'' ) + L;
+    }
+    saveDB(); renderDayList(); openDate(current || todayISO()); logAction('Imported TXT'); alert('Imported TXT to diary');
+  };
+  r.readAsText(f);
+});
+
+// clear all
+document.getElementById('clearAll').addEventListener('click', ()=>{ if(confirm('Clear all diary data? This cannot be undone.')){ DB={}; saveDB(); renderDayList(); openDate(todayISO()); logAction('Cleared DB'); }});
+
+// export / import done
+
+// ===== Utilities: export current daily as text file (optional) =====
+// not adding now
+
+// ===== keyboard shortcuts =====
+document.addEventListener('keydown', (e)=>{
+  if(e.ctrlKey && e.key==='s'){ e.preventDefault(); document.getElementById('saveBtn').click(); }
+  if(e.altKey && e.key==='m'){ document.getElementById('suggestBtn').click(); }
+});
+
+// initial log restore
+const rawLog = JSON.parse(localStorage.getItem('nd_log')||'[]');
+rawLog.slice(0,50).forEach(l=>{ const node = document.createElement('div'); node.style.padding='6px 4px'; node.innerHTML = `<div class="tiny muted">${new Date(l.t).toLocaleString()}</div><div>${l.action}</div>`; actLog.appendChild(node); });
+
+// ===== end app =====
+</script>
+</body>
+</html>
