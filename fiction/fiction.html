@@ -3,23 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Content Loader</title>
+<title>Cinematic Content Viewer</title>
 <style>
     body {
         margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1e1e2f, #25254d);
+        font-family: 'Segoe UI', sans-serif;
         color: #fff;
+        background-color: #000;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 2rem;
+        transition: background-image 0.8s ease-in-out;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 0;
     }
     h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
         margin-bottom: 1rem;
         text-align: center;
         color: #ffd369;
+        z-index: 1;
+        text-shadow: 0 0 15px #ffd369, 0 0 30px #ff9f1c;
+        animation: titlePop 1s ease forwards;
+    }
+    @keyframes titlePop {
+        from {opacity:0; transform: scale(0.8);}
+        to {opacity:1; transform: scale(1);}
     }
     .selector-container {
         display: flex;
@@ -30,8 +50,10 @@
         background: rgba(255, 255, 255, 0.05);
         padding: 1.5rem;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         backdrop-filter: blur(10px);
+        box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+        z-index: 1;
+        animation: fadeIn 0.8s ease forwards;
     }
     select {
         padding: 0.75rem;
@@ -39,48 +61,45 @@
         border: none;
         border-radius: 8px;
         outline: none;
-        background: rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.15);
         color: #fff;
         cursor: pointer;
         transition: background 0.3s;
     }
     select:hover {
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.3);
     }
     #content {
         margin-top: 2rem;
         padding: 1.5rem;
-        background: rgba(255, 255, 255, 0.07);
+        background: rgba(0,0,0,0.6);
         border-radius: 10px;
-        max-width: 800px;
+        max-width: 900px;
         width: 100%;
         min-height: 200px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        transition: all 0.3s ease-in-out;
-    }
-    #content p {
-        margin: 0;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.4);
+        z-index: 1;
+        animation: fadeInContent 0.8s ease;
     }
     .fade-in {
-        animation: fadeIn 0.5s ease-in;
+        animation: fadeInContent 0.6s ease-in-out;
+    }
+    @keyframes fadeInContent {
+        from {opacity:0; transform: translateY(20px) scale(0.98);}
+        to {opacity:1; transform: translateY(0) scale(1);}
     }
     @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(10px);}
-        to {opacity: 1; transform: translateY(0);}
+        from {opacity:0;}
+        to {opacity:1;}
     }
     @media (max-width: 600px) {
-        h1 {
-            font-size: 1.5rem;
-        }
-        select {
-            font-size: 0.9rem;
-        }
+        h1 {font-size: 1.8rem;}
     }
 </style>
 </head>
 <body>
 
-<h1>🎬 Interactive Content Viewer</h1>
+<h1>🎥 Cinematic Universe Hub</h1>
 <div class="selector-container">
     <select id="mainCategory">
         <option value="">-- Select Category --</option>
@@ -105,14 +124,32 @@
     const mainCategory = document.getElementById("mainCategory");
     const subCategory = document.getElementById("subCategory");
     const contentDiv = document.getElementById("content");
+    const body = document.body;
+
+    const backgrounds = {
+        standalone: "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1350&q=80')",
+        universes: "url('https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1350&q=80')",
+        upcoming: "url('https://images.unsplash.com/photo-1549921296-3a6b1c8944d4?auto=format&fit=crop&w=1350&q=80')",
+        documentaries: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1350&q=80')",
+        marvel: "url('https://images.unsplash.com/photo-1606112219348-204d7d8b94ee?auto=format&fit=crop&w=1350&q=80')",
+        dc: "url('https://images.unsplash.com/photo-1531251445707-1f000e1e87d0?auto=format&fit=crop&w=1350&q=80')",
+        starwars: "url('https://images.unsplash.com/photo-1523987355523-c7b5b48a9c34?auto=format&fit=crop&w=1350&q=80')",
+        lotr: "url('https://images.unsplash.com/photo-1600709734546-1ff4cbae78b0?auto=format&fit=crop&w=1350&q=80')"
+    };
+
+    function setBackground(key) {
+        body.style.backgroundImage = backgrounds[key] || "none";
+    }
 
     mainCategory.addEventListener("change", () => {
         if (mainCategory.value === "universes") {
             subCategory.style.display = "block";
+            setBackground("universes");
             contentDiv.innerHTML = "Please choose a universe...";
         } else {
             subCategory.style.display = "none";
             if (mainCategory.value) {
+                setBackground(mainCategory.value);
                 loadContent(mainCategory.value + ".txt");
             } else {
                 contentDiv.innerHTML = "Please select a category to view content.";
@@ -122,6 +159,7 @@
 
     subCategory.addEventListener("change", () => {
         if (subCategory.value) {
+            setBackground(subCategory.value);
             loadContent(subCategory.value + ".txt");
         } else {
             contentDiv.innerHTML = "Please choose a universe...";
@@ -137,7 +175,7 @@
             .then(data => {
                 contentDiv.innerHTML = data;
                 contentDiv.classList.add("fade-in");
-                setTimeout(() => contentDiv.classList.remove("fade-in"), 500);
+                setTimeout(() => contentDiv.classList.remove("fade-in"), 600);
             })
             .catch(err => {
                 contentDiv.innerHTML = `<p style="color: #ff6b6b;">Error loading content: ${fileName}</p>`;
