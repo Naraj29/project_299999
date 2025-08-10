@@ -1,0 +1,287 @@
+import React, { useEffect, useState, useRef } from "react";
+
+// NoDaydream Dashboard
+// Single-file React component (Tailwind CSS assumed available in the host project)
+// Default export a React component
+
+export default function NoDaydreamDashboard() {
+  const [txtContent, setTxtContent] = useState("");
+  const [currentFileName, setCurrentFileName] = useState("");
+  const [dailyTasks, setDailyTasks] = useState([]);
+  const [logs, setLogs] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("nodaydream_logs") || "[]");
+    } catch (e) {
+      return [];
+    }
+  });
+  const [lastLoadedAt, setLastLoadedAt] = useState(null);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerSecs, setTimerSecs] = useState(0);
+  const timerRef = useRef(null);
+  const [mode, setMode] = useState("MRP"); // MRP or NBRP or custom
+
+  // parse txt into tasks by lines starting with - or @daily
+  function parseTxtToTasks(text) {
+    const lines = text.split(/\r?\n/).map((l) => l.trim());
+    const tasks = [];
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      if (!l) continue;
+      if (l.startsWith("@daily")) {
+        // format: @daily: Title --desc
+        const parts = l.replace(/^@daily[:\s]*/i, "").split("--");
+        tasks.push({ id: Date.now() + Math.random(), title: parts[0].trim(), done: false, source: "file" });
+      } else if (l.startsWith("- ") || l.startsWith("-")) {
+        tasks.push({ id: Date.now() + Math.random(), title: l.replace(/^-\s?/, ""), done: false, source: "file" });
+      }
+    }
+    return tasks;
+  }
+
+  function handleFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    setCurrentFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = String(ev.target.result || "");
+      setTxtContent(text);
+      setLastLoadedAt(new Date().toISOString());
+      const parsed = parseTxtToTasks(text);
+      setDailyTasks((prev) => {
+        // merge without duplicates (by title)
+        const titles = new Set(prev.map((t) => t.title));
+        const merged = [...prev];
+        parsed.forEach((p) => {
+          if (!titles.has(p.title)) merged.push(p);
+        });
+        return merged;
+      });
+      logAction(`Loaded file ${file.name}`);
+    };
+    reader.readAsText(file);
+  }
+
+  function logAction(text) {
+    const entry = { id: Date.now(), text, ts: new Date().toISOString() };
+    setLogs((s) => {
+      const n = [entry, ...s].slice(0, 200);
+      localStorage.setItem("nodaydream_logs", JSON.stringify(n));
+      return n;
+    });
+  }
+
+  function toggleTask(id) {
+    setDailyTasks((tasks) => {
+      const n = tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t));
+      logAction(`Toggled task: ${n.find((x) => x.id === id).title}`);
+      return n;
+    });
+  }
+
+  useEffect(() => {
+    // persist tasks to localStorage
+    localStorage.setItem("nodaydream_tasks", JSON.stringify(dailyTasks));
+  }, [dailyTasks]);
+
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("nodaydream_tasks") || "null");
+    if (saved) setDailyTasks(saved);
+  }, []);
+
+  useEffect(() => {
+    if (timerRunning) {
+      timerRef.current = setInterval(() => setTimerSecs((s) => s + 1), 1000);
+    } else {
+      clearInterval(timerRef.current);
+    }
+    return () => clearInterval(timerRef.current);
+  }, [timerRunning]);
+
+  function startTimer(seconds) {
+    setTimerSecs(0);
+    setTimerRunning(true);
+    logAction(`Started ${seconds} sec timer`);
+    // auto stop after seconds
+    setTimeout(() => {
+      setTimerRunning(false);
+      // quick break action: vibrate & sound
+      try {
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      } catch (e) {}
+      const audio = new Audio(
+        "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YcQAAAAA"
+      );
+      audio.play().catch(() => {});
+      logAction("Timer finished");
+    }, seconds * 1000);
+  }
+
+  function stopTimer() {
+    setTimerRunning(false);
+    setTimerSecs(0);
+    logAction("Timer stopped");
+  }
+
+  function mockSelected() {
+    // create a mocked/cringe version of selected text
+    const sel = window.getSelection().toString().trim();
+    if (!sel) return alert("Select a phrase from the text preview to mock it.");
+    // simple mocking rules: exaggerate and insert silly words
+    const mocked = sel
+      .split(" ")
+      .map((w, i) => (i % 5 === 0 ? w.toUpperCase() + "-clown" : w + "~"))
+      .join(" ");
+    logAction(`Mocked text: ${sel}`);
+    alert(`Mocked (copy to clipboard):\n\n${mocked}`);
+    navigator.clipboard && navigator.clipboard.writeText(mocked).catch(() => {});
+  }
+
+  function doMicroAction(action) {
+    logAction(`Micro action: ${action}`);
+    if (action === "pushups") {
+      alert("Do 10 pushups now. Start.");
+    } else if (action === "cold") {
+      alert("Splash cold water or cold shower for 30s.");
+    } else if (action === "write") {
+      const note = prompt("Write one sentence about what you will do right now:");
+      if (note) logAction(`Note: ${note}`);
+    }
+  }
+
+  function clearLogs() {
+    if (!confirm("Clear logs?")) return;
+    setLogs([]);
+    localStorage.removeItem("nodaydream_logs");
+  }
+
+  // quick export/import of tasks
+  function exportState() {
+    const data = { tasks: dailyTasks, logs };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "nodaydream_backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function importState(e) {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = (ev) => {
+      try {
+        const obj = JSON.parse(ev.target.result);
+        if (obj.tasks) setDailyTasks(obj.tasks);
+        if (obj.logs) setLogs(obj.logs);
+        logAction("Imported state");
+        alert("Imported state");
+      } catch (err) {
+        alert("Invalid file");
+      }
+    };
+    r.readAsText(f);
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-6">
+      <div className="max-w-6xl mx-auto grid grid-cols-12 gap-6">
+        <header className="col-span-12 flex items-center justify-between">
+          <h1 className="text-2xl font-bold">NoDaydream — Dopamine Detox Dashboard</h1>
+          <div className="flex items-center gap-3">
+            <label className="bg-gray-800 px-3 py-2 rounded cursor-pointer">
+              Load .txt
+              <input className="hidden" type="file" accept=".txt" onChange={handleFile} />
+            </label>
+            <label className="bg-gray-800 px-3 py-2 rounded cursor-pointer">
+              Import JSON
+              <input className="hidden" type="file" accept=".json" onChange={importState} />
+            </label>
+            <button onClick={exportState} className="bg-blue-600 px-3 py-2 rounded">Export</button>
+          </div>
+        </header>
+
+        {/* Left: Text preview */}
+        <section className="col-span-5 bg-gray-800 p-4 rounded">
+          <h2 className="font-semibold mb-2">Loaded file</h2>
+          <div className="text-sm mb-2 text-gray-400">{currentFileName || "No file loaded"}</div>
+          <div className="h-96 overflow-auto bg-gray-900 p-3 rounded border border-gray-700">
+            <pre className="whitespace-pre-wrap text-sm">{txtContent || "(load a .txt file — this will parse @daily and lines starting with - as tasks)"}</pre>
+          </div>
+          <div className="mt-3 flex gap-2">
+            <button onClick={mockSelected} className="bg-red-600 px-3 py-2 rounded">Mock selected</button>
+            <button onClick={() => doMicroAction("write")} className="bg-yellow-600 px-3 py-2 rounded">Quick note</button>
+            <button onClick={() => doMicroAction("cold")} className="bg-blue-600 px-3 py-2 rounded">Cold splash</button>
+          </div>
+        </section>
+
+        {/* Middle: Tasks & Timer */}
+        <section className="col-span-4 bg-gray-800 p-4 rounded">
+          <h2 className="font-semibold mb-2">Daily Tasks</h2>
+          <div className="space-y-2 mb-3">
+            {dailyTasks.length === 0 && <div className="text-sm text-gray-400">No tasks yet. Load a file or add manually.</div>}
+            {dailyTasks.map((t) => (
+              <div key={t.id} className="flex items-center justify-between bg-gray-900 p-2 rounded">
+                <div className="flex items-center gap-3">
+                  <input type="checkbox" checked={t.done} onChange={() => toggleTask(t.id)} />
+                  <div className={`text-sm ${t.done ? "line-through text-gray-500" : ""}`}>{t.title}</div>
+                </div>
+                <div className="text-xs text-gray-400">{t.source}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4">
+            <h3 className="font-medium">Quick Timers</h3>
+            <div className="flex gap-2 mt-2">
+              <button onClick={() => startTimer(30)} className="bg-green-600 px-3 py-2 rounded">30s Break</button>
+              <button onClick={() => startTimer(60)} className="bg-green-600 px-3 py-2 rounded">60s</button>
+              <button onClick={() => startTimer(300)} className="bg-green-600 px-3 py-2 rounded">5min</button>
+            </div>
+            <div className="mt-3">{timerRunning ? <div>Timer: {timerSecs}s</div> : <div>Timer stopped</div>}</div>
+            <div className="flex gap-2 mt-3">
+              <button onClick={() => doMicroAction("pushups")} className="bg-indigo-600 px-3 py-2 rounded">Do 10 pushups</button>
+              <button onClick={() => doMicroAction("write")} className="bg-indigo-600 px-3 py-2 rounded">Write 1 sentence</button>
+            </div>
+          </div>
+        </section>
+
+        {/* Right: Logs & Controls */}
+        <aside className="col-span-3 bg-gray-800 p-4 rounded">
+          <h2 className="font-semibold mb-2">Action Log</h2>
+          <div className="h-72 overflow-auto bg-gray-900 p-2 rounded border border-gray-700 text-sm">
+            {logs.length === 0 && <div className="text-gray-400">No activity yet.</div>}
+            {logs.map((l) => (
+              <div key={l.id} className="mb-2">
+                <div className="text-xs text-gray-400">{new Date(l.ts).toLocaleString()}</div>
+                <div>{l.text}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-3">
+            <button onClick={clearLogs} className="bg-red-700 px-3 py-2 rounded w-full">Clear Logs</button>
+            <div className="mt-3 text-xs text-gray-400">Backup / Restore</div>
+            <div className="flex gap-2 mt-2">
+              <button onClick={exportState} className="bg-blue-600 px-3 py-2 rounded">Backup</button>
+              <label className="bg-gray-700 px-3 py-2 rounded cursor-pointer">
+                Restore
+                <input className="hidden" type="file" accept="application/json" onChange={importState} />
+              </label>
+            </div>
+          </div>
+
+          <div className="mt-4 text-xs text-gray-400">Last loaded: {lastLoadedAt ? new Date(lastLoadedAt).toLocaleString() : "never"}</div>
+        </aside>
+
+        <footer className="col-span-12 text-center text-sm text-gray-500 mt-6">
+          NoDaydream Dashboard • local only • your data stored in browser storage
+        </footer>
+      </div>
+    </div>
+  );
+}
+
