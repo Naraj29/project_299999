@@ -1,513 +1,150 @@
-<!-- GATE Curriculum Selector: Clean & Professional Version --><!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GATE Materials</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Subject Details Viewer</title>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1e1e2f;
+    color: #eee;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  header {
+    background: #282c34;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #61dafb;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+  }
+  main {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 90%;
+  }
+  label {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  select {
+    margin-left: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #3a3f55;
+    color: #eee;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  select:hover, select:focus {
+    background: #505773;
+    outline: none;
+  }
+  .content-box {
+    margin-top: 2rem;
+    background: #282c34;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    min-height: 200px;
+    overflow-y: auto;
+  }
+  .loading {
+    font-style: italic;
+    color: #a0a0a0;
+  }
+  .error {
+    color: #ff6b6b;
+    font-weight: 700;
+  }
+  @media (max-width: 600px) {
+    header {
+      font-size: 1.4rem;
+      padding: 1rem;
     }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #f2f5f9, #dfe6ed);
-      padding: 20px;
-      color: #333;
+    main {
+      padding: 1rem;
+      width: 95%;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #1a1a2e;
+    select {
+      font-size: 0.95rem;
+      padding: 0.4rem 0.8rem;
     }
-    .selector {
-      max-width: 800px;
-      margin: 0 auto;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      padding: 30px;
-      transition: all 0.3s ease-in-out;
-    }
-    label {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-top: 15px;
-      display: block;
-    }
-    select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
+    .content-box {
       font-size: 1rem;
+      padding: 1rem 1.2rem;
+      min-height: 150px;
     }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .material-list {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      background: #f1f9ff;
-      border-left: 4px solid #007bff;
-    }
-    .material-list h2 {
-      margin-bottom: 10px;
-      color: #0a3d62;
-    }
-    .material-list ul {
-      list-style-type: square;
-      margin-left: 20px;
-    }
-
-
-.subject-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 20px;
-  margin-top: 40px;
-}
-
-.subject-card {
-  background: linear-gradient(135deg, #e8e8e8, #ffffff);
-  border: 1px solid #ccc;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.subject-card:hover {
-  transform: translateY(-5px);
-  background: linear-gradient(135deg, #d0f0ff, #ffffff);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-.material-section {
-  display: none;
-  background: #f8f8f8;
-  border-left: 4px solid #3498db;
-  margin-top: 30px;
-  padding: 20px;
-  border-radius: 12px;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-
-
-  </style>
+  }
+</style>
 </head>
 <body>
-  <h1>GATE Materials</h1>
-  <div class="selector">
-    <label for="stage">Select Type</label>
-    <select id="stage" onchange="showSubjects()">
-      <option value="">-- Select --</option>
-      <option value="A"> Division A</option>
-      <option value="B"> Division B</option>
-    </select><label for="subject">Select Subject</label>
-<select id="subject" onchange="showMaterials()">
-  <option value="Select Subjects">-- Select --</option>
-</select>
 
+<header>Subject Details Viewer</header>
 
-<div class="material-list" id="materials" style="display:none">
-  <h2>Recommended Materials</h2>
-  <ul id="materialItems"></ul>
-</div>
+<main>
+  <label for="subjectSelect">Choose a subject:</label>
+  <select id="subjectSelect" aria-label="Select Subject">
+    <option value="" disabled selected>Select subject...</option>
+    <option value="math.txt">Mathematics</option>
+    <option value="physics.txt">Physics</option>
+    <option value="chemistry.txt">Chemistry</option>
+    <option value="biology.txt">Biology</option>
+  </select>
 
-
-
-
-
-
-
-
-  </div> 
+  <div class="content-box" id="contentBox">
+    Please select a subject to see details.
+  </div>
+</main>
 
 <script>
-  function showMaterial(subject) {
-    const allSections = document.querySelectorAll('.material-section');
-    allSections.forEach(section => section.style.display = 'none');
+  const select = document.getElementById('subjectSelect');
+  const contentBox = document.getElementById('contentBox');
 
-   
-
-    const target = document.getElementById(subject);
-    if (target) {
-      target.style.display = 'block';
+  select.addEventListener('change', () => {
+    const fileName = select.value;
+    if (!fileName) {
+      contentBox.textContent = 'Please select a subject to see details.';
+      return;
     }
-  }
-</script>
-
-
-
-
-
-
-
-
-
- <script>
-    const subjects = {
-      A: ['General Aptitude', 'Engineering Mathematics','Discrete Mathematics','Data Structures', 'Algorithms'],
-      B: ['Digital Logic', 'Database', 'Computer Networks', 'Operating Systems',
-  'Computer Organization and Architecture', 'Theory of Computation', 'Compiler Design', 'Others']
-    };
-
-    const materials = {
-      GS1: ['NCERT History (Class 6–12)', 'Spectrum Modern India', 'Geography NCERT + G.C. Leong'],
-
-Data Structures: ['
-
-
-🦇 Data Structures Peak Arsenal
-You’re entering the heart of CS now.
-DS is where AIR 1s build speed, accuracy, and mental control over the paper.',
-
-'🎯 Goal:
-
-10–12 Marks potential. Time-saver in GATE if mastered.
-🔑 Focus = Concepts + Dry-run Clarity + GATE-specific Implementation',
-
-
-'📚 Main Resources
-
-✅ 1. Core Book
-
-📘 Book: Fundamentals of Data Structures in C – Horowitz & Sahni
-
-Covers GATE-style concepts deeply (Non-coding perspective)
-
-Prefer over local guidebooks for theory clarity',
-
-'✅ 2. YouTube Lectures
-
-🎥 Neso Academy (DSA Playlist) – Clear fundamentals + visuals
-
-🎥 CodeHelp by Love Babbar – Interview + GATE blend
-
-🎥 Take U Forward – Playlist
-
-Great for visualization and memory building',
-
-'✅ 3. C++/C Implementation (if you do coding too)
-
-📘 Book (optional): DSA Made Easy by Narasimha Karumanchi (Only for implementation-type GATE questions)
-
-Platform Practice:
-
-🔗 Leetcode (for Trees, Linked List, Stack)
-
-🔗 GeeksforGeeks GATE Topic-wise DS
-
-🔗 GATE Overflow – Data Structure PYQs',
-
-'🧠 High-Weight GATE Topics (Mark-Efficient)
-
-🔒 Topic	Mark Priority
-
-Arrays & Strings	⭐
-Linked Lists	⭐⭐
-Stacks & Queues (inc. circular)	⭐⭐⭐
-Trees (Binary, BST, AVL)	⭐⭐⭐⭐
-Graphs (BFS/DFS + MST + Dijkstra)	⭐⭐⭐⭐
-Hashing	⭐⭐
-Recursion & Backtracking	⭐⭐
-Heaps & Priority Queues	⭐⭐⭐
-Time Complexity of Operations	⭐⭐⭐',
-
-'🔁 Smart Revision Protocol
-
-🧾 Round 1: Diagrams + Operation tables (Insertion, Deletion, Traversal)
-
-🧾 Round 2: Dry-run key GATE PYQs – simulate by hand
-
-🧾 Round 3: Implement 5 tough GATE-level problems in code (if coding allowed)',
-
-'🧠 Truth Mode: Visual Learning Extras
-
-VisuAlgo.net – Interactive visualization for all DS
-
-MIT OCW – Data Structures in Java (Video Lectures)
-
-Stanford CS106B / Princeton COS226 – Use only for brain expansion',
-
-'🗂️ DS Checklist (GATE-focused)
-
-🔒 Topic	Done?
-
-Array & Pointer Basics	
-String Manipulations	
-Single/Double/Circular LinkedList	
-Stack / Queue / Circular Queue	
-Trees (Pre/In/Post Traversals)	
-BST Operations	
-AVL + Balance Factor	
-Heap (Min/Max)	
-Graphs – DFS, BFS, MST	
-Hash Tables & Hashing Techniques	
-Complexity of All Structures	
-'],
-
-
-
-
-      GS2: ['Laxmikanth Polity', 'Current Affairs – Indian Express / The Hindu', 'PRSIndia Notes'],
-      GS3: ['Economic Survey', 'Budget Summary', 'Ramesh Singh Economy', 'Environment by Shankar IAS'],
-      GS4: ['Lexicon Ethics', 'Second ARC Report Summaries', 'Case Study Practice'],
-      Essay: ['Previous Year Essays', 'Essay Writing Strategy Videos', 'Topic-wise Essay Practice'],
-      CSAT: ['Previous Year Papers', 'Logical Reasoning Workbooks', 'Basic Maths Practice'],
-      'Preparation Techniques': ['Mock Interviews', 'DAF Analysis', 'Current Affairs Discussions'],
-      'General Studies': ['NCERTs from Class 6–12', 'Lucent GK', 'Current Affairs']
-    };
-
-    function showSubjects() {
-      const stage = document.getElementById('stage').value;
-      const subjectSelect = document.getElementById('subject');
-      subjectSelect.innerHTML = '<option value="">-- Select --</option>';
-      if (subjects[stage]) {
-        subjects[stage].forEach(sub => {
-          const opt = document.createElement('option');
-          opt.value = sub;
-          opt.textContent = sub;
-          subjectSelect.appendChild(opt);
-        });
-      }
-    }
-
-    function updateOptionalSubjects() {
-      const subject = document.getElementById('subject').value;
-      showMaterials(subject);
-    }
-
-    function showMaterials() {
-      const subject = document.getElementById('subject').value;
-      const person = document.getElementById('person').value;
-      const list = document.getElementById('materialItems');
-      const container = document.getElementById('materials');
-
-      list.innerHTML = '';
-
-      if (!subject) {
-        container.style.display = 'none';
-        return;
-      }
-
-      let data = materials[subject];
-
-      if (subject === 'Optional') {
-        data = materials.Optional[person];
-      }
-
-      if (data && Array.isArray(data)) {
-        data.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = item;
-          list.appendChild(li);
-        });
-        container.style.display = 'block';
-      }
-    }
-  </script>
-
-<!-- CONTINUATION: Paste this *after* Part 3 -->
-<style>
-  .content-area {
-    display: none;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    margin-top: 10px;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-
-  .content-area.active {
-    display: block;
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .subject-block {
-    margin-bottom: 20px;
-  }
-
-  .subject-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
-  }
-
-  .material-list {
-    padding-left: 20px;
-  }
-
-  .material-list li {
-    margin-bottom: 6px;
-  }
-</style><script>
-  const buttons = document.querySelectorAll('.btn');
-  const contentArea = document.getElementById('content-area');
-
-  const contentMap = {
-    gs1: `
-      <div class="subject-block">
-        <div class="subject-title">History</div>
-        <ul class="material-list">
-          <li>NCERT Class 6-12 History</li>
-          <li>India’s Ancient Past – RS Sharma</li>
-          <li>Modern India – Bipan Chandra</li>
-          <li>Post-Independence India – Bipan Chandra</li>
-        </ul>
-      </div>
-      <div class="subject-block">
-        <div class="subject-title">Society</div>
-        <ul class="material-list">
-          <li>NCERT Sociology Class 11 & 12</li>
-          <li>Social Issues by Ram Ahuja</li>
-        </ul>
-      </div>
-      <div class="subject-block">
-        <div class="subject-title">Geography</div>
-        <ul class="material-list">
-          <li>NCERT Class 6-12 Geography</li>
-          <li>GC Leong – Certificate Physical Geography</li>
-          <li>Atlas (Oxford or Orient BlackSwan)</li>
-        </ul>
-      </div>
-    `,
-    gs2: `
-      <div class="subject-block">
-        <div class="subject-title">Polity</div>
-        <ul class="material-list">
-          <li>Indian Polity – M. Laxmikanth</li>
-          <li>Polity NCERTs Class 9-12</li>
-          <li>Governance in India – ARC Reports</li>
-        </ul>
-      </div>
-      <div class="subject-block">
-        <div class="subject-title">International Relations</div>
-        <ul class="material-list">
-          <li>Current Affairs (The Hindu, Indian Express)</li>
-          <li>MEA India Yearbook</li>
-        </ul>
-      </div>
-    `,
-    gs3: `
-      <div class="subject-block">
-        <div class="subject-title">Economy</div>
-        <ul class="material-list">
-          <li>NCERT Macroeconomics Class 12</li>
-          <li>Sriram IAS Economy Notes</li>
-          <li>Economic Survey & Budget Highlights</li>
-        </ul>
-      </div>
-      <div class="subject-block">
-        <div class="subject-title">Environment</div>
-        <ul class="material-list">
-          <li>Shankar IAS Environment Book</li>
-          <li>Down to Earth Magazine</li>
-        </ul>
-      </div>
-      <div class="subject-block">
-        <div class="subject-title">Disaster Management</div>
-        <ul class="material-list">
-          <li>2nd ARC Report on Crisis Management</li>
-          <li>NDMA Guidelines</li>
-        </ul>
-      </div>
-    `,
-    gs4: `
-      <div class="subject-block">
-        <div class="subject-title">Ethics, Integrity & Aptitude</div>
-        <ul class="material-list">
-          <li>Lexicon for Ethics</li>
-          <li>G Subba Rao’s Ethics Book</li>
-          <li>Case Studies Practice Workbook</li>
-        </ul>
-      </div>
-    `,
-    essay: `
-      <div class="subject-block">
-        <div class="subject-title">Essay Preparation</div>
-        <ul class="material-list">
-          <li>Vision IAS Essay Compilations</li>
-          <li>Topic-wise Essay Examples (Topper copies)</li>
-          <li>YT: Anudeep Durishetty Essay Video</li>
-        </ul>
-      </div>
-    `,
-    csat: `
-      <div class="subject-block">
-        <div class="subject-title">CSAT</div>
-        <ul class="material-list">
-          <li>CSAT Manual – TMH</li>
-          <li>Previous Year CSAT Papers</li>
-          <li>R.S. Aggarwal (Quant + Reasoning)</li>
-        </ul>
-      </div>
-    `,
-    optional: `
-      <div class="subject-block">
-        <div class="subject-title">Optional Subjects</div>
-        <p><b>Aryan:</b> Anthropology</p>
-        <ul class="material-list">
-          <li>Physical Anthropology – P. Nath</li>
-          <li>Tribal India – Nadeem Hasnain</li>
-          <li>Anthro IGNOU + Toppers Notes</li>
-        </ul>
-        <p><b>Shital:</b> PSIR</p>
-        <ul class="material-list">
-          <li>IGNOU PSIR BA Notes</li>
-          <li>Global Politics – Andrew Heywood</li>
-          <li>Shubhra Ranjan PSIR Notes</li>
-        </ul>
-      </div>
-    `,
-    interview: `
-      <div class="subject-block">
-        <div class="subject-title">Interview Prep</div>
-        <ul class="material-list">
-          <li>Mock Interviews with Coaching Institutes</li>
-          <li>Daf Analysis & Current Issues</li>
-          <li>Interview Transcript Compilation (Topper Docs)</li>
-        </ul>
-      </div>
-    `
-  };
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const key = btn.getAttribute('data-subject');
-      contentArea.innerHTML = contentMap[key];
-      contentArea.classList.add('active');
-    });
+    contentBox.innerHTML = '<span class="loading">Loading...</span>';
+
+    fetch(fileName)
+      .then(response => {
+        if (!response.ok) throw new Error('File not found');
+        return response.text();
+      })
+      .then(text => {
+        // Simple text to HTML formatting (optional)
+        const safeText = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br>");
+        contentBox.innerHTML = safeText;
+      })
+      .catch(err => {
+        contentBox.innerHTML = `<span class="error">Failed to load file: ${fileName}</span>`;
+      });
   });
 </script>
-
-
-
 
 </body>
 </html>
