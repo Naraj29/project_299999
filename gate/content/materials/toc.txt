@@ -1,0 +1,134 @@
+👑 Theory of Computation (TOC)
+(A precision strike for AIR-1, not just qualification. TOC is concept-heavy, mistake-sensitive, and high scoring.)
+
+
+---
+
+🧠 WHY TOC MATTERS?
+
+8–10 marks consistently in GATE
+
+100% conceptual — no rote, no guesswork
+
+One silly mistake → multiple marks gone.
+You must become a TOC warrior, not just a learner.
+
+
+
+---
+
+🧩 TOPIC-WISE BREAKDOWN (AIR-1 Focus Style)
+
+🔢 Topic	🎯 Weight	⚠️ Focus Area
+
+Finite Automata (DFA/NFA)	High	DFA construction, NFA→DFA, DFA minimization
+Regular Expressions & RG	High	RE↔FA, Arden’s theorem, Closure Properties
+Pumping Lemma (Regular)	Medium	Applying lemma properly, counter-example logic
+CFG & PDA	High	CFG generation, Ambiguity, PDA from CFG
+Pumping Lemma (CFL)	Medium	Trickier than regular, needs intuition
+Turing Machines	High	TM design, Halting problem, Unsolvability
+Decidability & Undecidability	Very High	Recursive, RE, Rice’s Theorem, Reductions
+Closure Properties	Medium	Union, Intersection, Complement for Reg/CFL/TM
+
+
+
+---
+
+📚 TRUTHBOOK SYSTEM – AIR-1 GRADE
+
+📘 1. Peter Linz – An Introduction to Formal Languages & Automata
+
+🧠 THE foundational text for TOC.
+🔹 Clear definitions, visual aids, step-by-step logic
+🔹 Read only these chapters:
+
+FA, NFA, Regular Languages
+
+Regex & Arden’s
+
+CFL & PDA
+
+Turing Machines
+
+Decidability
+
+
+🕐 Total Time: 30–40 hours (deep conceptual mastery)
+
+
+---
+
+🎥 2. Video Series (Bilingual + AIR-1 Optimized)
+
+🔸 Gate Smashers – TOC Playlist (Hindi-English)
+
+🔗 Watch Here
+✅ Easy to grasp | Visual explanations | Covers PYQs inline
+🕐 Watch Time: ~45–50 hours
+
+🔸 Ravindrababu Ravula – TOC Lectures
+
+🔗 Watch Here
+✅ English only | High-level thinking | Fast revision
+🕐 Use this for Round 2 revision (~20 hours)
+
+
+---
+
+📄 3. PYQs and Practice Base
+
+🧠 GateOverflow TOC Section
+
+🔗 https://gateoverflow.in
+✅ Best solutions online | Follow explanations from experts
+✅ Sort by topic (FA, PDA, TM etc.)
+✅ Revise each PYQ 3 times before exam
+✅ Solve mixed topic mock problems
+
+
+---
+
+📌 MASTER SHEET: TOC CONCEPT SNAPSHOTS
+
+✅ DFA ↔ Regex ↔ NFA ↔ ε-NFA ↔ RG (all equivalent)
+✅ Min. DFA → Use Myhill-Nerode / table filling
+✅ Regular languages NOT closed under infinite union
+✅ Pumping Lemma = proof of non-regularity
+✅ PDA ≠ DPDA → Ambiguity detection
+✅ TM → Recognizer, not always decider
+✅ Rice’s Theorem: All non-trivial semantic properties of TM undecidable
+✅ Decidable ⊂ RE ⊂ R
+
+
+---
+
+🔁 REVISION STRATEGY
+
+Round	Time	Task
+
+1	Week 1–2	Gate Smashers full + Linz first 3 ch.
+2	Week 3–4	CFG, PDA, TMs + start PYQs (GO)
+3	Week 6	Ravula fast review + solve again
+4	Week 8–10	Practice difficult TM + Rice’s Thm
+5	Before mocks	Full mixed practice (PYQs + GO mocks)
+
+
+
+---
+
+⚡ BEAST-MODE BOOSTERS (Optional but AIR-1 Edge)
+
+Try designing all automata & TM by hand
+
+Write your own Pumping Lemma counterexamples
+
+Build a “TOC mistakes logbook” of traps you fall for
+
+Create flashcards for Closure Properties & Class Relations
+
+Explain Rice’s theorem to an imaginary student (or mirror)
+
+
+
+---
+
