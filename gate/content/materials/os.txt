@@ -1,0 +1,101 @@
+👑 Subject: Operating Systems (OS)
+OS arsenal will go beyond average.
+
+
+---
+
+📚 CORE (gate)
+
+🧠 Primary GATE-Focused Truthbooks
+
+1. Operating Systems – by Galvin (a.k.a. Silberschatz, Galvin, Gagne)
+🔹 Absolute GATE Bible. Use for deep concepts, diagrams, and problem understanding.
+🔹 Chapters: Process, Scheduling, Deadlock, Memory, File, I/O
+🔥 Mark important diagrams & examples
+🕐 Reading Time: 45–60 hours (with breaks)
+
+
+2. Operating System Concepts and Design – by Dhamdhere (Optional)
+🔹 For alternate explanations if Galvin gets dense
+🔹 Very useful for Memory Management, Paging, Segmentation
+
+
+
+
+---
+
+🧪 Truthbook Videos (GATE-Optimized Learning)
+
+1. NPTEL – Operating System by Prof. P.K. Biswas (IIT Kharagpur)
+🔗 https://nptel.ac.in/courses/106105214
+🔹 Excellent for scheduling, concurrency, deadlocks
+🕐 Total Time: ~40–45 hours
+
+
+2. Gate Smashers – OS Playlist (Hindi-English)
+🔹 Shortcut + revision + past year analysis
+🔗 YouTube: Gate Smashers – Operating System
+🕐 Watch for quick recap and pyq orientation
+
+
+3. Ravindrababu Ravula OS Playlist
+🔹 Excellent for fast-tracking theory with tricks
+🔹 Helps with problem-solving & GATE strategy
+🔗 YouTube
+
+
+
+
+---
+
+🔁 Practice + PYQ Arsenal
+
+1. GATE Previous Year OS Questions – Chapterwise
+🔹 Source: GO PDF / MadeEasy Workbook / GateOverflow
+🔗 https://gateoverflow.in
+🔹 Aim: At least 3 iterations with timed solving
+🕐 Weekly 2–3 practice blocks
+
+
+2. Gate Overflow Virtual Book (OS Section)
+🔹 Real GATE-level depth
+🔗 https://book.gateoverflow.in
+🔹 Explains answers in truth-level logic
+
+
+
+
+---
+
+🧠 BONUS: For True System Mastery (Beyond GATE)
+
+1. Operating Systems: Three Easy Pieces (OSTEP) – by Remzi & Andrea Arpaci-Dusseau
+🔹 Goldmine for deep system understanding
+🔹 Focus chapters: CPU Scheduling, VM, Synchronization, File Systems
+🔗 http://pages.cs.wisc.edu/~remzi/OSTEP/
+🕐 Use during breaks or as reference if you’re peaking early
+
+
+2. Build Your Own Operating System (Optional Advanced Project)
+🔹 Learn system boot process, interrupts, process control manually
+🔗 https://github.com/cfenollosa/os-tutorial
+
+
+
+
+---
+
+🎯 STRATEGY (GATE + peak-level Mastery)
+
+Week Type	Focus
+
+Week 1–3	Concept Building (Galvin + NPTEL)
+Week 4–5	PYQ Round 1 + GateSmasher Revisions
+Week 6–7	Advance Problems (GateOverflow) + Test Series
+Week 8+	Full-Length Mock + Integrated Revision (OS + CN + COA links)
+
+
+
+---
+
+
