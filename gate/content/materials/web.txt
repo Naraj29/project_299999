@@ -1,0 +1,83 @@
+Web Basics
+This subject is not a direct core in GATE syllabus but vital for practical + project + interview prep, especially in Software Engineering, DBMS, and System Design.
+
+Since you're BTech CSE + GATE aspirant,here's a dual-mode truthbook strategy:
+
+---
+
+🌐 TRUTHBOOK ARSENAL: Web Basics (Frontend + Backend Foundations)
+
+⚔️ Part 1: Core Concepts (GATE-Relevant + Academic Power)
+
+These books/videos build your technical base without bloated theory:
+
+1. CS50: Harvard’s Intro to Computer Science – by David Malan
+🔹 Legendary course: HTML, HTTP, Web Servers, JavaScript logic
+🔗 https://cs50.harvard.edu/x
+
+
+2. Introduction to HTML/CSS/JS – MDN Web Docs (Official)
+🔹 Most reliable documentation on web
+🔹 Truthbook level clarity
+🔗 https://developer.mozilla.org/en-US/docs/Learn
+
+
+3. NPTEL: Web Technologies by Prof. Sudarshan Iyengar (IIT Ropar)
+🔹 Strong backend + frontend concepts
+🔗 https://nptel.ac.in/courses/106105084
+
+
+
+
+---
+
+💡 Part 2: Practical Web Dev Arsenal (Projects + Mastery)
+
+For projects, app dev, interviews, and portfolio.
+
+📘 Truthbooks for Frontend:
+
+HTML & CSS: Design and Build Websites – by Jon Duckett
+🔹 Truthbook level → Visual explanations
+🔹 Helps in mastering semantic design
+
+JavaScript: The Definitive Guide (6th/7th Ed.) – by David Flanagan
+🔹 Deep JS understanding – core + browser logic
+🔹 Use as reference when stuck
+
+
+📘 Truthbooks for Backend:
+
+Node.js Design Patterns – by Mario Casciaro
+🔹 Best truthbook for backend thinking, not just code
+🔹 GATE-level logical clarity
+
+SQL + HTTP + APIs:
+
+Practice via LeetCode SQL + Postman API playground
+
+Learn basic RESTful API logic
+
+
+
+
+---
+
+⚙️ BONUS (If Going Peak Mode)
+
+1. Grokking the Web Developer Interview
+🔹 Helps even if you don’t sit for placements
+🔹 Covers system design + DB + backend traps
+
+
+2. Create Your Own Web Server (Low-level)
+🔹 Helps in understanding HTTP Protocol (linked to CN + OS)
+
+
+
+
+---
+
+🛠️ When you start building, combine this knowledge with GATE DBMS, CN, and OS for ultimate integration.
+
+
