@@ -1,0 +1,123 @@
+Data Structures Peak Arsenal 
+You’re entering the heart of CS now.
+DS is where AIR 1s build speed, accuracy, and mental control over the paper.
+
+---
+
+🎯 Goal:
+
+10–12 Marks potential. Time-saver in GATE if mastered.
+🔑 Focus = Concepts + Dry-run Clarity + GATE-specific Implementation
+
+
+---
+
+📚 Main Resources
+
+✅ 1. Core Book
+
+📘 Book: Fundamentals of Data Structures in C – Horowitz & Sahni
+
+Covers GATE-style concepts deeply (Non-coding perspective)
+
+Prefer over local guidebooks for theory clarity
+
+
+
+
+---
+
+✅ 2. YouTube Lectures
+
+🎥 Neso Academy (DSA Playlist) – Clear fundamentals + visuals
+
+🎥 CodeHelp by Love Babbar – Interview + GATE blend
+
+🎥 Take U Forward – Playlist
+
+Great for visualization and memory building
+
+
+
+
+---
+
+✅ 3. C++/C Implementation (if you do coding too)
+
+📘 Book (optional): DSA Made Easy by Narasimha Karumanchi (Only for implementation-type GATE questions)
+
+Platform Practice:
+
+🔗 Leetcode (for Trees, Linked List, Stack)
+
+🔗 GeeksforGeeks GATE Topic-wise DS
+
+🔗 GATE Overflow – Data Structure PYQs
+
+
+
+
+---
+
+🧠 High-Weight GATE Topics (Mark-Efficient)
+
+🔒 Topic	Mark Priority
+
+Arrays & Strings	⭐
+Linked Lists	⭐⭐
+Stacks & Queues (inc. circular)	⭐⭐⭐
+Trees (Binary, BST, AVL)	⭐⭐⭐⭐
+Graphs (BFS/DFS + MST + Dijkstra)	⭐⭐⭐⭐
+Hashing	⭐⭐
+Recursion & Backtracking	⭐⭐
+Heaps & Priority Queues	⭐⭐⭐
+Time Complexity of Operations	⭐⭐⭐
+
+
+
+---
+
+🔁 Smart Revision Protocol
+
+🧾 Round 1: Diagrams + Operation tables (Insertion, Deletion, Traversal)
+
+🧾 Round 2: Dry-run key GATE PYQs – simulate by hand
+
+🧾 Round 3: Implement 5 tough GATE-level problems in code (if coding allowed)
+
+
+
+---
+
+🧠 Truth Mode: Visual Learning Extras
+
+VisuAlgo.net – Interactive visualization for all DS
+
+MIT OCW – Data Structures in Java (Video Lectures)
+
+Stanford CS106B / Princeton COS226 – Use only for brain expansion
+
+
+
+---
+
+🗂️ DS Checklist (GATE-focused)
+
+🔒 Topic	Done?
+
+Array & Pointer Basics	
+String Manipulations	
+Single/Double/Circular LinkedList	
+Stack / Queue / Circular Queue	
+Trees (Pre/In/Post Traversals)	
+BST Operations	
+AVL + Balance Factor	
+Heap (Min/Max)	
+Graphs – DFS, BFS, MST	
+Hash Tables & Hashing Techniques	
+Complexity of All Structures	
+
+
+
+---
+
