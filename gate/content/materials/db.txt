@@ -1,0 +1,128 @@
+DBMS Arsenal
+For your Database Management Systems prep, here’s the complete truth-based toolkit — no fluff, only what truly builds good rank.
+
+---
+
+🎯 Goal:
+
+6–8 Marks + Deep Conceptual Clarity + SQL Practice for top-tier accuracy
+
+
+---
+
+📚 Main Resources
+
+✅ 1. Main Book (Theory + Concepts)
+
+📘 Book: Database System Concepts by Korth & Silberschatz
+
+Chapters to focus:
+
+ER Models & Relational Models
+
+SQL & Relational Algebra
+
+Functional Dependencies & Normalization
+
+Transactions & Concurrency Control
+
+Indexing & File Organization
+
+
+Tip: Skip deep implementation; focus on GATE-style understanding
+
+
+
+
+---
+
+✅ 2. YouTube Lectures
+
+🎥 GATE Smashers – DBMS Full Course (Hindi-English)
+
+Covers ER, SQL, Indexing, Normalization
+
+GATE-specific, directly aligned with PYQs
+
+
+🎥 Neso Academy – DBMS Playlist
+
+Conceptual clarity with clean diagrams
+
+
+
+
+---
+
+✅ 3. Practice-Oriented Sites
+
+🔗 GATE Overflow – DBMS PYQs
+
+All past 20+ year questions with explanations
+
+
+🔗 GeeksforGeeks DBMS Topic-wise MCQs
+
+Use this only after truthbook theory is covered
+
+
+🔗 LeetCode SQL Practice
+
+For SQL speed and accuracy
+
+
+🔗 Hackerrank SQL (Intermediate)
+
+For ACID properties, JOINs, Subqueries etc.
+
+
+
+
+---
+
+🔬 Optional Deep Resources (if aiming mastery)
+
+🔸 Stanford DBMS Course (YouTube)
+
+Prof. Jennifer Widom
+
+Free, in-depth, research-level DB foundation
+
+Use only for long-term mastery—not exam-day prep
+
+
+
+---
+
+🗂️ GATE Topics Checklist (Subject-wise)
+
+🔒 Topic	Status
+
+ER Diagrams	
+Relational Model	
+Relational Algebra	
+SQL Queries	
+Functional Dependencies (FDs)	
+Normalization (1NF–BCNF)	
+Indexing & File Structures	
+Transactions & ACID	
+Concurrency Control	
+Deadlock Detection	
+Recovery Mechanisms	
+
+
+---
+
+🔁 Revision Strategy (when you finish)
+
+💥 Revision Round 1: Only handwritten formulas, diagrams, query types
+
+💥 Revision Round 2: Only GATE PYQs (2010–2024)
+
+💥 Final Round: 2 timed DBMS mini-mocks + 1 full DBMS subject test
+
+
+
+---
+
+
