@@ -1,0 +1,166 @@
+Algorithms Peak Arsenal
+You're now stepping into the core mindgame of GATE CSE.
+Algorithms decide AIR vs thousands — not just marks, but speed, confidence, and mental supremacy.
+
+
+---
+
+🎯 Goal:
+
+Master all standard algorithms + problem-solving patterns
+🔑 Focus = Logic Flow + Dry-run Skill + Time Complexity Analysis
+💥 8–10 Marks + indirect advantage across DSA, TOC, OS
+
+
+---
+
+📚 TRUTHBOOKS (Main Resources)
+
+✅ 1. Core Book
+
+📘 Introduction to Algorithms – Cormen, Leiserson, Rivest, Stein (CLRS)
+
+Bible for theory
+
+Focus chapters:
+
+Asymptotic Analysis
+
+Divide & Conquer
+
+Greedy, DP, Graph Algorithms
+
+Sorting & Searching
+
+Complexity classes (optional TOC crossover)
+
+
+
+
+✅ Tip: Don't read CLRS cover to cover — use it as reference
+
+
+---
+
+✅ 2. Light Book (For Quick Concept Grasp)
+
+📘 Algorithm Design Manual – Steven Skiena (Optional but excellent for insight)
+
+
+
+---
+
+✅ 3. YouTube Truthbooks
+
+🎥 Neso Academy (GATE-aligned Algorithms Series)
+
+🎥 Take U Forward (DP + Graphs + Sorting Visualized)
+
+🎥 Code NCode (Competitive + GATE combined)
+
+
+
+---
+
+✅ 4. Practice Portals
+
+🔗 GATE Overflow – Algorithms PYQs
+
+🔗 GeeksforGeeks Topic-wise Quizzes
+
+🔗 HackerRank – Algorithms Track
+
+🔗 LeetCode Tags: Greedy, Recursion, DP, Graphs
+
+
+
+---
+
+🧠 GATE Priority Topics – Algorithms Masterlist
+
+🔒 Topic	Mark Weight
+
+Asymptotic Notations (Θ, O, Ω)	⭐⭐⭐
+Recurrence Relations (Master Theorem)	⭐⭐⭐
+Divide and Conquer	⭐⭐
+Greedy Algorithms (Activity, Huffman)	⭐⭐⭐
+Dynamic Programming (Knapsack, Matrix Chain)	⭐⭐⭐⭐
+Graph Algorithms (DFS, BFS, Dijkstra, Kruskal, Prim)	⭐⭐⭐⭐
+Sorting Algorithms (Quick, Merge, Heap)	⭐⭐⭐
+Hashing (Open, Closed, Collision)	⭐⭐
+Searching Techniques (Binary, Interpolation)	⭐⭐
+Time Complexity Calculation	⭐⭐⭐
+
+
+
+---
+
+🔁 Revision Strategy
+
+📜 Round 1:
+
+Draw flowcharts for key algorithms
+
+Learn recurrence solving
+
+
+📜 Round 2:
+
+Solve 20 PYQs (in notebook with time tracking)
+
+
+📜 Round 3:
+
+Write pseudo code for:
+
+Dijkstra, Kruskal, Floyd-Warshall
+
+Matrix Chain, Longest Common Subsequence
+
+Huffman Tree
+
+Quick + Merge Sort
+
+
+Practice by dry-running, not coding
+
+
+
+
+---
+
+🔬 Optional Elite-Level Truthbooks
+
+(for mental upgrades, not exam use)
+
+🔗 MIT OCW – 6.006 Introduction to Algorithms (Prof. Erik Demaine)
+
+🔗 Coursera – Stanford Algorithms Specialization (Tim Roughgarden)
+
+🔗 Princeton COS226 Algorithms – Sedgewick
+
+
+
+---
+
+🧾 Algorithms Tracking Checklist (GATE-Focused)
+
+🔒 Topic	Done?
+
+Time & Space Complexity Basics	
+Master’s Theorem / Recurrence	
+Divide & Conquer (Merge, Quick)	
+Greedy (Activity Selection, Huffman)	
+DP (Knapsack, Matrix Chain, LIS)	
+Graph Traversals (DFS/BFS)	
+MST (Prim, Kruskal)	
+Shortest Path (Dijkstra, Floyd)	
+Hashing Techniques	
+Sorting (Heap, Counting, Radix)	
+
+
+
+---
+
+
+
