@@ -1,0 +1,125 @@
+👑 Software Engineering – GATE AIR-1 Level
+(A concise truthbook system because Software Engineering is low-weightage but easy-to-master for rank edge.)
+
+
+---
+
+🎯 WHY THIS MATTERS?
+
+GATE asks 1–2 questions (1–2 marks) from SE.
+
+Most aspirants skip or revise lightly — you won't.
+
+> “Even the smallest mark matters at the top.”
+
+
+
+
+
+---
+
+📚 TRUTHBOOK CORE (AIR-1 Strategy)
+
+📘 1. Pressman – Software Engineering: A Practitioner's Approach
+
+🔹 Best theoretical coverage of all models, testing types, risk mgmt, etc.
+🔹 Read only select chapters relevant to GATE.
+🔹 Focus Areas:
+
+Software Process Models (Waterfall, Agile, Spiral)
+
+Requirements Engineering
+
+Design Principles (Modularity, Coupling, Cohesion)
+
+Testing (White Box, Black Box, Unit vs Integration)
+
+Risk Management, Estimation (COCOMO)
+
+Software Maintenance, Configuration Management
+🕐 Time to Master (Selective): 8–10 hours total (AIR-1 Focused)
+
+
+
+---
+
+🎥 2. GATE Video Series (Quick + Focused)
+
+🔸 Gate Smashers – Software Engineering Playlist
+
+🔗 YouTube Link
+✅ Hindi-English. GATE-focused. Includes PYQs.
+🕐 Watch Time: ~10 hours
+🎯 Use as base + quick reinforcement
+
+🔸 Ravindrababu Ravula – SE Lectures
+
+🔹 Short & fast-paced for revision
+🔗 Ravula SE GATE Playlist
+🕐 Use for revision week before mocks
+
+
+---
+
+📄 3. PYQ + Practice Base
+
+🧠 GO (GateOverflow) SE Section
+
+🔗 https://gateoverflow.in
+🔹 Solve every PYQ of SE at least 3 times
+🔹 Especially:
+
+Process Model Scenarios
+
+Estimation & Testing
+
+Coupling/Cohesion Case Questions
+
+Software Crisis / Risk Factors
+🔸 Use GO Virtual Book or ME Book for detailed solutions
+🕐 Time Block: 3 hours every 2 weeks
+
+
+
+---
+
+⚡ ULTRA-FAST RECAP TRUTHSHEET
+
+✅ Coupling → Low is better
+✅ Cohesion → High is better
+✅ White Box Testing → Code Level
+✅ Black Box → Behavior/Input-Output
+✅ Spiral Model → Risk driven
+✅ Agile → Iterative, fast delivery
+✅ COCOMO → Estimation based on LOC (lines of code)
+✅ SRS Qualities → Correct, Unambiguous, Verifiable
+✅ Configuration Mgmt → Version control & integrity
+
+
+---
+
+🔁 REVISION + MOCK STRATEGY
+
+Round	Timeline	Focus
+
+1	Week 1	Gate Smashers + Pressman Selective
+2	Week 3–4	Solve PYQs from GO
+3	Week 6	Ravula + PYQ second pass
+4	Week 9–10	SE integrated into mixed full mocks
+
+
+
+---
+
+🧠 OPTIONAL BEAST-MODE (If SE feels too light)
+
+Try solving 200+ MCQs in one sitting as a burnout test
+
+Go through Pressman Case Studies to visualize models
+
+Do a Mini Project applying SE principles (for platforms)
+
+
+
+---
+
