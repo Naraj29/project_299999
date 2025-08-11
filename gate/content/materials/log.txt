@@ -1,0 +1,154 @@
+Digital Logic Truth Arsenal
+Digital Logic is one of the most scoring and most ignored subjects by average aspirants.
+But not you. You’ll use it to gain early confidence, 15–20 minutes saved, and solidify your COA + TOC base.
+
+
+---
+
+🎯 Goal:
+
+Master number systems, logic gates, combinational + sequential circuits
+🔑 Target: 6–8 marks in GATE — near full score with speed
+
+
+---
+
+📚 TRUTHBOOKS (Main Resources)
+
+✅ 1. Main Book
+
+📘 Digital Logic and Computer Design – M. Morris Mano
+
+Best for theory clarity, circuit diagrams, gate-level understanding
+
+Focused chapters:
+
+Number Systems, Binary Arithmetic
+
+Boolean Algebra & Logic Gates
+
+K-Map & Minimization
+
+Combinational Circuits (Adder, Subtractor, MUX, DEMUX)
+
+Sequential Circuits (Latches, Flip-Flops, Counters, FSM)
+
+Memory + Timing Concepts
+
+
+
+
+
+---
+
+✅ 2. YouTube Series
+
+🎥 Neso Academy – Digital Logic Complete Playlist
+
+Clean, conceptual, GATE-focused
+
+
+🎥 Gate Smashers – Digital Logic in Hindi-English
+
+More diagram & problem-solving focused
+
+
+
+
+---
+
+✅ 3. Practice Resources
+
+🔗 GATE Overflow – Digital PYQs
+
+🔗 GeeksforGeeks – Digital Logic Quizzes
+
+🔗 Digital Circuits Problems (PDF) from Made Easy Workbook
+
+🔗 VisuAlgo.net – visualize binary trees, logic flow
+
+
+
+---
+
+🧠 GATE Priority Topics – Digital Logic Masterlist
+
+🔒 Topic	Mark Weight
+
+Number Systems & Conversions	⭐⭐
+Boolean Algebra & Logic Gates	⭐⭐⭐
+K-Map (up to 5 variables)	⭐⭐⭐⭐
+Combinational Circuits (MUX, Decoder)	⭐⭐⭐
+Arithmetic Circuits (Adder, Subtractor)	⭐⭐
+Flip-Flops (JK, D, T)	⭐⭐⭐⭐
+Counters (Mod-N, Ripple, Synchronous)	⭐⭐⭐
+FSM & Sequential Circuit Design	⭐⭐
+Timing Diagrams, Propagation Delay	⭐⭐
+
+
+
+---
+
+🔁 Revision Strategy
+
+📜 Round 1:
+
+K-Map practice (minimize 10 expressions by hand)
+
+Truth tables for all gates, MUX, FFs
+
+
+📜 Round 2:
+
+Draw and memorize state transitions
+
+Solve previous 10-year GATE Digital Logic questions
+
+
+📜 Round 3:
+
+Rapid-fire MCQs (timed)
+
+Make formula flashcards:
+
+FF characteristic tables, conversion formulas, SOP/POS formats
+
+
+
+
+
+---
+
+🔬 Optional Elite-Level Truthbooks (If Time Permits)
+
+📘 Roth – Fundamentals of Logic Design (for visuals)
+
+📘 Anand Kumar – Digital Fundamentals (more problem-focused)
+
+🔗 Stanford Digital Circuits Course (only for deep theoretical interest)
+
+
+
+---
+
+🧾 Digital Logic GATE Checklist
+
+🔒 Topic	Done?
+
+Number Systems + BCD, Gray Code	
+Logic Gates, Truth Tables	
+Boolean Algebra Laws	
+K-Map Minimization (2–5 variables)	
+Adders, Subtractors (Half, Full)	
+Multiplexers, Encoders, Decoders	
+Flip-Flops (JK, D, T)	
+Counters (Ripple, Synchronous)	
+State Machines (FSM)	
+Timing Diagrams & Delays	
+
+
+
+---
+
+
+
