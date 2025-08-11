@@ -1,0 +1,116 @@
+
+---
+
+🧠 Compiler Design — AIR 1 Set
+
+🔹 1. Core Textbooks
+
+These will teach you everything conceptually and precisely:
+
+Book 1: Compilers: Principles, Techniques, and Tools — by Aho, Lam, Sethi, Ullman (a.k.a. “Dragon Book”)
+
+✅ Standard for AIR 1 aspirants
+
+📌 Focus: Lexical → Syntax → Semantic → Intermediate Code → Optimization → Code Generation
+
+📍 Don't read full book. Focus selectively as per GATE syllabus. I will mark chapters if needed.
+
+
+Book 2: Engineering a Compiler — by Keith D. Cooper
+
+📘 Clarity + better than Dragon Book in optimization & backend
+
+Optional for deeper understanding beyond GATE
+
+
+Book 3 (Indian Author - GATE Focused):
+
+Theory of Computer Science by K.L.P. Mishra (some compiler parts overlap with TOC)
+
+GATE Overflow Notes (PDF or platform)
+
+Made Easy Handwritten Notes (precise, fast revision)
+
+
+
+
+---
+
+🔹 2. Best Video Courses / Playlists (Free + AIR 1 Level)
+
+📺 Ravindrababu Ravula – Compiler Design Playlist (YouTube)
+
+Legendary for GATE, builds intuition from scratch
+
+Covers DFA/NFA/Lexical Parsing/Syntax Trees etc.
+
+
+📺 Neso Academy – Compiler Design
+
+Crystal clear theory for every topic
+
+Especially good for Lexical Analysis + Parsing
+
+
+📺 NPTEL – Compiler Design by Prof. Barua (IIT Kanpur)
+
+AIR 1 level depth
+
+Use it to go deeper into concepts not clear elsewhere
+
+
+
+
+---
+
+🔹 3. Practice & Revision Sources
+
+🧪 GATE Overflow – Previous year solved questions with in-depth discussion
+
+🧪 GeeksforGeeks Topicwise + Practice Set
+
+📚 Previous Year Question Book (GATE CSE by Made Easy or Ace)
+
+🧾 Self-notes – Prepare Lexical → Syntax → Intermediate Code → Optimization flow diagram
+
+
+
+---
+
+🛠 Optional but Powerful Tools
+
+🔍 GATEbook PDF (by GATE Overflow team) – Compiler chapter
+
+🔄 Cheat sheets – One-page summaries for Parsing techniques, Code optimization types
+
+🧩 Quizzing Sites – use cses.in or similar for gamified compiler quizzes
+
+
+
+---
+
+✅ Focus Areas for GATE
+
+1. Lexical Analysis (Tokens, Lexemes, DFA construction)
+
+
+2. Syntax Analysis (LL(1), LR, SLR, LALR)
+
+
+3. Intermediate Code Generation (Quadruples, Triples)
+
+
+4. Syntax Directed Translation
+
+
+5. Code Optimization (Dead code elimination, Constant folding etc.)
+
+
+6. Symbol Table + Error Handling basics
+
+
+
+
+---
+
+
