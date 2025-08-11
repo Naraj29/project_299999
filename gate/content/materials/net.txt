@@ -1,0 +1,82 @@
+Subject: Computer Networks
+Here’s your arsenal for Computer Networks, optimized for peak depth, speed, and accuracy:
+
+
+---
+
+
+📘 Primary Sources (Core Concepts + Problem Mastery)
+
+1. Computer Networking: A Top-Down Approach – by Kurose & Ross
+🔹 Deep understanding with real-world flow
+🔹 Follow GATE syllabus-wise (skip lower-level implementation details not in GATE)
+⏱ Suggested use: 1–2 chapters/week (refer, not rote-read)
+
+
+2. NPTEL Course: Computer Networks – Prof. Bhaskar Ramamurthi / IIT Madras
+🔹 Gold-standard for GATE-level topics
+🔹 Videos + PDF + Assignments
+🔗 https://nptel.ac.in/courses/106105183
+
+
+3. GATE Overflow: CN Notes & Practice (by toppers)
+🔹 Includes short notes, mistakes, edge cases
+🔗 https://gateoverflow.in/tags/computer-networks
+
+
+
+
+---
+
+📗 Practice & Question Banks (Topicwise & Toughness Ladder)
+
+1. Made Easy Workbook – Computer Networks (Topicwise GATE Questions)
+🔹 Contains 20+ years of topic-wise GATE problems
+🔹 Solve once with full focus → tag unsolved/hard ones for revision
+
+
+2. GO PDF: Must-Solve CN Questions (with concepts)
+🔹 Curated questions from GO + GATE + TIFR + ISRO
+🔹 Contains traps, formula edge cases
+
+
+
+
+---
+
+🧪 Mock + Test Practice (Start After Core is Ready)
+
+1. GateOverflow Tests → CN Subject Tests
+🔹 Open, free, based on real GATE difficulty
+🔗 https://test.gateoverflow.in
+
+
+2. Previous Year GATE Papers (Full + CN-specific)
+🔹 Solve 3 times spaced across your prep
+🔹 Maintain error log for speed + silly mistake tracking
+
+
+
+
+---
+
+🔍 Revision Strategy
+
+Make a “1-page per topic” CN journal → Layered with:
+
+Protocol name
+
+Layers involved
+
+Service provided
+
+Key formulas (throughput, delay, etc.)
+
+Traps (e.g., stop-and-wait vs go-back-N)
+
+
+
+
+---
+
+This loadout is enough to beat 99.99% competitors.
