@@ -1,117 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Date-Based Text Viewer</title>
-  <!-- FullCalendar CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/main.min.css" rel="stylesheet" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Diary</title>
+
+  <!-- Open-source calendar: Flatpickr (MIT) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    :root{
+      --bg: #0f1115;
+      --panel: #151a22;
+      --text: #e8eef8;
+      --muted: #9fb0c3;
+      --brand: #6aa6ff;
+      --accent: #2a3340;
+      --ok: #2cc4a5;
+      --warn: #ffcc66;
+      --danger: #ff7a7a;
+      --border: #263140;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+      --radius: 14px;
     }
-    header {
-      text-align: center;
-      margin-bottom: 1rem;
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background: linear-gradient(180deg, #0d1016 0%, #0f1115 100%);
     }
-    #calendar {
-      max-width: 600px;
-      width: 100%;
-      margin-bottom: 2rem;
+
+    /* Layout */
+    .shell{
+      max-width: 1150px;
+      margin: 24px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 20px;
     }
-    #content {
-      max-width: 800px;
-      width: 100%;
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      min-height: 150px;
+    header.appbar{
+      max-width: 1150px;
+      margin: 16px auto 0;
+      padding: 0 16px;
     }
-    @media (max-width: 600px) {
-      body {
-        padding: 0.5rem;
-      }
+    .bar{
+      display:flex; align-items:center; justify-content:space-between;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
     }
+    .brand{
+      display:flex; align-items:center; gap: 12px; font-weight: 700; letter-spacing:.2px;
+    }
+    .brand .dot{
+      width:12px; height:12px; border-radius:50%;
+      background: conic-gradient(from 0deg, var(--brand), #9c7cff, #67e8f9, var(--brand));
+      box-shadow: 0 0 0 4px rgba(106,166,255,.15);
+    }
+    .toolbar{ display:flex; gap:8px; align-items:center; flex-wrap: wrap; }
+    .btn{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #1a2130, #131a24);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    .btn.primary{ border-color: #2c3b52; background: linear-gradient(180deg, #1f2a3d, #162033); }
+    .btn.ghost{ background: transparent; }
+    .badge{
+      font-size:12px; color: var(--muted); padding: 2px 8px; border-radius: 999px;
+      background: #1a2230; border:1px solid var(--border);
+    }
+
+    /* Panels */
+    .panel{
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: clip;
+    }
+    .left{
+      padding: 16px;
+      display:flex; flex-direction:column; gap:16px;
+    }
+    .section h3{
+      margin: 0 0 10px 0; font-size: 14px; font-weight: 700; color: var(--muted); letter-spacing:.3px;
+    }
+    .calendar-input input{
+      width:100%;
+      background: #0e141e; color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px 12px; font-size: 14px;
+    }
+    .month-row{
+      display:flex; gap:8px; align-items:center;
+    }
+    select, .select{
+      width:100%;
+      background: #0e141e; color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; font-size: 14px;
+    }
+
+    .right{
+      display:flex; flex-direction:column; min-height: 60vh;
+    }
+    .content-head{
+      padding: 14px 18px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap:wrap;
+      background: linear-gradient(180deg,#121826,#0f141f);
+    }
+    .content-head .title{
+      font-size: 18px; font-weight: 700;
+    }
+    .content{
+      padding: 18px; line-height: 1.65; font-size: 16px;
+    }
+    .content p{ margin: 0 0 10px 0; }
+    .content .muted{ color: var(--muted); }
+    .content .empty{
+      border: 1px dashed var(--border); border-radius: 10px; padding: 18px; color: var(--muted);
+      background: #0e141e;
+    }
+    .entry-meta{
+      display:flex; gap:8px; align-items:center; flex-wrap:wrap; color: var(--muted); font-size: 13px;
+    }
+    .list{
+      display:grid; grid-template-columns: 1fr; gap: 8px; margin-top: 8px; max-height: 200px; overflow:auto;
+    }
+    .list .row{
+      border:1px solid var(--border); border-radius:10px; padding:10px 12px; background:#0e141e;
+      display:flex; align-items:center; justify-content:space-between; gap:10px; cursor:pointer;
+    }
+    .row .date{ font-weight:600; }
+    .row .snippet{ color: var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width: 60%; }
+
+    .footer-note{
+      padding: 10px 16px; color: var(--muted); border-top: 1px dashed var(--border); background:#0e141e;
+      font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 880px){
+      .shell{ grid-template-columns: 1fr; }
+      .right{ order: -1; }
+    }
+
+    /* Link & code styling inside content */
+    .content a{ color: var(--brand); text-decoration: none; border-bottom:1px dashed rgba(106,166,255,.35); }
+    .content a:hover{ border-bottom-color: var(--brand); }
+    .content pre{
+      background:#0b111a; border:1px solid var(--border); padding:12px; border-radius:10px; overflow:auto;
+    }
+    .content ul, .content ol{ margin:0 0 12px 20px; }
+    .content hr{ border: none; border-top: 1px dashed var(--border); margin: 16px 0; }
   </style>
 </head>
 <body>
+  <header class="appbar">
+    <div class="bar">
+      <div class="brand">
+        <div class="dot" aria-hidden="true"></div>
+        <div>My Diary</div>
+        <span id="statusBadge" class="badge" title="File status">Loading…</span>
+      </div>
+      <div class="toolbar">
+        <button id="prevBtn" class="btn ghost" title="Previous date">◀</button>
+        <button id="nextBtn" class="btn ghost" title="Next date">▶</button>
+        <button id="reloadBtn" class="btn" title="Reload diary.txt">Reload</button>
+        <button id="printBtn" class="btn primary" title="Print / Save PDF">Print</button>
+      </div>
+    </div>
+  </header>
 
-<header>
-  <h1>Daily Notes Viewer</h1>
-  <p>Select a date from the calendar</p>
-</header>
+  <main class="shell">
+    <aside class="panel left" aria-label="Filters">
+      <section class="section">
+        <h3>Pick a date</h3>
+        <div class="calendar-input">
+          <input id="datePicker" type="text" placeholder="Choose date" aria-label="Date picker" />
+        </div>
+      </section>
 
-<div id="calendar"></div>
-<div id="content"><em>Select a date to view its content.</em></div>
+      <section class="section">
+        <h3>Browse by month</h3>
+        <div class="month-row">
+          <select id="monthSelect" aria-label="Month select"></select>
+          <button id="openMonthBtn" class="btn" title="Show all entries in month">Open</button>
+        </div>
+        <div class="list" id="monthList" aria-live="polite"></div>
+      </section>
 
-<!-- FullCalendar JS -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/main.min.js"></script>
-<script>
-  let allData = {};
+      <section class="section">
+        <h3>Quick search</h3>
+        <input id="searchBox" class="select" type="search" placeholder="Type to filter…" />
+        <div class="list" id="searchResults"></div>
+      </section>
 
-  // Parse data.txt into a { date: content } object
-  function parseDataFile(text) {
-    const entries = text.split(/===\s*(\d{4}-\d{2}-\d{2})\s*===/g);
-    const result = {};
-    for (let i = 1; i < entries.length; i += 2) {
-      const date = entries[i].trim();
-      const content = entries[i + 1]?.trim();
-      if (date && content) {
-        result[date] = content;
+      <div class="footer-note">
+        <div><strong>How to write in <code>diary.txt</code></strong></div>
+        <div>Use ISO dates. Example:</div>
+<pre>2025-08-14 A rainy day
+Wrote code. Coffee ☕
+- Task: update site
+---
+2025-08-13
+Plan: Gym at 6am
+Cook dinner</pre>
+        <div>Separator <code>---</code> is optional; a new date line starts a new entry.</div>
+      </div>
+    </aside>
+
+    <section class="panel right" aria-label="Entry">
+      <div class="content-head">
+        <div class="title" id="entryTitle">No date selected</div>
+        <div class="entry-meta">
+          <span id="countBadge" class="badge">0 entries</span>
+          <span id="updatedBadge" class="badge">Updated: —</span>
+        </div>
+      </div>
+      <article class="content" id="entryContent">
+        <div class="empty">Pick a date on the left, or choose a month to see all entries.</div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Flatpickr (MIT) -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <script>
+    // ======= CONFIG =======
+    const DIARY_FILE = 'diary.txt'; // Keep this HTML and diary.txt in the same folder
+    // ======================
+
+    const state = {
+      entriesByDate: new Map(),  // 'YYYY-MM-DD' -> { date, title?, lines[], raw }
+      months: new Map(),         // 'YYYY-MM' -> ['YYYY-MM-DD', ...]
+      orderedDates: [],          // Sorted dates
+      lastModified: null,
+      currentDate: null
+    };
+
+    // Utilities
+    const pad = (n)=> String(n).padStart(2,'0');
+    const fmtDate = (d)=> {
+      try{
+        const dt = (typeof d === 'string') ? new Date(d) : d;
+        return dt.toLocaleDateString(undefined, { weekday:'short', year:'numeric', month:'short', day:'numeric' });
+      }catch{ return d; }
+    };
+    const toMonthKey = (yyyy_mm_dd)=> yyyy_mm_dd.slice(0,7);
+
+    function setBadge(id, text, color){
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.textContent = text;
+      if(color){ el.style.background = color; }
+    }
+
+    function sanitize(text){
+      // Very light sanitization to avoid accidental HTML injection
+      return text.replace(/[&<>]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[ch]));
+    }
+
+    function linkify(text){
+      // Convert URLs to links
+      return text.replace(/((https?:\/\/|www\.)[\w.-]+(?:\/[\w@:%~#?&/=+-]*)?)/gi, (m)=>{
+        const url = m.startsWith('http') ? m : 'https://' + m;
+        return `<a href="${url}" target="_blank" rel="noopener">${sanitize(m)}</a>`;
+      });
+    }
+
+    function linesToHtml(lines){
+      // Simple formatting:
+      // - blank line => new paragraph
+      // - lines starting with "- " => <ul>
+      // - code block fenced by ``` => <pre>
+      const out = [];
+      let inList = false, inCode = false, codeBuf = [];
+
+      const flushList = ()=>{ if(inList){ out.push('</ul>'); inList=false; } };
+      const flushCode = ()=>{
+        if(inCode){ out.push('<pre>'+sanitize(codeBuf.join('\n'))+'</pre>'); inCode=false; codeBuf=[]; }
+      };
+
+      for(const raw of lines){
+        const line = raw.trimEnd();
+
+        if(line.trim() === '```'){
+          if(inCode){ flushCode(); } else { inCode = true; codeBuf=[]; }
+          continue;
+        }
+        if(inCode){ codeBuf.push(raw); continue; }
+
+        if(/^-\s+/.test(line)){
+          if(!inList){ out.push('<ul>'); inList=true; }
+          out.push('<li>'+linkify(sanitize(line.replace(/^-+\s*/, '')) )+'</li>');
+          continue;
+        }
+
+        if(line.trim() === ''){
+          flushList();
+          out.push('<p class="muted">‎</p>');
+          continue;
+        }
+
+        flushList();
+        out.push('<p>'+linkify(sanitize(line))+'</p>');
+      }
+      flushList(); flushCode();
+      return out.join('\n');
+    }
+
+    function parseDiary(text){
+      state.entriesByDate.clear();
+      state.months.clear();
+
+      const lines = text.replace(/\r\n/g,'\n').split('\n');
+      const isDateLine = (s)=> /^\d{4}-\d{2}-\d{2}(?:\s+.+)?$/.test(s.trim());
+      const isSeparator = (s)=> /^-{3,}$/.test(s.trim());
+
+      let current = null;
+
+      function startEntry(date, maybeTitle){
+        const d = date.trim().slice(0,10);
+        current = { date: d, title: maybeTitle?.trim() || '', lines: [], raw: [] };
+        state.entriesByDate.set(d, current);
+        const mk = toMonthKey(d);
+        if(!state.months.has(mk)) state.months.set(mk, []);
+        if(!state.months.get(mk).includes(d)) state.months.get(mk).push(d);
+      }
+
+      for(let i=0; i<lines.length; i++){
+        const line = lines[i];
+        if(isSeparator(line)){ current = current; /* ignore */ continue; }
+        if(isDateLine(line)){
+          const [date, ...rest] = line.trim().split(/\s+/);
+          const title = rest.length ? rest.join(' ') : '';
+          startEntry(date, title);
+          continue;
+        }
+        if(!current){
+          // Skip junk until first date line
+          continue;
+        }
+        current.lines.push(line);
+        current.raw.push(line);
+      }
+
+      // sort dates ascending
+      state.orderedDates = Array.from(state.entriesByDate.keys()).sort();
+
+      // sort month buckets
+      for(const [mk, arr] of state.months.entries()){
+        arr.sort();
       }
     }
-    return result;
-  }
 
-  // Initialize calendar after loading the data
-  function initCalendar() {
-    const calendarEl = document.getElementById('calendar');
-    const contentEl = document.getElementById('content');
-
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      height: 'auto',
-      selectable: true,
-      dateClick: function(info) {
-        const dateStr = info.dateStr; // Format: YYYY-MM-DD
-        if (allData[dateStr]) {
-          contentEl.innerHTML = '<pre>' + allData[dateStr] + '</pre>';
-        } else {
-          contentEl.innerHTML = `<p><em>No entry found for ${dateStr}.</em></p>`;
+    async function fetchDiary(){
+      setBadge('statusBadge','Loading…');
+      try{
+        const res = await fetch(DIARY_FILE, { cache: 'no-store' });
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const last = res.headers.get('Last-Modified');
+        state.lastModified = last ? new Date(last) : new Date();
+        const text = await res.text();
+        parseDiary(text);
+        initMonthSelect();
+        updateBadges();
+        enableDatePicker();
+        renderMonthList(); // default: latest month
+        // Auto-select latest date if present
+        if(state.orderedDates.length){
+          const lastDate = state.orderedDates[state.orderedDates.length-1];
+          showDate(lastDate);
+          picker.setDate(lastDate, true);
+        }else{
+          showEmpty('No diary entries found in diary.txt yet. Start with a line like: 2025-08-14 Your title');
         }
-      },
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: ''
+        setBadge('statusBadge','Loaded', 'linear-gradient(180deg,#203047,#182335)');
+      }catch(err){
+        console.error(err);
+        setBadge('statusBadge','Error', 'linear-gradient(180deg,#40222a,#2a151a)');
+        showError("Couldn't load <code>diary.txt</code>. Make sure this HTML and <code>diary.txt</code> are in the same folder on your server, and the site is opened via http(s):// not file://");
       }
+    }
+
+    function updateBadges(){
+      setBadge('countBadge', `${state.orderedDates.length} entr${state.orderedDates.length===1?'y':'ies'}`);
+      setBadge('updatedBadge', 'Updated: ' + (state.lastModified ? fmtDate(state.lastModified) : '—'));
+    }
+
+    function initMonthSelect(){
+      const sel = document.getElementById('monthSelect');
+      sel.innerHTML = '';
+      // sort months descending (latest first)
+      const months = Array.from(state.months.keys()).sort().reverse();
+      if(months.length === 0){
+        const opt = document.createElement('option');
+        opt.value = ''; opt.textContent = '— No months —';
+        sel.appendChild(opt);
+        return;
+      }
+      for(const mk of months){
+        const [y,m] = mk.split('-');
+        const d = new Date(Number(y), Number(m)-1, 1);
+        const label = d.toLocaleDateString(undefined, { month:'long', year:'numeric' });
+        const opt = document.createElement('option');
+        opt.value = mk; opt.textContent = `${label} (${state.months.get(mk).length})`;
+        sel.appendChild(opt);
+      }
+    }
+
+    function renderMonthList(mk){
+      const container = document.getElementById('monthList');
+      container.innerHTML = '';
+      const monthKey = mk || (Array.from(state.months.keys()).sort().pop());
+      if(!monthKey || !state.months.has(monthKey)){
+        container.innerHTML = '<div class="row"><div class="snippet">No entries yet.</div></div>';
+        return;
+      }
+      document.getElementById('monthSelect').value = monthKey;
+      const dates = state.months.get(monthKey);
+      for(const d of dates){
+        const entry = state.entriesByDate.get(d);
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `
+          <div class="date">${d}</div>
+          <div class="snippet">${sanitize((entry.title || entry.lines.find(l=>l.trim()) || '').toString()).slice(0,60)}</div>
+        `;
+        row.addEventListener('click', ()=> {
+          showDate(d);
+          picker.setDate(d, true);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        container.appendChild(row);
+      }
+    }
+
+    function showEmpty(msg){
+      document.getElementById('entryTitle').textContent = 'No date selected';
+      document.getElementById('entryContent').innerHTML = `<div class="empty">${msg}</div>`;
+    }
+    function showError(msg){
+      document.getElementById('entryTitle').textContent = 'Error';
+      document.getElementById('entryContent').innerHTML = `<div class="empty" style="border-color:#5a1f28;background:#1a0f12;color:#ffb4c0">${msg}</div>`;
+    }
+
+    function showDate(dateStr){
+      state.currentDate = dateStr;
+      const e = state.entriesByDate.get(dateStr);
+      if(!e){
+        document.getElementById('entryTitle').textContent = dateStr;
+        document.getElementById('entryContent').innerHTML = `<div class="empty">No entry found for <strong>${dateStr}</strong>.</div>`;
+        return;
+      }
+      const heading = e.title ? `${dateStr} — ${e.title}` : dateStr;
+      document.getElementById('entryTitle').textContent = heading;
+      const html = linesToHtml(e.lines);
+      document.getElementById('entryContent').innerHTML = html || '<div class="muted">No content.</div>';
+    }
+
+    function nextPrevDate(offset){
+      if(!state.orderedDates.length) return;
+      if(!state.currentDate){ showDate(state.orderedDates[0]); return; }
+      const idx = state.orderedDates.indexOf(state.currentDate);
+      const j = Math.min(state.orderedDates.length-1, Math.max(0, idx + offset));
+      const d = state.orderedDates[j];
+      showDate(d);
+      picker.setDate(d, true);
+    }
+
+    // Search
+    function doSearch(q){
+      const list = document.getElementById('searchResults');
+      list.innerHTML = '';
+      const query = q.trim().toLowerCase();
+      if(!query){ return; }
+      const results = [];
+      for(const d of state.orderedDates){
+        const e = state.entriesByDate.get(d);
+        const hay = (e.title + '\n' + e.lines.join('\n')).toLowerCase();
+        if(hay.includes(query)) results.push(d);
+        if(results.length >= 50) break; // cap results
+      }
+      if(results.length === 0){
+        list.innerHTML = '<div class="row"><div class="snippet">No matches.</div></div>';
+        return;
+      }
+      for(const d of results){
+        const e = state.entriesByDate.get(d);
+        const row = document.createElement('div');
+        row.className = 'row';
+        row.innerHTML = `<div class="date">${d}</div><div class="snippet">${sanitize(e.title || e.lines.find(l=>l.trim()) || '')}</div>`;
+        row.addEventListener('click', ()=> {
+          showDate(d); picker.setDate(d, true); window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        list.appendChild(row);
+      }
+    }
+
+    // Calendar
+    let picker = null;
+    function enableDatePicker(){
+      const allDates = new Set(state.orderedDates);
+      if(picker){ picker.destroy(); }
+      picker = flatpickr("#datePicker", {
+        dateFormat: "Y-m-d",
+        disableMobile: false,
+        defaultDate: state.currentDate || null,
+        onDayCreate: function(dObj, dStr, fp, dayElem){
+          const y = dayElem.dateObj.getFullYear();
+          const m = pad(dayElem.dateObj.getMonth()+1);
+          const d = pad(dayElem.dateObj.getDate());
+          const key = `${y}-${m}-${d}`;
+          if(allDates.has(key)){
+            dayElem.style.border = '1px solid #2c8bff';
+            dayElem.style.boxShadow = 'inset 0 0 0 2px rgba(106,166,255,.35)';
+          }else{
+            dayElem.style.opacity = .55;
+          }
+        },
+        onChange: function(selectedDates, dateStr){
+          if(dateStr){ showDate(dateStr); }
+        }
+      });
+    }
+
+    // Events
+    document.getElementById('reloadBtn').addEventListener('click', fetchDiary);
+    document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+    document.getElementById('prevBtn').addEventListener('click', ()=> nextPrevDate(-1));
+    document.getElementById('nextBtn').addEventListener('click', ()=> nextPrevDate(1));
+    document.getElementById('openMonthBtn').addEventListener('click', ()=> {
+      const mk = document.getElementById('monthSelect').value;
+      renderMonthList(mk);
     });
+    document.getElementById('searchBox').addEventListener('input', (e)=> doSearch(e.target.value));
 
-    calendar.render();
-  }
-
-  // Load the TXT file and initialize everything
-  fetch('data.txt')
-    .then(resp => {
-      if (!resp.ok) throw new Error('Could not load data.txt');
-      return resp.text();
-    })
-    .then(text => {
-      allData = parseDataFile(text);
-      initCalendar();
-    })
-    .catch(err => {
-      document.getElementById('content').innerHTML = '<p style="color:red;"><strong>Error loading data.txt</strong></p>';
-      console.error(err);
-    });
-</script>
-
+    // Start
+    fetchDiary();
+  </script>
 </body>
 </html>
