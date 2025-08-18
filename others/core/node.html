@@ -1,292 +1,117 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Node • Prayag</title>
-  <!--
-    THE NODE — single-file main hub for www.theprayag.com
-    ------------------------------------------------------
-    Replace the href targets with your real page names (host.html, shadow.html, etc.).
-
-    ⚠ SECURITY NOTE (read carefully):
-    - The optional "Quick Lock" in this file is CLIENT-SIDE ONLY. It hides content from casual eyes
-      but does NOT provide real security against determined attackers or crawlers.
-    - For true protection, use server-side auth (Netlify/Vercel/Cloudflare Functions or a VPS)
-      and keep sensitive data out of public repos.
-
-    Quality-of-life features:
-    - Keyboard shortcuts: H = Host, S = Shadow, L = Lock/Unlock, . = Stealth, / = Search
-    - Stealth Mode hides labels/words and shows only symbols.
-    - Search filters alter rooms by tag or number.
-  -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Node</title>
   <style>
-    :root{
-      --bg: #0b0d12;
-      --panel: rgba(255,255,255,0.06);
-      --panel-strong: rgba(255,255,255,0.12);
-      --text: #e6e9ef;
-      --muted: #a1a7b3;
-      --accent: #7c9cff;
-      --accent-2: #8ef3ff;
-      --shadow: 0 10px 30px rgba(0,0,0,0.45);
-      --radius: 18px;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%;}
-    body{
-      margin:0; background: radial-gradient(1200px 800px at 10% 10%, #0f1320 0%, #090b11 40%, #07080d 100%);
-      color:var(--text); font: 500 16px/1.6 "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      letter-spacing: .2px;
+    body {
+      background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
     }
-    .wrap{max-width:1200px; padding:28px; margin:0 auto;}
-    header{
-      display:flex; align-items:center; gap:16px; justify-content:space-between; margin-bottom:16px;
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
     }
-    .brand{display:flex; align-items:center; gap:14px;}
-    .sigil{width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
-      display:grid; place-items:center; box-shadow:var(--shadow); position:relative; overflow:hidden}
-    .sigil svg{width:26px; height:26px; color:#0b0d12}
-    .title{font-size: clamp(20px, 2.6vw, 28px); font-weight:800; letter-spacing:.4px}
-    .muted{color:var(--muted)}
-
-    .controls{display:flex; gap:10px; align-items:center}
-    .btn{appearance:none; border:1px solid rgba(255,255,255,.12); background:var(--panel);
-      color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer; backdrop-filter: blur(8px);
-      transition:.2s ease; box-shadow: var(--shadow); font-weight:600}
-    .btn:hover{background:var(--panel-strong); transform: translateY(-1px)}
-
-    .search{min-width:220px; background:var(--panel); border:1px solid rgba(255,255,255,.12); color:var(--text);
-      padding:10px 12px; border-radius:12px; outline:none}
-
-    .grid{display:grid; gap:16px; grid-template-columns: 1fr;}
-    @media (min-width:860px){ .grid{grid-template-columns: 1.1fr .9fr;} }
-
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.12); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow);}
-    .card h2{margin:0 0 6px; font-size:18px; letter-spacing:.3px}
-    .split{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
-
-    .tile{position:relative; border-radius:16px; padding:18px; background: var(--panel);
-      border:1px solid rgba(255,255,255,.1); overflow:hidden; transition:.28s ease; min-height:140px; display:flex; flex-direction:column; justify-content:space-between}
-    .tile:hover{transform: translateY(-3px); border-color: rgba(255,255,255,.22); background: var(--panel-strong)}
-    .tile h3{margin:0; font-size:20px}
-    .tile p{margin:6px 0 0}
-
-    .host{background: radial-gradient(400px 220px at 20% 20%, rgba(255,255,255,.14), rgba(255,255,255,.04));}
-    .shadow{background: radial-gradient(400px 220px at 80% 20%, rgba(124,156,255,.22), rgba(255,255,255,.04));}
-
-    .quick-links{display:grid; grid-template-columns: repeat(2, 1fr); gap:12px;}
-    .q{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:var(--panel);
-      border:1px solid rgba(255,255,255,.1); text-decoration:none; color:var(--text)}
-    .q:hover{background:var(--panel-strong)}
-
-    .rooms{display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:6px}
-    @media(min-width:640px){.rooms{grid-template-columns: repeat(3, 1fr);} }
-    @media(min-width:980px){.rooms{grid-template-columns: repeat(4, 1fr);} }
-
-    .room{position:relative; aspect-ratio: 1/1; border-radius: 16px; background: var(--panel);
-      border:1px solid rgba(255,255,255,.1); display:flex; align-items:center; justify-content:center; flex-direction:column;
-      gap:8px; text-decoration:none; color:var(--text); transition:.2s ease}
-    .room:hover{transform: translateY(-2px); background: var(--panel-strong)}
-    .tag{font-size:12px; color:var(--muted)}
-
-    .badge{position:absolute; top:8px; left:8px; font-size:12px; padding:4px 8px; border-radius:999px;
-      background: rgba(124,156,255,.18); border:1px solid rgba(124,156,255,.35)}
-
-    footer{margin:26px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; color:var(--muted)}
-    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; border:1px solid rgba(255,255,255,.15);
-      border-bottom-width:2px; padding:2px 6px; border-radius:6px; background:rgba(255,255,255,.06); color:var(--text)}
-
-    /* Lock overlay */
-    .lock{position:fixed; inset:0; display:none; place-items:center; background: radial-gradient(900px 600px at 70% 20%, rgba(7,9,14,.92), rgba(3,4,7,.98)); z-index:50}
-    .lock-inner{width:min(520px, 92vw); background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); padding:22px; border-radius:18px; box-shadow:var(--shadow)}
-    .lock h2{margin:0 0 10px}
-    .lock .row{display:flex; gap:10px}
-    .lock input{flex:1; padding:12px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); color:var(--text)}
-    .note{font-size:12px; color:var(--muted); margin-top:10px}
-
-    /* Stealth mode */
-    .stealth .label, .stealth .desc, .stealth .muted, .stealth .tag, .stealth h2, .stealth h3, .stealth .title{filter: blur(6px); opacity:.6}
-    .stealth .sigil{filter: none}
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(from 180deg at 50% 50%, #ff9a9e, #fad0c4, #fad0c4, #ffdde1, #a1c4fd, #c2e9fb, #d4fc79, #96e6a1);
+      animation: rotate 6s linear infinite;
+      z-index: 0;
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    .card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    .card p {
+      font-size: 1rem;
+      color: #555;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+    }
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    /* Make cards responsive */
+    @media (max-width: 600px) {
+      .card h2 {
+        font-size: 1.25rem;
+      }
+      .card p {
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="lock" id="lock">
-    <div class="lock-inner">
-      <h2>Enter Passphrase</h2>
-      <p class="muted" style="margin-top:-6px">Quick Lock (client-side visual lock only)</p>
-      <div class="row" style="margin-top:10px">
-        <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password" />
-        <button class="btn" id="unlockBtn">Unlock</button>
+  <div class="container">
+    <div class="card" onclick="openPage('shadow.html')">
+      <div class="card-content">
+        <h2>Shadow</h2>
+        <p>The dark strategist within.</p>
       </div>
-      <p class="note">Tip: Press <span class="kbd">L</span> anytime to lock/unlock. This is not real security — use server-side auth for secrecy.</p>
     </div>
-  </div>
-
-  <div class="wrap" id="app">
-    <header>
-      <div class="brand">
-        <div class="sigil" aria-hidden="true">
-          <!-- minimal bat-like sigil -->
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 12c2-1 3-3 3-5 2 2 5 2 6-1 1 3 4 3 6 1 0 2 1 4 3 5-2 1-3 3-3 5-2-2-5-2-6 1-1-3-4-3-6-1 0-2-1-4-3-5z"/></svg>
-        </div>
-        <div>
-          <div class="title">THE NODE</div>
-          <div class="muted">Central gateway of Prayag</div>
-        </div>
+    <div class="card" onclick="openPage('host.html')">
+      <div class="card-content">
+        <h2>Host</h2>
+        <p>The main identity – calm & grounded.</p>
       </div>
-      <div class="controls">
-        <input id="search" class="search" type="search" placeholder="Search alters (e.g. 03, wolf, tech)" aria-label="Search alters" />
-        <button class="btn" id="stealthBtn" title="Toggle Stealth (.)">Stealth</button>
-        <button class="btn" id="lockBtn" title="Quick Lock (L)">Lock</button>
+    </div>
+    <div class="card" onclick="openPage('guardian.html')">
+      <div class="card-content">
+        <h2>Guardian</h2>
+        <p>The protector – resilient & fearless.</p>
       </div>
-    </header>
-
-    <main class="grid">
-      <!-- Left: Host & Shadow split -->
-      <section class="card">
-        <h2 class="label">Primary Gates</h2>
-        <div class="split">
-          <a class="tile host" href="host.html" id="hostLink">
-            <div class="badge">Gate A</div>
-            <h3 class="label">Host</h3>
-            <p class="desc muted">Public face. Strategy. Civilian operations.</p>
-          </a>
-          <a class="tile shadow" href="shadow.html" id="shadowLink">
-            <div class="badge">Gate B</div>
-            <h3 class="label">Shadow</h3>
-            <p class="desc muted">Architect. Training. Mission control.</p>
-          </a>
-        </div>
-
-        <div class="quick-links" style="margin-top:14px">
-          <a class="q" href="symbol.html"><span>🜂</span><span class="label">Unified Symbol</span></a>
-          <a class="q" href="tools.html"><span>⚙️</span><span class="label">Tools & Systems</span></a>
-          <a class="q" href="missions.html"><span>🎯</span><span class="label">Missions Hub</span></a>
-          <a class="q" href="truthbooks.html"><span>📚</span><span class="label">Truthbooks</span></a>
-        </div>
-      </section>
-
-      <!-- Right: Alters index -->
-      <section class="card">
-        <h2 class="label">Alter Rooms <span class="muted">(14)</span></h2>
-        <div class="rooms" id="rooms">
-          <!-- Rooms generated by JS -->
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div>
-        <span class="muted">Shortcuts:</span>
-        <span class="kbd">H</span> Host
-        <span class="kbd">S</span> Shadow
-        <span class="kbd">/</span> Search
-        <span class="kbd">.</span> Stealth
-        <span class="kbd">L</span> Lock
+    </div>
+    <div class="card" onclick="openPage('creator.html')">
+      <div class="card-content">
+        <h2>Creator</h2>
+        <p>The builder – visionary & inventive.</p>
       </div>
-      <div class="muted">© <span id="year"></span> Prayag</div>
-    </footer>
-  </div>
-
-  <script>
-    // ------- CONFIGURABLE PLACEHOLDERS -------
-    const ALTER_PAGES = [
-      // Update titles/tags/hrefs as you define identities
-      { id:"01", title:"A-01", tag:"wolf tech", href:"alter-01.html" },
-      { id:"02", title:"A-02", tag:"crow stealth", href:"alter-02.html" },
-      { id:"03", title:"A-03", tag:"lion command", href:"alter-03.html" },
-      { id:"04", title:"A-04", tag:"owl strategy", href:"alter-04.html" },
-      { id:"05", title:"A-05", tag:"viper intel", href:"alter-05.html" },
-      { id:"06", title:"A-06", tag:"tiger force", href:"alter-06.html" },
-      { id:"07", title:"A-07", tag:"orca calm", href:"alter-07.html" },
-      { id:"08", title:"A-08", tag:"fox adapt", href:"alter-08.html" },
-      { id:"09", title:"A-09", tag:"bear endure", href:"alter-09.html" },
-      { id:"10", title:"A-10", tag:"hawk recon", href:"alter-10.html" },
-      { id:"11", title:"A-11", tag:"mantis precision", href:"alter-11.html" },
-      { id:"12", title:"A-12", tag:"cobra threat", href:"alter-12.html" },
-      { id:"13", title:"A-13", tag:"monk peace", href:"alter-13.html" },
-      { id:"14", title:"A-14", tag:"ghost silence", href:"alter-14.html" }
-    ];
-
-    // ------- RENDER ALTER ROOMS -------
-    const rooms = document.getElementById('rooms');
-    function renderRooms(filter=""){
-      rooms.innerHTML = "";
-      const q = filter.trim().toLowerCase();
-      ALTER_PAGES.filter(r => !q || r.id.includes(q) || r.title.toLowerCase().includes(q) || r.tag.toLowerCase().includes(q))
-        .forEach(r => {
-          const a = document.createElement('a');
-          a.className = 'room';
-          a.href = r.href;
-          a.setAttribute('data-id', r.id);
-          a.setAttribute('data-tag', r.tag);
-          a.innerHTML = `
-            <div class="badge">${r.id}</div>
-            <div style="font-size:38px">◎</div>
-            <div class="label">${r.title}</div>
-            <div class="tag">${r.tag}</div>
-          `;
-          rooms.appendChild(a);
-        });
+    </div>
+  </div>  <script>
+    function openPage(page) {
+      window.location.href = page;
     }
-    renderRooms();
-
-    // ------- SEARCH -------
-    const search = document.getElementById('search');
-    search.addEventListener('input', e => renderRooms(e.target.value));
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === '/') { e.preventDefault(); search.focus(); }
-    });
-
-    // ------- KEYBOARD NAV -------
-    const hostLink = document.getElementById('hostLink');
-    const shadowLink = document.getElementById('shadowLink');
-    window.addEventListener('keydown', (e)=>{
-      if(e.key.toLowerCase() === 'h') hostLink.click();
-      if(e.key.toLowerCase() === 's') shadowLink.click();
-    });
-
-    // ------- STEALTH MODE -------
-    const stealthBtn = document.getElementById('stealthBtn');
-    stealthBtn.addEventListener('click', toggleStealth);
-    window.addEventListener('keydown', (e)=>{ if(e.key === '.') toggleStealth(); });
-    function toggleStealth(){ document.body.classList.toggle('stealth'); }
-
-    // ------- QUICK LOCK (client-side visual lock only) -------
-    const lockBtn = document.getElementById('lockBtn');
-    const lock = document.getElementById('lock');
-    const pass = document.getElementById('pass');
-    const unlockBtn = document.getElementById('unlockBtn');
-
-    const LOCK_KEY = 'node_locked';
-    const LOCK_ON = () => sessionStorage.setItem(LOCK_KEY, '1');
-    const LOCK_OFF = () => sessionStorage.removeItem(LOCK_KEY);
-    const IS_LOCKED = () => sessionStorage.getItem(LOCK_KEY) === '1';
-
-    function showLock(){ lock.style.display = 'grid'; pass.value = ''; pass.focus(); }
-    function hideLock(){ lock.style.display = 'none'; }
-
-    function tryUnlock(){
-      // Minimal check: require any non-empty passphrase.
-      // Replace with a real check if you implement server auth.
-      if(pass.value && pass.value.trim().length >= 4){ LOCK_OFF(); hideLock(); }
-      else { alert('Enter passphrase (4+ chars)'); }
-    }
-
-    lockBtn.addEventListener('click', ()=>{ LOCK_ON(); showLock(); });
-    unlockBtn.addEventListener('click', tryUnlock);
-    pass.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
-    window.addEventListener('keydown', e=>{
-      if(e.key.toLowerCase()==='l') { if(IS_LOCKED()) { hideLock(); LOCK_OFF(); } else { LOCK_ON(); showLock(); } }
-    });
-
-    // Lock by default if you want:
-    // LOCK_ON(); showLock();
-
-    // ------- YEAR -------
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
+  </script></body>
 </html>
