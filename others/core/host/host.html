@@ -1,122 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Host Gateway</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Host Gateway • Prayag</title>
+  <!-- Single-file Host page: HTML + CSS + JS (no external deps) -->
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #ffffff);
-      color: #222;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+    :root{
+      /* Light, calm, professional palette */
+      --bg: #f6f9ff;
+      --bg-grad: radial-gradient(1200px 700px at 10% 0%, #ffffff 0%, #f1f6ff 40%, #eaf2ff 100%);
+      --card: #ffffff;
+      --muted: #6b7280;
+      --text: #0f172a;
+      --brand: #2563eb; /* primary blue */
+      --brand-2: #22c55e; /* accent green */
+      --brand-3: #f59e0b; /* amber */
+      --ring: rgba(37,99,235,.18);
+      --shadow: 0 10px 30px rgba(15,23,42,.08);
+      --radius: 18px;
     }
 
-    header {
-      padding: 1rem;
-      text-align: center;
-      background: #1976d2;
-      color: white;
-      font-size: 1.6rem;
-      font-weight: bold;
-      letter-spacing: 2px;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background: var(--bg-grad); color:var(--text);
+      font: 500 16px/1.6 "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
     }
 
-    .container {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-      box-sizing: border-box;
-    }
+    /* Subtle animated backdrop (floating dots) */
+    .particles{position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden}
+    .dot{position:absolute; width:8px; height:8px; border-radius:50%; opacity:.14;
+      background: radial-gradient(circle at 30% 30%, #93c5fd, transparent 60%);
+      animation: drift var(--dur, 22s) linear infinite; filter: blur(0.2px)}
+    @keyframes drift{0%{transform:translate3d(var(--x0,0), var(--y0,0),0)}100%{transform:translate3d(var(--x1,120vw), var(--y1,-20vh),0)}}
 
-    .card {
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      padding: 2rem 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border-top: 6px solid #1976d2;
-    }
+    .wrap{position:relative; z-index:1; max-width:1200px; padding:22px; margin:0 auto}
 
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:16px; margin:8px 0 14px;
     }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{width:44px; height:44px; border-radius:12px; display:grid; place-items:center;
+      background: conic-gradient(from 180deg, #93c5fd, #a7f3d0, #fde68a, #93c5fd);
+      box-shadow: var(--shadow);}
+    .logo svg{width:26px; height:26px; color:#0f172a}
+    .title{font-weight:800; font-size: clamp(18px, 2.4vw, 26px)}
+    .subtitle{color:var(--muted); font-size:14px; margin-top:-2px}
 
-    .card h3 {
-      margin: 0.5rem 0 0.75rem;
-      font-size: 1.3rem;
-      color: #1976d2;
-    }
+    .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .search{min-width:220px; background:#fff; border:1px solid rgba(2,6,23,.08); color:var(--text);
+      padding:10px 12px; border-radius:12px; outline:none; box-shadow: var(--shadow)}
+    .btn{appearance:none; border:1px solid rgba(2,6,23,.08); background:#fff; color:var(--text);
+      padding:10px 14px; border-radius:12px; cursor:pointer; box-shadow: var(--shadow); font-weight:700; transition:.2s}
+    .btn:hover{transform: translateY(-1px)}
+    .toggle{display:flex; align-items:center; gap:8px}
 
-    .card p {
-      font-size: 0.95rem;
-      color: #444;
-    }
+    main{display:grid; gap:16px; grid-template-columns: 1fr;}
+    @media(min-width:880px){main{grid-template-columns: 1.15fr .85fr}}
 
-    footer {
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.85rem;
-      background: #f0f0f0;
-      color: #666;
-    }
+    .card{background: var(--card); border:1px solid rgba(2,6,23,.08); border-radius: var(--radius); padding:18px; box-shadow: var(--shadow)}
+    .card h2{margin:0 0 6px; font-size:18px}
+    .muted{color:var(--muted)}
 
-    /* Simple button animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .card {
-      animation: fadeIn 0.8s ease both;
-    }
+    .split{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    @media(max-width:720px){.split{grid-template-columns: repeat(2, 1fr)}}
+    @media(max-width:460px){.split{grid-template-columns: 1fr}}
+
+    .tile{position:relative; border-radius:16px; padding:16px; background: linear-gradient(180deg, #ffffff, #f8fbff);
+      border:1px solid rgba(2,6,23,.08); overflow:hidden; transition:.28s ease; min-height:120px; display:flex; flex-direction:column; justify-content:space-between}
+    .tile:hover{transform: translateY(-3px)}
+    .tile h3{margin:0; font-size:18px}
+    .tile p{margin:6px 0 0; color:var(--muted); font-size:14px}
+    .chip{position:absolute; top:10px; right:10px; font-size:12px; padding:4px 8px; border-radius:999px; background: #eff6ff; color:#1d4ed8; border:1px solid #bfdbfe}
+
+    .icon{font-size:28px; line-height:1}
+
+    /* Quick shortcuts row */
+    .quick{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:10px}
+    @media(max-width:640px){.quick{grid-template-columns: repeat(2, 1fr)}}
+
+    .q{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:#fff;
+      border:1px solid rgba(2,6,23,.08); text-decoration:none; color:var(--text); box-shadow: var(--shadow)}
+
+    /* Rooms grid */
+    .rooms{display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:6px}
+    @media(min-width:640px){.rooms{grid-template-columns: repeat(3, 1fr)}}
+    @media(min-width:980px){.rooms{grid-template-columns: repeat(4, 1fr)}}
+
+    .room{position:relative; aspect-ratio: 1/1; border-radius: 16px; background: #ffffff;
+      border:1px solid rgba(2,6,23,.08); display:flex; align-items:center; justify-content:center; flex-direction:column;
+      gap:8px; text-decoration:none; color:var(--text); transition:.2s ease; box-shadow: var(--shadow); overflow:hidden}
+    .room:hover{transform: translateY(-2px)}
+    .room .badge{position:absolute; top:8px; left:8px; font-size:12px; padding:4px 8px; border-radius:999px; background:#ecfeff; color:#0ea5e9; border:1px solid #bae6fd}
+    .room .title{font-weight:800}
+    .room .tag{font-size:12px; color:var(--muted)}
+
+    /* Focus mode (distraction-free) */
+    .focus header .subtitle, .focus .muted, .focus footer, .focus .q span:last-child{opacity:.18; filter:saturate(.6)}
+
+    footer{margin:22px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; color:var(--muted)}
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; border:1px solid rgba(2,6,23,.16);
+      border-bottom-width:2px; padding:2px 6px; border-radius:6px; background:#fff; color:var(--text)}
+
+    /* Quick-lock overlay (client-side visual only) */
+    .lock{position:fixed; inset:0; display:none; place-items:center; background: rgba(241,245,249,.72); backdrop-filter: blur(6px); z-index:50}
+    .lock-inner{width:min(520px, 92vw); background:#ffffff; border:1px solid rgba(2,6,23,.08); padding:22px; border-radius:18px; box-shadow: var(--shadow)}
+    .lock h2{margin:0 0 10px}
+    .lock .row{display:flex; gap:10px}
+    .lock input{flex:1; padding:12px; border-radius:12px; background:#f8fafc; border:1px solid rgba(2,6,23,.14); color:var(--text)}
+    .note{font-size:12px; color:var(--muted); margin-top:10px}
+
+    /* Ripple on click */
+    .ripple{position:absolute; border-radius:50%; transform:scale(0); animation:rip 600ms linear; background:rgba(37,99,235,.18)}
+    @keyframes rip{to{transform:scale(6); opacity:0}}
   </style>
 </head>
 <body>
-  <header>Host Control Center</header>
-  
-  <div class="container">
-    <div class="card" onclick="navigate('missions.html')">
-      <h3>Missions</h3>
-      <p>Track and manage all active missions.</p>
-    </div>
+  <!-- Ambient particle dots -->
+  <div class="particles" id="particles"></div>
 
-    <div class="card" onclick="navigate('aim.html')">
-      <h3>Aim</h3>
-      <p>Set and refine long-term goals.</p>
-    </div>
-
-    <div class="card" onclick="navigate('diary.html')">
-      <h3>Diary</h3>
-      <p>Write, reflect, and store daily thoughts.</p>
-    </div>
-
-    <div class="card" onclick="navigate('training.html')">
-      <h3>Training</h3>
-      <p>Access routines and skill development.</p>
-    </div>
-
-    <div class="card" onclick="navigate('tools.html')">
-      <h3>Tools</h3>
-      <p>Launch essential utilities and resources.</p>
+  <!-- Quick Lock -->
+  <div class="lock" id="lock">
+    <div class="lock-inner">
+      <h2>Enter Passphrase</h2>
+      <p class="muted" style="margin-top:-6px">Quick Lock (visual only)</p>
+      <div class="row" style="margin-top:10px">
+        <input id="pass" type="password" placeholder="••••••••" autocomplete="current-password" />
+        <button class="btn" id="unlockBtn">Unlock</button>
+      </div>
+      <p class="note">Tip: Press <span class="kbd">L</span> anytime to lock/unlock. This is not real security.</p>
     </div>
   </div>
 
-  <footer>
-    Host Persona Gateway – Focus • Clarity • Discipline
-  </footer>
+  <div class="wrap" id="app">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.09 6.26H21l-5.17 3.76L16.9 18 12 14.8 7.1 18l1.07-5.98L3 8.26h6.91L12 2z"/></svg>
+        </div>
+        <div>
+          <div class="title">HOST GATEWAY</div>
+          <div class="subtitle">Focus • Clarity • Discipline</div>
+        </div>
+      </div>
+      <div class="controls">
+        <input id="search" class="search" type="search" placeholder="Search modules (e.g. missions, diary)" aria-label="Search" />
+        <button class="btn" id="focusBtn" title="Toggle Focus (.)">Focus</button>
+        <button class="btn" id="soundBtn" title="Ambient Sound (M)">Sound: Off</button>
+        <button class="btn" id="lockBtn" title="Quick Lock (L)">Lock</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Left: Primary host modules -->
+      <section class="card">
+        <h2>Primary Modules</h2>
+        <p class="muted">Choose a workspace</p>
+        <div class="split" id="modules">
+          <!-- tiles injected via JS config -->
+        </div>
+        <div class="quick" style="margin-top:14px">
+          <a class="q" href="node.html"><span>🏠</span><span>Back to Node</span></a>
+          <a class="q" href="tools.html"><span>🧰</span><span>Tools</span></a>
+          <a class="q" href="calendar.html"><span>📅</span><span>Calendar</span></a>
+        </div>
+      </section>
+
+      <!-- Right: Alter rooms index (host view) -->
+      <section class="card">
+        <h2>Alter Rooms <span class="muted">(14)</span></h2>
+        <div class="rooms" id="rooms"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <span class="muted">Shortcuts:</span>
+        <span class="kbd">/</span> Search
+        <span class="kbd">.</span> Focus
+        <span class="kbd">M</span> Sound
+        <span class="kbd">L</span> Lock
+      </div>
+      <div class="muted">© <span id="year"></span> Prayag — Host</div>
+    </footer>
+  </div>
 
   <script>
-    function navigate(page){
-      window.location.href = page;
+    // ---- Config: modules and alters ----
+    const MODULES = [
+      { icon:"🎯", title:"Missions", desc:"Plan, track, execute.", href:"missions.html", tag:"missions goals" },
+      { icon:"🎯", title:"Aim", desc:"North Star objectives.", href:"aim.html", tag:"aim goals" },
+      { icon:"📓", title:"Diary", desc:"Daily reflection & logs.", href:"diary.html", tag:"journal diary" },
+      { icon:"🏋️", title:"Training", desc:"Routines & progression.", href:"training.html", tag:"fitness training" },
+      { icon:"🧰", title:"Tools", desc:"Utilities and kits.", href:"tools.html", tag:"tools utilities" },
+      { icon:"💼", title:"Finance", desc:"Budgets & investments.", href:"finance.html", tag:"money finance" },
+      { icon:"🧠", title:"Knowledge", desc:"Notes & research.", href:"knowledge.html", tag:"kb wiki notes" },
+      { icon:"📅", title:"Calendar", desc:"Time blocks & events.", href:"calendar.html", tag:"time schedule" },
+      { icon:"🛰️", title:"Ops", desc:"Operations console.", href:"ops.html", tag:"operations" }
+    ];
+
+    const ALTER_PAGES = [
+      { id:"01", title:"A-01", tag:"wolf tech", href:"alter-01.html" },
+      { id:"02", title:"A-02", tag:"crow stealth", href:"alter-02.html" },
+      { id:"03", title:"A-03", tag:"lion command", href:"alter-03.html" },
+      { id:"04", title:"A-04", tag:"owl strategy", href:"alter-04.html" },
+      { id:"05", title:"A-05", tag:"viper intel", href:"alter-05.html" },
+      { id:"06", title:"A-06", tag:"tiger force", href:"alter-06.html" },
+      { id:"07", title:"A-07", tag:"orca calm", href:"alter-07.html" },
+      { id:"08", title:"A-08", tag:"fox adapt", href:"alter-08.html" },
+      { id:"09", title:"A-09", tag:"bear endure", href:"alter-09.html" },
+      { id:"10", title:"A-10", tag:"hawk recon", href:"alter-10.html" },
+      { id:"11", title:"A-11", tag:"mantis precision", href:"alter-11.html" },
+      { id:"12", title:"A-12", tag:"cobra threat", href:"alter-12.html" },
+      { id:"13", title:"A-13", tag:"monk peace", href:"alter-13.html" },
+      { id:"14", title:"A-14", tag:"ghost silence", href:"alter-14.html" }
+    ];
+
+    // ---- Particle backdrop ----
+    (function makeParticles(){
+      const p = document.getElementById('particles');
+      for(let i=0;i<36;i++){
+        const d=document.createElement('div');
+        d.className='dot';
+        d.style.left=Math.random()*100+'vw';
+        d.style.top=Math.random()*100+'vh';
+        d.style.setProperty('--x0', (Math.random()*-20)+'vw');
+        d.style.setProperty('--y0', (Math.random()*20)+'vh');
+        d.style.setProperty('--x1', (60+Math.random()*60)+'vw');
+        d.style.setProperty('--y1', (-10+Math.random()*-30)+'vh');
+        d.style.setProperty('--dur', (18+Math.random()*20)+'s');
+        p.appendChild(d);
+      }
+    })();
+
+    // ---- Render modules ----
+    const modulesEl = document.getElementById('modules');
+    MODULES.forEach(m=>{
+      const a = document.createElement('a');
+      a.className='tile'; a.href=m.href; a.setAttribute('data-tag', m.tag);
+      a.innerHTML = `
+        <div class="chip">Host</div>
+        <div class="icon">${m.icon}</div>
+        <h3>${m.title}</h3>
+        <p>${m.desc}</p>
+      `;
+      // ripple
+      a.addEventListener('click', (e)=>{
+        const r = document.createElement('span');
+        r.className='ripple';
+        const rect = a.getBoundingClientRect();
+        r.style.left = (e.clientX-rect.left)+'px';
+        r.style.top = (e.clientY-rect.top)+'px';
+        a.appendChild(r); setTimeout(()=>r.remove(), 650);
+      });
+      modulesEl.appendChild(a);
+    });
+
+    // ---- Render alter rooms ----
+    const rooms = document.getElementById('rooms');
+    function renderRooms(filter=""){
+      rooms.innerHTML="";
+      const q = filter.trim().toLowerCase();
+      ALTER_PAGES.filter(r => !q || r.id.includes(q) || r.title.toLowerCase().includes(q) || r.tag.toLowerCase().includes(q))
+        .forEach(r=>{
+          const a=document.createElement('a');
+          a.className='room'; a.href=r.href; a.setAttribute('data-id', r.id); a.setAttribute('data-tag', r.tag);
+          a.innerHTML=`
+            <div class="badge">${r.id}</div>
+            <div style="font-size:36px">◎</div>
+            <div class="title">${r.title}</div>
+            <div class="tag">${r.tag}</div>
+          `;
+          rooms.appendChild(a);
+        });
     }
+    renderRooms();
+
+    // ---- Search + keyboard shortcuts ----
+    const search = document.getElementById('search');
+    search.addEventListener('input', e => { renderRooms(e.target.value); filterModules(e.target.value); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='/' ){ e.preventDefault(); search.focus(); } });
+    function filterModules(q){
+      const t = q.trim().toLowerCase();
+      [...modulesEl.querySelectorAll('.tile')].forEach(el=>{
+        const tag = el.getAttribute('data-tag')||'';
+        el.style.display = (!t || tag.toLowerCase().includes(t)) ? '' : 'none';
+      });
+    }
+
+    // ---- Focus Mode ----
+    const focusBtn = document.getElementById('focusBtn');
+    focusBtn.addEventListener('click', toggleFocus);
+    window.addEventListener('keydown', (e)=>{ if(e.key==='.') toggleFocus(); });
+    function toggleFocus(){ document.body.classList.toggle('focus'); savePref('focus', document.body.classList.contains('focus')); }
+
+    // ---- Ambient Sound (WebAudio) ----
+    let audioCtx=null, gainNode=null; let soundOn=false;
+    const soundBtn = document.getElementById('soundBtn');
+    function initAudio(){
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const lfo = audioCtx.createOscillator();
+      const lfoGain = audioCtx.createGain();
+      gainNode = audioCtx.createGain();
+      // soft pad
+      osc1.type='sine'; osc1.frequency.value=92; // base tone
+      osc2.type='triangle'; osc2.frequency.value=184; // harmonic
+      // gentle LFO to modulate amplitude
+      lfo.type='sine'; lfo.frequency.value=0.08;
+      lfoGain.gain.value=0.18; // modulation depth
+      lfo.connect(lfoGain); lfoGain.connect(gainNode.gain);
+      osc1.connect(gainNode); osc2.connect(gainNode);
+      gainNode.gain.value=0.0; // start muted
+      gainNode.connect(audioCtx.destination);
+      osc1.start(); osc2.start(); lfo.start();
+    }
+    function toggleSound(){
+      if(!audioCtx){ initAudio(); }
+      soundOn = !soundOn;
+      gainNode.gain.linearRampToValueAtTime(soundOn?0.06:0.0, audioCtx.currentTime+0.3);
+      soundBtn.textContent = 'Sound: ' + (soundOn? 'On' : 'Off');
+      savePref('sound', soundOn);
+    }
+    soundBtn.addEventListener('click', toggleSound);
+    window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='m') toggleSound(); });
+
+    // ---- Quick Lock (visual) ----
+    const lockBtn = document.getElementById('lockBtn');
+    const lock = document.getElementById('lock');
+    const pass = document.getElementById('pass');
+    const unlockBtn = document.getElementById('unlockBtn');
+
+    const LOCK_KEY='host_locked';
+    const LOCK_ON = () => sessionStorage.setItem(LOCK_KEY, '1');
+    const LOCK_OFF = () => sessionStorage.removeItem(LOCK_KEY);
+    const IS_LOCKED = () => sessionStorage.getItem(LOCK_KEY)==='1';
+
+    function showLock(){ lock.style.display='grid'; pass.value=''; pass.focus(); }
+    function hideLock(){ lock.style.display='none'; }
+
+    function tryUnlock(){ if(pass.value && pass.value.trim().length>=4){ LOCK_OFF(); hideLock(); } else { alert('Enter passphrase (4+ chars)'); } }
+
+    lockBtn.addEventListener('click', ()=>{ LOCK_ON(); showLock(); });
+    unlockBtn.addEventListener('click', tryUnlock);
+    pass.addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+    window.addEventListener('keydown', e=>{ if(e.key.toLowerCase()==='l'){ if(IS_LOCKED()){ hideLock(); LOCK_OFF(); } else { LOCK_ON(); showLock(); } } });
+
+    // ---- Preferences (focus/sound) ----
+    function savePref(k,v){ try{ localStorage.setItem('host_'+k, JSON.stringify(v)); }catch(e){} }
+    function loadPref(k){ try{ return JSON.parse(localStorage.getItem('host_'+k)); }catch(e){ return null; } }
+    (function restore(){
+      const focus = loadPref('focus');
+      if(focus){ document.body.classList.add('focus'); }
+      const snd = loadPref('sound');
+      if(snd){ toggleSound(); }
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
   </script>
 </body>
 </html>
