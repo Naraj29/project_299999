@@ -1,682 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Monthly Plans & Records</title>
-</head>
-<body>
-<br>
-<br>
-<br>
-  <div class="container">
-<div style="font-family: 'Segoe UI', sans-serif; padding: 30px; background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); border-radius: 12px; max-width: 700px; margin: auto; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); text-align: center;">
-
-  <!-- Heading -->
-  <h2 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 20px;">
-    🕒 Monthly and Daily Records
-  </h2><p style="color: #555; font-size: 1.1rem; margin-top: -10px; margin-bottom: 25px; line-height: 1.5;">
-  <br>
-  Every single day matters. <br>
-  Learn from the past, live in present, embrace the future.
-  
-</p>
-
-  <!-- Clock Display -->
-  <div id="clock" style="font-size: 1.5rem; color: #34495e; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); display: inline-block; min-width: 250px;">
-    Loading time...
-  </div>
-
-  <!-- Responsive Styles -->
-  <style>
-    @media (max-width: 600px) {
-      #clock {
-        font-size: 1.2rem;
-        padding: 15px;
-        min-width: 200px;
-      }
-
-      h2 {
-        font-size: 1.8rem;
-      }
-    }
-  </style>
-
-  <!-- JavaScript Clock -->
-  <script>
-    function updateClock() {
-      const clockDiv = document.getElementById("clock");
-      const now = new Date();
-
-      const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
-
-      const date = now.toLocaleDateString(undefined, options);
-      const time = now.toLocaleTimeString();
-
-      clockDiv.innerHTML = `<strong>${date}</strong><br>${time}`;
-    }
-
-    // Initial update
-    updateClock();
-
-    // Update every second
-    setInterval(updateClock, 1000);
-  </script>
-</div>
-
-    <div id="content">
-<!-- Monthly Timetable Starts -->
-<section class="month-section">
-  <h2>August 2025</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li> Understand GATE Exam </li>
-    <li> Start preparation </li>
-    <li> Daily DSA & Discrete + Engineering Mathematics </li>
-    <li> Starting "Digital Logic" </li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      
-<tr><td>4</td><td>07 Aug 2025 - 08 Aug 2025</td><td>Thursday - Friday</td><td>Website + <br> Discussion & Plans about GATE Journey </td><td>✅</td></tr>
-      <tr><td>5</td><td>09 Aug 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-<tr><td>6</td><td>10 Aug 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>17 Aug 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>24 Aug 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>31 Aug 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>13 Aug 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>20 Aug 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>27 Aug 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>10</td><td>02 Aug 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>16 Aug 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>23 Aug 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>14</td><td>30 Aug 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>September 2025</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>07 Sep 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>14 Sep 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>21 Sep 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>28 Sep 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>03 Sep 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>10 Sep 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>17 Sep 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>24 Sep 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>9</td><td>06 Sep 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>10</td><td>13 Sep 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>20 Sep 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>27 Sep 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>October 2025</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>05 Oct 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>12 Oct 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>19 Oct 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>26 Oct 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>01 Oct 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>08 Oct 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>15 Oct 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>22 Oct 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>29 Oct 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>04 Oct 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>11 Oct 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>18 Oct 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>25 Oct 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>November 2025</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>02 Nov 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>09 Nov 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>16 Nov 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>23 Nov 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>30 Nov 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>05 Nov 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>12 Nov 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>19 Nov 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>26 Nov 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>01 Nov 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>08 Nov 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>15 Nov 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>22 Nov 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>14</td><td>29 Nov 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>December 2025</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>07 Dec 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>14 Dec 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>21 Dec 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>28 Dec 2025</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>03 Dec 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>10 Dec 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>17 Dec 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>24 Dec 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>31 Dec 2025</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>06 Dec 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>13 Dec 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>20 Dec 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>27 Dec 2025</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>January 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>04 Jan 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>11 Jan 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>18 Jan 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>25 Jan 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>07 Jan 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>14 Jan 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>21 Jan 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>28 Jan 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>9</td><td>03 Jan 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>10</td><td>10 Jan 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>17 Jan 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>24 Jan 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>31 Jan 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>February 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>01 Feb 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>08 Feb 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>15 Feb 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>22 Feb 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>29 Feb 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>04 Feb 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>11 Feb 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>18 Feb 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>25 Feb 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>07 Feb 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>14 Feb 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>21 Feb 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>28 Feb 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>March 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>01 Mar 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>08 Mar 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>15 Mar 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>22 Mar 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>29 Mar 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>04 Mar 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>11 Mar 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>18 Mar 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>25 Mar 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>07 Mar 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>14 Mar 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>21 Mar 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>28 Mar 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>April 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>05 Apr 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>12 Apr 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>19 Apr 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>26 Apr 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>01 Apr 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>08 Apr 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>15 Apr 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>22 Apr 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>29 Apr 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>04 Apr 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>11 Apr 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>18 Apr 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>25 Apr 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>May 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>03 May 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>10 May 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>17 May 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>24 May 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>31 May 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>06 May 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>13 May 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>20 May 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>27 May 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>02 May 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>09 May 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>16 May 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>23 May 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>14</td><td>30 May 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>June 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>07 Jun 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>14 Jun 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>21 Jun 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>28 Jun 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>03 Jun 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>10 Jun 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>17 Jun 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>24 Jun 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>9</td><td>06 Jun 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>10</td><td>13 Jun 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>20 Jun 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>27 Jun 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>July 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>05 Jul 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>12 Jul 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>19 Jul 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>26 Jul 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>01 Jul 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>08 Jul 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>15 Jul 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>22 Jul 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>29 Jul 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>04 Jul 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>11 Jul 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>18 Jul 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>25 Jul 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>August 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>02 Aug 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>09 Aug 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>16 Aug 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>23 Aug 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>30 Aug 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>05 Aug 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>12 Aug 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>19 Aug 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>26 Aug 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>01 Aug 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>08 Aug 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>15 Aug 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>22 Aug 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>14</td><td>29 Aug 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>September 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>06 Sep 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>13 Sep 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>20 Sep 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>27 Sep 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>02 Sep 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>09 Sep 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>16 Sep 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>23 Sep 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>30 Sep 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>05 Sep 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>12 Sep 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>19 Sep 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>26 Sep 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>October 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>04 Oct 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>11 Oct 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>18 Oct 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>25 Oct 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>07 Oct 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>14 Oct 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>21 Oct 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>28 Oct 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>9</td><td>03 Oct 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>10</td><td>10 Oct 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>17 Oct 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>24 Oct 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>31 Oct 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>November 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>01 Nov 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>08 Nov 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>15 Nov 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>22 Nov 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>29 Nov 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>04 Nov 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>11 Nov 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>18 Nov 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>25 Nov 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>07 Nov 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>14 Nov 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>21 Nov 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>28 Nov 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>December 2026</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>06 Dec 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>13 Dec 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>20 Dec 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>27 Dec 2026</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>5</td><td>02 Dec 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>6</td><td>09 Dec 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>16 Dec 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>23 Dec 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>30 Dec 2026</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>05 Dec 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>12 Dec 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>19 Dec 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>26 Dec 2026</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-<section class="month-section">
-  <h2>January 2027</h2>
-  <p><strong>Key Tasks for This Month:</strong></p>
-  <ul>
-    <li>Task 1 (edit me)</li>
-    <li>Task 2 (edit me)</li>
-  </ul>
-  <table>
-    <thead>
-      <tr><th>Sr No.</th><th>Date</th><th>Day</th><th>Task</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>1</td><td>03 Jan 2027</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>2</td><td>10 Jan 2027</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>3</td><td>17 Jan 2027</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>4</td><td>24 Jan 2027</td><td>Sunday</td><td></td><td>Pending</td></tr>
-      <tr><td>5</td><td>31 Jan 2027</td><td>Sunday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>6</td><td>06 Jan 2027</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>7</td><td>13 Jan 2027</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>8</td><td>20 Jan 2027</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-      <tr><td>9</td><td>27 Jan 2027</td><td>Wednesday</td><td></td><td>Pending</td></tr>
-
-      <tr><td>10</td><td>02 Jan 2027</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>11</td><td>09 Jan 2027</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>12</td><td>16 Jan 2027</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>13</td><td>23 Jan 2027</td><td>Saturday</td><td></td><td>Pending</td></tr>
-      <tr><td>14</td><td>30 Jan 2027</td><td>Saturday</td><td></td><td>Pending</td></tr>
-    </tbody>
-  </table>
-</section>
-
-</div>
-</div>
-
-<!-- Styles -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Subject Details Viewer</title>
 <style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+  }
   body {
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f3f6fa;
-    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1e1e2f;
+    color: #eee;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
   }
-
-  h1, h2 {
+  header {
+    background: #282c34;
+    padding: 1.5rem 2rem;
     text-align: center;
-    color: #2b4a60;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #61dafb;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
   }
-
-  .container {
-    padding: 20px;
-    max-width: 1000px;
-    margin: auto;
+  main {
+    flex: 1;
+    padding: 2rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 90%;
   }
-
-  
-  section.month-section {
-    margin: 40px 0;
-    padding: 20px;
-    background: #ffffff;
+  label {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  select {
+    margin-left: 0.75rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border: none;
+    background: #3a3f55;
+    color: #eee;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+  select:hover, select:focus {
+    background: #505773;
+    outline: none;
   }
-
-  table th, table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
+  .content-box {
+    margin-top: 2rem;
+    background: #282c34;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+    white-space: pre-wrap;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    min-height: 200px;
+    overflow-y: auto;
   }
-
-  table th {
-    background-color: #e2ebf2;
+  .loading {
+    font-style: italic;
+    color: #a0a0a0;
   }
-
-  
-
-  @media (max-width: 768px) {
-    .password-section input {
-      width: 80%;
+  .error {
+    color: #ff6b6b;
+    font-weight: 700;
+  }
+  @media (max-width: 600px) {
+    header {
+      font-size: 1.4rem;
+      padding: 1rem;
     }
-    table th, table td {
-      font-size: 14px;
-      padding: 6px;
+    main {
+      padding: 1rem;
+      width: 95%;
+    }
+    select {
+      font-size: 0.95rem;
+      padding: 0.4rem 0.8rem;
+    }
+    .content-box {
+      font-size: 1rem;
+      padding: 1rem 1.2rem;
+      min-height: 150px;
     }
   }
 </style>
+</head>
+<body>
 
+<header>Subject Details Viewer</header>
+
+<main>
+  <label for="subjectSelect">Choose a subject:</label>
+  <select id="subjectSelect" aria-label="Select Subject">
+    <option value="" disabled selected>Select subject...</option>
+        <option value="materials/gen.txt">General Aptitude</option>
+<option value="materials/math.txt">Engineering Mathematics</option>
+    <option value="materials/discrete.txt">Discrete Mathematics</option>
+    <option value="materials/ds.txt">Data Structures</option>
+    <option value="materials/algo.txt">Algorithms</option>
+ <option value="materials/log.txt">Digital Logic</option>
+<option value="materials/coa.txt">Computer Organization & Architecture </option>
+<option value="materials/os.txt">Operating Systems</option>
+<option value="materials/net.txt">Computer Networks</option>
+
+<option value="materials/db.txt">Databases</option>
+
+<option value="materials/toc.txt">Theory of Computation Logic</option>
+
+<option value="materials/compiler.txt">Compiler Design</option>
+
+<option value="materials/web.txt">Web Basics</option>
+<option value="materials/soft.txt">Software Engineering</option>
+<option value="materials/remaining.txt">Remaining Subjects & Topics</option>
+
+
+
+  </select>
+
+  <div class="content-box" id="contentBox">
+    Please select a subject to see details.
+  </div>
+</main>
+
+<script>
+  const select = document.getElementById('subjectSelect');
+  const contentBox = document.getElementById('contentBox');
+
+  select.addEventListener('change', () => {
+    const fileName = select.value;
+    if (!fileName) {
+      contentBox.textContent = 'Please select a subject to see details.';
+      return;
+    }
+    contentBox.innerHTML = '<span class="loading">Loading...</span>';
+
+    fetch(fileName)
+      .then(response => {
+        if (!response.ok) throw new Error('File not found');
+        return response.text();
+      })
+      .then(text => {
+        // Simple text to HTML formatting (optional)
+        const safeText = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br>");
+        contentBox.innerHTML = safeText;
+      })
+      .catch(err => {
+        contentBox.innerHTML = `<span class="error">Failed to load file: ${fileName}</span>`;
+      });
+  });
+</script>
 
 </body>
 </html>
