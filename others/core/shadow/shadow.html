@@ -1,151 +1,354 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shadow Gate</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SHADOW • Gate</title>
   <style>
-    /* === RESET === */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: radial-gradient(circle at top left, #0d0d0d, #000000 70%);
-      color: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
+    /* ===== Base ===== */
+    :root{
+      --bg1:#07070a; --bg2:#0b0b12; --card:#11131a; --ink:#e6e9ff; --muted:#98a2b3;
+      --brand:#7c3aed; /* violet */
+      --accent:#22d3ee; /* cyan */
+      --danger:#ef4444; /* red */
+      --ring:rgba(124,58,237,.28);
+      --shadow: 0 18px 40px rgba(0,0,0,.6);
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--ink);
+      font: 500 16px/1.6 "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(1200px 700px at 80% -10%, #101329 0%, #0b0c16 45%, #06070b 100%);
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x:hidden;
     }
 
-    .container {
-      text-align: center;
-      padding: 2rem;
-      max-width: 1000px;
-      width: 100%;
+    /* ===== Ambient: moving grid + mist ===== */
+    .gridFx{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.25;}
+    .gridFx:before{content:""; position:absolute; inset:-20%; background:
+      linear-gradient(transparent 95%, rgba(124,58,237,.18) 96%) 0 0/ 100% 42px,
+      linear-gradient(90deg, transparent 95%, rgba(34,211,238,.18) 96%) 0 0/ 42px 100%;
+      transform: perspective(900px) rotateX(60deg) translateY(-15%);
+      animation: driftGrid 28s linear infinite;
+      filter: blur(.2px);
     }
+    @keyframes driftGrid{0%{transform:perspective(900px) rotateX(60deg) translateY(-15%) translateX(0)}100%{transform:perspective(900px) rotateX(60deg) translateY(-15%) translateX(-15%)}}
 
-    /* Title */
-    h1 {
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, #ff0040, #ff6a00, #ffd500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1.5rem;
-      animation: fadeInDown 1.5s ease;
+    .mist{position:fixed; inset:-50%; pointer-events:none; z-index:0;
+      background: radial-gradient(circle at 40% 40%, rgba(124,58,237,.12), transparent 40%),
+                  radial-gradient(circle at 60% 60%, rgba(34,211,238,.12), transparent 40%);
+      animation: mist 60s linear infinite; filter: blur(10px);
     }
+    @keyframes mist{0%{transform:rotate(0deg) scale(1)}100%{transform:rotate(360deg) scale(1.2)}}
 
-    /* Grid */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
+    .wrap{position:relative; z-index:1; max-width:1200px; padding:22px; margin:0 auto}
 
-    /* Card */
-    .card {
-      background: rgba(20, 20, 20, 0.9);
-      border-radius: 18px;
-      padding: 1.8rem 1.2rem;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 25px rgba(255, 0, 70, 0.5);
-      cursor: pointer;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      position: relative;
-      overflow: hidden;
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin:6px 0 18px}
+    .brand{display:flex; align-items:center; gap:12px}
+    .medallion{width:48px; height:48px; border-radius:16px; display:grid; place-items:center; box-shadow: var(--shadow);
+      background: conic-gradient(from 120deg, #1f2937, #0ea5e9 40%, #7c3aed 70%, #1f2937);
     }
+    .medallion svg{width:28px; height:28px; color:#e2e8f0}
+    .title{font-weight:900; letter-spacing:.08em; font-size: clamp(18px, 2.6vw, 28px)}
+    .subtitle{color:var(--muted); font-size:14px; margin-top:-2px}
 
-    .card:hover {
-      transform: translateY(-12px) scale(1.05);
-      box-shadow: 0 0 40px rgba(255, 0, 100, 0.7);
-    }
+    .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .btn, .select, .search{appearance:none; border:1px solid rgba(226,232,240,.12); background: linear-gradient(180deg, #121423, #0e1020);
+      color:var(--ink); padding:12px 14px; border-radius:14px; box-shadow: var(--shadow); font-weight:700}
+    .btn{cursor:pointer; transition:.2s}
+    .btn:hover{transform:translateY(-1px)}
+    .search{min-width:220px}
+    .select{min-width:220px; cursor:pointer}
 
-    .card h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.6rem;
-      color: #ffd500;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
+    main{display:grid; gap:16px; grid-template-columns: 1fr}
+    @media(min-width:980px){main{grid-template-columns:1.1fr .9fr}}
 
-    .card p {
-      font-size: 0.95rem;
-      color: #ccc;
-    }
+    .card{background: linear-gradient(180deg, #0c0f1c, #0a0d19); border:1px solid rgba(226,232,240,.08); border-radius: var(--radius);
+      padding:18px; box-shadow: var(--shadow)}
+    .card h2{margin:0 0 6px; font-size:18px}
+    .muted{color:var(--muted)}
 
-    /* Glow borders */
-    .card::before {
-      content: "";
-      position: absolute;
-      top: -2px;
-      left: -2px;
-      width: calc(100% + 4px);
-      height: calc(100% + 4px);
-      background: linear-gradient(45deg, #ff0040, #ff6a00, #ffd500, #00ffcc, #0077ff, #ff0040);
-      background-size: 400%;
-      border-radius: 20px;
-      z-index: -1;
-      filter: blur(10px);
-      animation: glowing 12s linear infinite;
-    }
+    .grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:14px}
+    @media(max-width:780px){.grid{grid-template-columns: repeat(2, 1fr)}}
+    @media(max-width:520px){.grid{grid-template-columns: 1fr}}
 
-    /* Animations */
-    @keyframes glowing {
-      0% { background-position: 0 0; }
-      50% { background-position: 400% 0; }
-      100% { background-position: 0 0; }
-    }
+    .tile{position:relative; border-radius:16px; padding:16px; background: linear-gradient(180deg, #0e1328, #0b1021);
+      border:1px solid rgba(226,232,240,.08); overflow:hidden; transition:.28s ease; min-height:120px; display:flex; flex-direction:column; justify-content:space-between}
+    .tile:hover{transform: translateY(-3px)}
+    .tile h3{margin:0; font-size:18px}
+    .tile p{margin:6px 0 0; color:var(--muted); font-size:14px}
+    .chip{position:absolute; top:10px; right:10px; font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(124,58,237,.15); color:#c4b5fd; border:1px solid rgba(124,58,237,.35)}
+    .icon{font-size:28px; line-height:1}
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .quick{display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:10px}
+    @media(max-width:640px){.quick{grid-template-columns: repeat(2, 1fr)}}
+    .q{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background: linear-gradient(180deg, #101428, #0c1020);
+      border:1px solid rgba(226,232,240,.08); text-decoration:none; color:var(--ink); box-shadow: var(--shadow)}
 
-    /* Responsive */
-    @media(max-width: 768px) {
-      h1 { font-size: 2.2rem; }
-      .card h2 { font-size: 1.2rem; }
-      .card p { font-size: 0.85rem; }
-    }
+    .rooms{display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-top:6px}
+    @media(min-width:640px){.rooms{grid-template-columns: repeat(3, 1fr)}}
+    @media(min-width:1060px){.rooms{grid-template-columns: repeat(4, 1fr)}}
+
+    .room{position:relative; aspect-ratio: 1/1; border-radius: 16px; background: linear-gradient(180deg, #0f1224, #0b0f1d);
+      border:1px solid rgba(226,232,240,.08); display:flex; align-items:center; justify-content:center; flex-direction:column;
+      gap:8px; text-decoration:none; color:var(--ink); transition:.2s ease; box-shadow: var(--shadow); overflow:hidden}
+    .room:hover{transform: translateY(-2px)}
+    .room .badge{position:absolute; top:8px; left:8px; font-size:12px; padding:4px 8px; border-radius:999px; background: rgba(34,211,238,.14); color:#67e8f9; border:1px solid rgba(34,211,238,.35)}
+    .room .title{font-weight:800}
+    .room .tag{font-size:12px; color:var(--muted)}
+
+    .kbd{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; border:1px solid rgba(226,232,240,.18);
+      border-bottom-width:2px; padding:2px 6px; border-radius:6px; background:linear-gradient(180deg, #121423, #0e1020); color:var(--ink)}
+
+    footer{margin:22px 0 8px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; color:var(--muted)}
+
+    /* Dropdown rows */
+    .row{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
+
+    /* Gate distortion on nav */
+    .distort{animation:glitch .42s steps(2,end) forwards}
+    @keyframes glitch{0%{transform:translate(1px,1px)}25%{transform:translate(-2px,1px) skewX(1deg)}50%{transform:translate(2px,-1px) skewX(-1deg)}75%{transform:translate(-1px,2px)}100%{transform:translate(0)}}
+
+    /* Focus mode */
+    .focus header .subtitle, .focus .muted, .focus footer, .focus .q span:last-child{opacity:.18; filter:saturate(.6)}
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>⚡ Shadow Gate ⚡</h1>
-    <div class="grid">
-      <div class="card" onclick="openPage('missions.html')">
-        <h2>Missions</h2>
-        <p>Enter the realm of ultimate objectives.</p>
+  <div class="gridFx"></div>
+  <div class="mist"></div>
+
+  <div class="wrap" id="app">
+    <header>
+      <div class="brand">
+        <div class="medallion">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3l3 6 6 .9-4.5 4.4 1.1 6.3L12 17l-5.6 3.6 1.1-6.3L3 9.9 9 9l3-6z"/></svg>
+        </div>
+        <div>
+          <div class="title">SHADOW</div>
+          <div class="subtitle">Training • Skill • Knowledge • Peak</div>
+        </div>
       </div>
-      <div class="card" onclick="openPage('strategies.html')">
-        <h2>Strategies</h2>
-        <p>The playbook of shadows and dominance.</p>
+      <div class="controls">
+        <input id="search" class="search" type="search" placeholder="Search (rooms/modules)" aria-label="Search" />
+        <select id="jumpSelect" class="select" aria-label="Quick Jump"></select>
+        <button class="btn" id="focusBtn" title="Toggle Focus (.)">Focus</button>
+        <button class="btn" id="soundBtn" title="Ambient (M)">Sound: Off</button>
       </div>
-      <div class="card" onclick="openPage('diary.html')">
-        <h2>Diary</h2>
-        <p>Secrets recorded in hidden ink.</p>
+    </header>
+
+    <main>
+      <!-- LEFT: Shadow Modules -->
+      <section class="card">
+        <h2>Shadow Modules</h2>
+        <p class="muted">Train, acquire skill, grow knowledge, and enter Peak Mode</p>
+
+        <div class="row">
+          <select class="select" id="trainingSel" aria-label="Training">
+            <option value="" selected>Training ▼</option>
+            <option value="shadow-training.html">Open: Training Console</option>
+            <option value="shadow-routines.html">Open: Routines</option>
+            <option value="shadow-progress.html">Open: Progress</option>
+            <option value="shadow-recovery.html">Open: Recovery</option>
+          </select>
+          <select class="select" id="skillsSel" aria-label="Skills">
+            <option value="" selected>Skills ▼</option>
+            <option value="shadow-skills.html">Open: Skills Hub</option>
+            <option value="shadow-combat.html">Open: Combat</option>
+            <option value="shadow-stealth.html">Open: Stealth</option>
+            <option value="shadow-tech.html">Open: Tech</option>
+          </select>
+          <select class="select" id="knowledgeSel" aria-label="Knowledge">
+            <option value="" selected>Knowledge ▼</option>
+            <option value="shadow-knowledge.html">Open: Knowledge Base</option>
+            <option value="shadow-research.html">Open: Research</option>
+            <option value="shadow-labs.html">Open: Labs</option>
+            <option value="shadow-library.html">Open: Library</option>
+          </select>
+          <select class="select" id="peakSel" aria-label="Peak Mode">
+            <option value="" selected>Peak Mode ▼</option>
+            <option value="shadow-peak.html">Open: Peak Protocol</option>
+            <option value="shadow-peak-prep.html">Open: Prep & Checklists</option>
+            <option value="shadow-peak-mission.html">Open: Peak Missions</option>
+          </select>
+        </div>
+
+        <div class="grid" id="modules"></div>
+        <div class="quick" style="margin-top:12px">
+          <a class="q" href="node.html"><span>🏠</span><span>Back to Node</span></a>
+          <a class="q" href="host.html"><span>👤</span><span>Host</span></a>
+          <a class="q" href="archive.html"><span>🗄️</span><span>Archive</span></a>
+        </div>
+      </section>
+
+      <!-- RIGHT: Rooms / Alters index (Shadow view) -->
+      <section class="card">
+        <h2>Rooms <span class="muted">(14)</span></h2>
+        <div class="rooms" id="rooms"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <span class="muted">Shortcuts:</span>
+        <span class="kbd">/</span> Search
+        <span class="kbd">.</span> Focus
+        <span class="kbd">M</span> Sound
       </div>
-      <div class="card" onclick="openPage('arsenal.html')">
-        <h2>Arsenal</h2>
-        <p>Tools and weapons of the unseen warrior.</p>
-      </div>
-      <div class="card" onclick="openPage('identity.html')">
-        <h2>Identity</h2>
-        <p>The faceless mask of the alter ego.</p>
-      </div>
-      <div class="card" onclick="openPage('archive.html')">
-        <h2>Archive</h2>
-        <p>Past echoes of the dark chronicle.</p>
-      </div>
-    </div>
+      <div class="muted">© <span id="year"></span> Prayag — Shadow</div>
+    </footer>
   </div>
 
   <script>
-    function openPage(page) {
-      window.location.href = page;
+    // ---------- Config ----------
+    const MODULES = [
+      { icon:"🏋️", title:"Training Console", desc:"Programs, blocks, recovery.", href:"shadow-training.html", tag:"training" },
+      { icon:"🛡️", title:"Combat", desc:"Striking, grappling, defense.", href:"shadow-combat.html", tag:"skills combat" },
+      { icon:"🕶️", title:"Stealth", desc:"Movement, disguise, infil.", href:"shadow-stealth.html", tag:"skills stealth" },
+      { icon:"🧠", title:"Knowledge Base", desc:"Notes, research, labs.", href:"shadow-knowledge.html", tag:"knowledge" },
+      { icon:"🧪", title:"Labs", desc:"Experiment, iterate, test.", href:"shadow-labs.html", tag:"labs research" },
+      { icon:"💻", title:"Tech", desc:"Systems, devices, code.", href:"shadow-tech.html", tag:"skills tech" },
+      { icon:"📚", title:"Library", desc:"References & texts.", href:"shadow-library.html", tag:"library books" },
+      { icon:"⚡", title:"Peak Protocol", desc:"Activation & operations.", href:"shadow-peak.html", tag:"peak mode" },
+      { icon:"🗂️", title:"Archive", desc:"Past records.", href:"archive.html", tag:"archive" }
+    ];
+
+    const ROOMS = [
+      { id:"01", title:"A-01", tag:"wolf tech", href:"alter-01.html" },
+      { id:"02", title:"A-02", tag:"crow stealth", href:"alter-02.html" },
+      { id:"03", title:"A-03", tag:"lion command", href:"alter-03.html" },
+      { id:"04", title:"A-04", tag:"owl strategy", href:"alter-04.html" },
+      { id:"05", title:"A-05", tag:"viper intel", href:"alter-05.html" },
+      { id:"06", title:"A-06", tag:"tiger force", href:"alter-06.html" },
+      { id:"07", title:"A-07", tag:"orca calm", href:"alter-07.html" },
+      { id:"08", title:"A-08", tag:"fox adapt", href:"alter-08.html" },
+      { id:"09", title:"A-09", tag:"bear endure", href:"alter-09.html" },
+      { id:"10", title:"A-10", tag:"hawk recon", href:"alter-10.html" },
+      { id:"11", title:"A-11", tag:"mantis precision", href:"alter-11.html" },
+      { id:"12", title:"A-12", tag:"cobra threat", href:"alter-12.html" },
+      { id:"13", title:"A-13", tag:"monk peace", href:"alter-13.html" },
+      { id:"14", title:"A-14", tag:"ghost silence", href:"alter-14.html" }
+    ];
+
+    // ---------- Jump dropdown ----------
+    const JUMP = [
+      { label:"— Quick Jump —", href:"" },
+      { label:"Training Console", href:"shadow-training.html" },
+      { label:"Skills Hub", href:"shadow-skills.html" },
+      { label:"Knowledge Base", href:"shadow-knowledge.html" },
+      { label:"Peak Protocol", href:"shadow-peak.html" },
+      { label:"Archive", href:"archive.html" },
+      { label:"Host", href:"host.html" },
+      { label:"Node", href:"node.html" }
+    ];
+
+    // ---------- Effects ----------
+    function gate(url){
+      document.body.classList.add('distort');
+      setTimeout(()=>{ window.location.href = url; }, 420);
     }
+
+    // ---------- Render Modules ----------
+    const modulesEl = document.getElementById('modules');
+    MODULES.forEach(m=>{
+      const a = document.createElement('a');
+      a.className='tile'; a.href=m.href; a.setAttribute('data-tag', m.tag);
+      a.innerHTML = `
+        <div class="chip">Shadow</div>
+        <div class="icon">${m.icon}</div>
+        <h3>${m.title}</h3>
+        <p>${m.desc}</p>
+      `;
+      a.addEventListener('click', (e)=>{ e.preventDefault(); gate(m.href); });
+      modulesEl.appendChild(a);
+    });
+
+    // ---------- Render Rooms ----------
+    const roomsEl = document.getElementById('rooms');
+    function renderRooms(filter=""){
+      roomsEl.innerHTML="";
+      const q = filter.trim().toLowerCase();
+      ROOMS.filter(r => !q || r.id.includes(q) || r.title.toLowerCase().includes(q) || r.tag.toLowerCase().includes(q))
+        .forEach(r=>{
+          const a=document.createElement('a');
+          a.className='room'; a.href=r.href; a.setAttribute('data-id', r.id);
+          a.innerHTML=`
+            <div class="badge">${r.id}</div>
+            <div style="font-size:36px">◈</div>
+            <div class="title">${r.title}</div>
+            <div class="tag">${r.tag}</div>
+          `;
+          a.addEventListener('click', (e)=>{ e.preventDefault(); gate(r.href); });
+          roomsEl.appendChild(a);
+        });
+    }
+    renderRooms();
+
+    // ---------- Dropdown bindings ----------
+    const trainingSel = document.getElementById('trainingSel');
+    const skillsSel = document.getElementById('skillsSel');
+    const knowledgeSel = document.getElementById('knowledgeSel');
+    const peakSel = document.getElementById('peakSel');
+    const jumpSelect = document.getElementById('jumpSelect');
+
+    function wireSelect(sel){ sel.addEventListener('change', e=>{ const v = e.target.value; if(v){ gate(v); sel.selectedIndex=0; } }); }
+    ;[trainingSel, skillsSel, knowledgeSel, peakSel].forEach(wireSelect);
+
+    JUMP.forEach(item=>{ const o=document.createElement('option'); o.textContent=item.label; o.value=item.href; jumpSelect.appendChild(o); });
+    wireSelect(jumpSelect);
+
+    // ---------- Search + Shortcuts ----------
+    const search = document.getElementById('search');
+    search.addEventListener('input', e => { renderRooms(e.target.value); filterModules(e.target.value); });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='/' ){ e.preventDefault(); search.focus(); } });
+    function filterModules(q){
+      const t = q.trim().toLowerCase();
+      [...modulesEl.querySelectorAll('.tile')].forEach(el=>{
+        const tag = el.getAttribute('data-tag')||'';
+        el.style.display = (!t || tag.toLowerCase().includes(t)) ? '' : 'none';
+      });
+    }
+
+    // ---------- Focus Mode ----------
+    const focusBtn = document.getElementById('focusBtn');
+    focusBtn.addEventListener('click', toggleFocus);
+    window.addEventListener('keydown', (e)=>{ if(e.key==='.') toggleFocus(); });
+    function toggleFocus(){ document.body.classList.toggle('focus'); }
+
+    // ---------- Ambient Sound (WebAudio) ----------
+    let audioCtx=null, gainNode=null; let soundOn=false;
+    const soundBtn = document.getElementById('soundBtn');
+    function initAudio(){
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const noise = audioCtx.createBufferSource();
+      const noiseBuf = audioCtx.createBuffer(1, audioCtx.sampleRate*2, audioCtx.sampleRate);
+      const data = noiseBuf.getChannelData(0);
+      for(let i=0;i<data.length;i++){ data[i] = (Math.random()*2-1) * 0.2; }
+      noise.buffer = noiseBuf; noise.loop = true;
+      const lfo = audioCtx.createOscillator();
+      const lfoGain = audioCtx.createGain();
+      gainNode = audioCtx.createGain();
+      osc1.type='sine'; osc1.frequency.value=62; // low pad
+      osc2.type='triangle'; osc2.frequency.value=124; // harmonic
+      lfo.type='sine'; lfo.frequency.value=0.07; lfoGain.gain.value=0.22;
+      lfo.connect(lfoGain); lfoGain.connect(gainNode.gain);
+      osc1.connect(gainNode); osc2.connect(gainNode); noise.connect(gainNode);
+      gainNode.gain.value=0.0; gainNode.connect(audioCtx.destination);
+      osc1.start(); osc2.start(); noise.start(); lfo.start();
+    }
+    function toggleSound(){
+      if(!audioCtx){ initAudio(); }
+      soundOn = !soundOn;
+      gainNode.gain.linearRampToValueAtTime(soundOn?0.05:0.0, audioCtx.currentTime+0.35);
+      soundBtn.textContent = 'Sound: ' + (soundOn? 'On' : 'Off');
+    }
+    soundBtn.addEventListener('click', toggleSound);
+    window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='m') toggleSound(); });
+
+    // ---------- Year ----------
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
