@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Host Gateway</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #ffffff);
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1rem;
+      text-align: center;
+      background: #1976d2;
+      color: white;
+      font-size: 1.6rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-top: 6px solid #1976d2;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h3 {
+      margin: 0.5rem 0 0.75rem;
+      font-size: 1.3rem;
+      color: #1976d2;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.85rem;
+      background: #f0f0f0;
+      color: #666;
+    }
+
+    /* Simple button animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .card {
+      animation: fadeIn 0.8s ease both;
+    }
+  </style>
+</head>
+<body>
+  <header>Host Control Center</header>
+  
+  <div class="container">
+    <div class="card" onclick="navigate('missions.html')">
+      <h3>Missions</h3>
+      <p>Track and manage all active missions.</p>
+    </div>
+
+    <div class="card" onclick="navigate('aim.html')">
+      <h3>Aim</h3>
+      <p>Set and refine long-term goals.</p>
+    </div>
+
+    <div class="card" onclick="navigate('diary.html')">
+      <h3>Diary</h3>
+      <p>Write, reflect, and store daily thoughts.</p>
+    </div>
+
+    <div class="card" onclick="navigate('training.html')">
+      <h3>Training</h3>
+      <p>Access routines and skill development.</p>
+    </div>
+
+    <div class="card" onclick="navigate('tools.html')">
+      <h3>Tools</h3>
+      <p>Launch essential utilities and resources.</p>
+    </div>
+  </div>
+
+  <footer>
+    Host Persona Gateway – Focus • Clarity • Discipline
+  </footer>
+
+  <script>
+    function navigate(page){
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>
