@@ -152,8 +152,8 @@
 
 
 <main>
-  <label for="subjectSelect">Science & Technology:</label>
-  <select id="subjectSelect" aria-label="Select From Options">
+  <label for="subjectSelect1">Science & Technology:</label>
+  <select id="subjectSelect1" aria-label="Select From Options">
     <option value="" disabled selected>Select...</option>
         <option value="materials/gen.txt">Application Development : Native + Platform Independent</option>
 
@@ -208,6 +208,40 @@
 
 <script>
   const select = document.getElementById('subjectSelect');
+  const contentBox = document.getElementById('contentBox');
+
+  select.addEventListener('change', () => {
+    const fileName = select.value;
+    if (!fileName) {
+      contentBox.textContent = 'Please select a subject to see details.';
+      return;
+    }
+    contentBox.innerHTML = '<span class="loading">Loading...</span>';
+
+    fetch(fileName)
+      .then(response => {
+        if (!response.ok) throw new Error('File not found');
+        return response.text();
+      })
+      .then(text => {
+        // Simple text to HTML formatting (optional)
+        const safeText = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br>");
+        contentBox.innerHTML = safeText;
+      })
+      .catch(err => {
+        contentBox.innerHTML = `<span class="error">Failed to load file: ${fileName}</span>`;
+      });
+  });
+
+
+
+
+
+const select = document.getElementById('subjectSelect1');
   const contentBox = document.getElementById('contentBox');
 
   select.addEventListener('change', () => {
