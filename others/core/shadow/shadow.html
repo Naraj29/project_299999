@@ -201,7 +201,7 @@
 
   </select>
 
-  <div class="content-box" id="contentBox">
+  <div class="content-box" id="contentBox1">
     Choose an option to see details.
   </div>
 </main>
@@ -241,33 +241,33 @@
 
 
 
-const select = document.getElementById('subjectSelect1');
-  const contentBox = document.getElementById('contentBox');
+const select1 = document.getElementById('subjectSelect1');
+  const contentBox1 = document.getElementById('contentBox1');
 
   select.addEventListener('change', () => {
-    const fileName = select.value;
-    if (!fileName) {
-      contentBox.textContent = 'Please select a subject to see details.';
+    const fileName1 = select.value;
+    if (!fileName1) {
+      contentBox1.textContent = 'Please select a subject to see details.';
       return;
     }
-    contentBox.innerHTML = '<span class="loading">Loading...</span>';
+    contentBox1.innerHTML = '<span class="loading">Loading...</span>';
 
-    fetch(fileName)
+    fetch(fileName1)
       .then(response => {
         if (!response.ok) throw new Error('File not found');
         return response.text();
       })
       .then(text => {
         // Simple text to HTML formatting (optional)
-        const safeText = text
+        const safeText1 = text
           .replace(/&/g, "&amp;")
           .replace(/</g, "&lt;")
           .replace(/>/g, "&gt;")
           .replace(/\n/g, "<br>");
-        contentBox.innerHTML = safeText;
+        contentBox1.innerHTML = safeText;
       })
       .catch(err => {
-        contentBox.innerHTML = `<span class="error">Failed to load file: ${fileName}</span>`;
+        contentBox1.innerHTML = `<span class="error">Failed to load file: ${fileName1}</span>`;
       });
   });
 </script>
