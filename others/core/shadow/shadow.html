@@ -244,8 +244,8 @@
 const select1 = document.getElementById('subjectSelect1');
   const contentBox1 = document.getElementById('contentBox1');
 
-  select.addEventListener('change', () => {
-    const fileName1 = select.value;
+  select1.addEventListener('change', () => {
+    const fileName1 = select1.value;
     if (!fileName1) {
       contentBox1.textContent = 'Please select a subject to see details.';
       return;
