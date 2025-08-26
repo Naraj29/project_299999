@@ -154,7 +154,7 @@
 
 
 
-<main>
+<main class = "main-block">
   <label for="subjectSelect1">Science & Technology:</label>
   <select id="subjectSelect1" aria-label="Select From Options">
     <option value="" disabled selected>Select...</option>
@@ -203,10 +203,43 @@
 
 
   </select>
-
   <div class="content-box" id="contentBox1">
     Choose an option to see details.
   </div>
+  <script type="module">
+    const container = document.currentScript.parentElement;
+
+    //  Put your const select1 = document.getElementById('subjectSelect1');
+  const contentBox1 = document.getElementById('contentBox1');
+
+  select1.addEventListener('change', () => {
+    const fileName1 = select1.value;
+    if (!fileName1) {
+      contentBox1.textContent = 'Please select a subject to see details.';
+      return;
+    }
+    contentBox1.innerHTML = '<span class="loading">Loading...</span>';
+
+    fetch(fileName1)
+      .then(response => {
+        if (!response.ok) throw new Error('File not found');
+        return response.text();
+      })
+      .then(text => {
+        // Simple text to HTML formatting (optional)
+        const safeText1 = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br>");
+        contentBox1.innerHTML = safeText;
+      })
+      .catch(err => {
+        contentBox1.innerHTML = `<span class="error">Failed to load file: ${fileName1}</span>`;
+      });
+  });
+  </script>
+
 </main>
 
 <script>
@@ -240,40 +273,10 @@
       });
   });
 
-
-
-
-
-const select1 = document.getElementById('subjectSelect1');
-  const contentBox1 = document.getElementById('contentBox1');
-
-  select1.addEventListener('change', () => {
-    const fileName1 = select1.value;
-    if (!fileName1) {
-      contentBox1.textContent = 'Please select a subject to see details.';
-      return;
-    }
-    contentBox1.innerHTML = '<span class="loading">Loading...</span>';
-
-    fetch(fileName1)
-      .then(response => {
-        if (!response.ok) throw new Error('File not found');
-        return response.text();
-      })
-      .then(text => {
-        // Simple text to HTML formatting (optional)
-        const safeText1 = text
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/\n/g, "<br>");
-        contentBox1.innerHTML = safeText;
-      })
-      .catch(err => {
-        contentBox1.innerHTML = `<span class="error">Failed to load file: ${fileName1}</span>`;
-      });
-  });
 </script>
+
+
+
 
 </body>
 </html>
