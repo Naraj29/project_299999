@@ -1,282 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Skills in Shadow</title>
-<style>
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #1e1e2f;
-    color: #eee;
-    margin: 0; padding: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-  header {
-    background: #282c34;
-    padding: 1.5rem 2rem;
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 1.2px;
-    color: #61dafb;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
-  }
-  main {
-    flex: 1;
-    padding: 2rem 1.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-    width: 90%;
-  }
-  label {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  select {
-    margin-left: 0.75rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: none;
-    background: #3a3f55;
-    color: #eee;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  select:hover, select:focus {
-    background: #505773;
-    outline: none;
-  }
-  .content-box {
-    margin-top: 2rem;
-    background: #282c34;
-    border-radius: 12px;
-    padding: 1.5rem 2rem;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.6);
-    white-space: pre-wrap;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    min-height: 200px;
-    overflow-y: auto;
-  }
-  .loading {
-    font-style: italic;
-    color: #a0a0a0;
-  }
-  .error {
-    color: #ff6b6b;
-    font-weight: 700;
-  }
-  @media (max-width: 600px) {
-    header {
-      font-size: 1.4rem;
-      padding: 1rem;
+  <meta charset="UTF-8">
+  <title>Shadow Skills Matrix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #f0f0f0;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    main {
-      padding: 1rem;
-      width: 95%;
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #00e6e6;
     }
     select {
-      font-size: 0.95rem;
-      padding: 0.4rem 0.8rem;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      background: #1a1a1a;
+      color: #f0f0f0;
+      outline: none;
+      transition: 0.3s;
     }
-    .content-box {
-      font-size: 1rem;
-      padding: 1rem 1.2rem;
-      min-height: 150px;
+    select:hover {
+      background: #262626;
     }
-  }
-</style>
+    #viewer {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 800px;
+      min-height: 300px;
+      background: #111;
+      border-radius: 10px;
+      padding: 15px;
+      overflow: auto;
+      box-shadow: 0 0 15px rgba(0, 230, 230, 0.5);
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 10px;
+    }
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+  </style>
 </head>
 <body>
 
-<header>Mastering Skills</header>
+  <h2>League of Shadow</h2>
 
-<main>
-  <label for="subjectSelect">Physical & Mental Training</label>
-  <select id="subjectSelect" aria-label="Peak Human Training">
-    <option value="" disabled selected>Select...</option>
-        <option value="materials/gen.txt">Arm Wrestling </option>
-
-<option value="materials/discrete.txt">Body Movements : Gestures & Postures </option>
-   
-     
-  <option value="materials/math.txt"> Calisthenics - Peak</option>
-<option value="materials/web.txt">Concentration & Focus</option>
-<option value="materials/web.txt">Diet & Nutrition : Micro + Macro</option>
-
-<option value="materials/web.txt">Dopamine Detox - Peak </option>
-
- <option value="materials/web.txt">Dressing Sense </option>
-
-  <option value="materials/math.txt"> Gymnastics </option>
-
-<option value="materials/web.txt">Hair Care : Beard & Moustache</option>
-<option value="materials/web.txt">Hygiene : Habits & Routines</option>
-
-  <option value="materials/math.txt"> Lifting - Pro </option>
-
-
-  <option value="materials/math.txt">Martial Arts </option>
-<option value="materials/web.txt">Memory Training - Peak</option>
-<option value="materials/math.txt">Physical Education </option>
-
-
-<option value="materials/web.txt">Plyometrics</option>
-<option value="materials/web.txt">Skin-care</option>
-
-<option value="materials/soft.txt">Strongman Training</option>
-<option value="materials/web.txt">Tooth Care</option>
-
-
-  <option value="materials/math.txt"> Yoga & Asanas - Mastery </option>
-
-    
-
-
-<option value="materials/remaining.txt"> ZZ - Code</option>
-
-
-
-  </select>
-
-  <div class="content-box" id="contentBox">
-    Choose an option to see details.
-</div>
-</main>
-
-
-
-<main class = "main-block">
-  <label for="subjectSelect1">Science & Technology:</label>
-  <select id="subjectSelect1" aria-label="Select From Options">
-    <option value="" disabled selected>Select...</option>
-        <option value="materials/gen.txt">Application Development : Native + Platform Independent</option>
-
-
-<option value="../c/txt/arduino.txt">Arduino</option>
-
-
-<option value="../c/txt/ai.txt">Artificial Intelligence</option>
-
-  <option value="../c/txt/bio.txt">Biology </option>
-
-
-     
-  <option value="../c/txt/chem.txt"> Chemistry </option>
-
-
-<option value="../c/txt/civil.txt"> Civil Engineering </option>
-  
-  <option value="../c/txt/cse.txt">Computer Science and Engineering - Peak</option>
-
-  <option value="mat/txt/editing.txt"> Editing - Pro </option>
-
-<option value="../c/txt/ee.txt">Electrical Engineering</option>
-
-<option value="../c/txt/ece.txt">Electronics & Communication Engineering</option>
-  <option value="../c/txt/web.txt">Full Stack Web Development </option>
-
-
-<option value="../c/txt/hack.txt"> Hacking - Pro </option>
-
-   <option value="../c/txt/hard.txt">Hardware Engineering</option>
-   
-
-<option value="../c/txt/math.txt">Mathematics</option>
-
-
-<option value="../c/txt/mech.txt">Mechanical Engineering</option>
-<option value="../c/txt/phy.txt">Physics</option>
-<option value="../c/txt/robot.txt">Robotics - Peak</option>
-
-<option value="../c/txt/soft.txt">Software Engineering - Peak</option>
-<option value="../c/txt/zz.txt">ZZ - Code</option>
-
-
-
-  </select>
-  <div class="content-box" id="contentBox1">
-    Choose an option to see details.
+  <!-- Dropdowns -->
+  <div>
+    <select id="protocol">
+      <option value="">-- Choose --</option>
+    </select>
+    <select id="field" disabled>
+      <option value="">-- Path --</option>
+    </select>
+    <select id="skill" disabled>
+      <option value="">-- Destination --</option>
+    </select>
   </div>
-  <script type="module">
-    const container = document.currentScript.parentElement;
 
-    //  Put your const select1 = document.getElementById('subjectSelect1');
-  const contentBox1 = document.getElementById('contentBox1');
+  <!-- Content Viewer -->
+  <div id="viewer">
+    <p> Choose your Destination...</p>
+  </div>
 
-  select1.addEventListener('change', () => {
-    const fileName1 = select1.value;
-    if (!fileName1) {
-      contentBox1.textContent = 'Please select a subject to see details.';
-      return;
+  <script>
+    // 🔹 Example big data structure (can be extended infinitely)
+    const DATA = {
+      "Training": {
+        "Physical Training": {
+          "Martial Arts": "mat/txt/martial.html",
+          "Swordplay": "mat/txt/sword.txt"
+        },
+        "Memtal Training": {
+          "Infiltration": "mat/txt/infiltration.html",
+          "Disguise": "mat/txt/disguise.txt"
+        },
+        "Science & Technology": {
+          "Application Development : Native Apps + Platform Independent": "mat/txt/app.html",
+          "Arduino": "mat/txt/arduino.txt",
+          "Editing - Pro":"mat/txt/editing.txt"
+        },
+        "Memtal Training": {
+          "Infiltration": "mat/txt/infiltration.html",
+          "Disguise": "mat/txt/disguise.txt"
+        }
+      },
+      "Protocol Beta": {
+        "Technology": {
+          "Hacking": "mat/txt/hacking.html",
+          "Engineering": "mat/txt/engineering.txt"
+        },
+        "Strategy": {
+          "Tactics": "mat/txt/tactics.html",
+          "Psychology": "mat/txt/psychology.txt"
+        }
+      }
+    };
+
+    const protocolSel = document.getElementById("protocol");
+    const fieldSel = document.getElementById("field");
+    const skillSel = document.getElementById("skill");
+    const viewer = document.getElementById("viewer");
+
+    // Load Protocols
+    for (let protocol in DATA) {
+      let opt = document.createElement("option");
+      opt.value = protocol;
+      opt.textContent = protocol;
+      protocolSel.appendChild(opt);
     }
-    contentBox1.innerHTML = '<span class="loading">Loading...</span>';
 
-    fetch(fileName1)
-      .then(response => {
-        if (!response.ok) throw new Error('File not found');
-        return response.text();
-      })
-      .then(text => {
-        // Simple text to HTML formatting (optional)
-        const safeText1 = text
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/\n/g, "<br>");
-        contentBox1.innerHTML = safeText;
-      })
-      .catch(err => {
-        contentBox1.innerHTML = `<span class="error">Failed to load file: ${fileName1}</span>`;
-      });
-  });
+    protocolSel.onchange = () => {
+      fieldSel.innerHTML = '<option value="">-- Make a choice --</option>';
+      skillSel.innerHTML = '<option value="">-- Find the Path --</option>';
+      skillSel.disabled = true;
+      viewer.innerHTML = "<p>Your content will appear here...</p>";
+
+      if (protocolSel.value) {
+        fieldSel.disabled = false;
+        let fields = Object.keys(DATA[protocolSel.value]);
+        fields.forEach(field => {
+          let opt = document.createElement("option");
+          opt.value = field;
+          opt.textContent = field;
+          fieldSel.appendChild(opt);
+        });
+      } else {
+        fieldSel.disabled = true;
+      }
+    };
+
+    fieldSel.onchange = () => {
+      skillSel.innerHTML = '<option value="">-- Select Skill --</option>';
+      viewer.innerHTML = "<p>Your content will appear here...</p>";
+
+      if (fieldSel.value) {
+        skillSel.disabled = false;
+        let skills = Object.keys(DATA[protocolSel.value][fieldSel.value]);
+        skills.forEach(skill => {
+          let opt = document.createElement("option");
+          opt.value = skill;
+          opt.textContent = skill;
+          skillSel.appendChild(opt);
+        });
+      } else {
+        skillSel.disabled = true;
+      }
+    };
+
+    skillSel.onchange = () => {
+      viewer.innerHTML = "<p>Loading...</p>";
+      let filePath = DATA[protocolSel.value][fieldSel.value][skillSel.value];
+
+      if (filePath.endsWith(".html")) {
+        viewer.innerHTML = `<iframe src="${filePath}"></iframe>`;
+      } else {
+        fetch(filePath)
+          .then(res => res.text())
+          .then(txt => {
+            viewer.innerHTML = `<pre>${txt}</pre>`;
+          })
+          .catch(err => {
+            viewer.innerHTML = "<p>Error loading file.</p>";
+          });
+      }
+    };
   </script>
-
-</main>
-
-<script>
-  const select = document.getElementById('subjectSelect');
-  const contentBox = document.getElementById('contentBox');
-
-  select.addEventListener('change', () => {
-    const fileName = select.value;
-    if (!fileName) {
-      contentBox.textContent = 'Please select a subject to see details.';
-      return;
-    }
-    contentBox.innerHTML = '<span class="loading">Loading...</span>';
-
-    fetch(fileName)
-      .then(response => {
-        if (!response.ok) throw new Error('File not found');
-        return response.text();
-      })
-      .then(text => {
-        // Simple text to HTML formatting (optional)
-        const safeText = text
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/\n/g, "<br>");
-        contentBox.innerHTML = safeText;
-      })
-      .catch(err => {
-        contentBox.innerHTML = `<span class="error">Failed to load file: ${fileName}</span>`;
-      });
-  });
-
-</script>
-
-
-
-
 </body>
 </html>
